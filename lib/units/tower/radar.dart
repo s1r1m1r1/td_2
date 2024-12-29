@@ -5,9 +5,7 @@ import '../base/goblin.dart';
 
 typedef RadarScanCallback = void Function(GameComponent c);
 
-
-
-enum RadarMode { findBest, findFirst,  disable }
+enum RadarMode { findBest, findFirst, disable }
 
 mixin Radar on PositionComponent {
   bool _radarOn = true;
@@ -17,7 +15,6 @@ mixin Radar on PositionComponent {
   double distScan = 1000;
   late double _bestDistance = distScan;
 
-  // RadarScanCallback? radarScanAlert;
   RadarScanCallback? radarScanAlert;
 
   set radarOn(bool i) {
@@ -28,7 +25,6 @@ mixin Radar on PositionComponent {
 
   void radarScan(Iterable<Goblin> targets) {
     _findBestTarget(targets.toList());
-    // _findCollision(targets);
   }
 
   void _findBestTarget(List<Goblin> targets) {
@@ -36,15 +32,11 @@ mixin Radar on PositionComponent {
     if (radarOn) {
       _bestTarget = null;
       _bestDistance = distScan;
-      _collisions.clear();
       _checkDistance(targets);
     }
   }
 
-
-
   Goblin? _bestTarget;
-  List<Goblin> _collisions = [];
 
   void _checkDistance(List<Goblin> targets) {
     if (targets.isEmpty) return;
@@ -54,8 +46,8 @@ mixin Radar on PositionComponent {
       if (stop) break;
       final t = targets[i];
       final tPos = t.position + (t.size / 2);
-      final tCollisionSize = (t.size.x + t.size.y) + 1 ;
-      double collisionRange = tCollisionSize + distScan;
+      // final tCollisionSize = (t.size.x + t.size.y) + 1;
+      // double collisionRange = tCollisionSize + distScan;
       final double distance = centerRadar.distanceTo(tPos);
       // debugPrint('targetPosition : $tPos');
       // debugPrint('targetColSize : $tCollisionSize');

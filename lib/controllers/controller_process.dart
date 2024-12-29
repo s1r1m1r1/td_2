@@ -1,11 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/chest.dart';
-import 'package:td_2/units/tower/tower_component.dart';
-import '../stage_map.dart';
 import 'game_event.dart';
-import 'game_manual_controller.dart';
 import 'grid_component.dart';
 
 final _log = Logger('GameInstruction');

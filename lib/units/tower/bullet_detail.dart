@@ -38,18 +38,17 @@ class Bullet2Detail extends _BulletDetail {
 
 class _BulletDetail<T> extends GameComponent
     with Movable, CanNotSeen, Clash<T>, UseAssetsLoader, UseSpriteAnimation {
-  @override
-  T? effect;
-
   SpriteAnimation? _anim;
   _BulletDetail({
     required Vector2 position,
     required Vector2 size,
     required Future<SpriteAnimation> anim,
+    T? effect,
   }) {
     this.position = position;
     this.size = size;
     loader?.add(AssetToLoad(anim, (i) => _anim = i));
+    this.effect = effect;
     // setupLighting(
     //   LightingConfig(
     //     radius: width * 8.0,
@@ -61,13 +60,6 @@ class _BulletDetail<T> extends GameComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    // gameRef.add(
-    //   RectangleComponent(
-    //     priority: 1000,
-    //     position: position,
-    //     paint: Paint()..color = Colors.purple.withAlpha(200),
-    //     size: size,
-    // ));
     setAnimation(_anim, size: size, autoPlay: true);
     clashAlert = done;
     // distExplosion = 300;
@@ -84,7 +76,6 @@ class _BulletDetail<T> extends GameComponent
     updateMovable(dt);
     super.update(dt);
   }
-
 
   void outOfRange() {
     removeFromParent();
@@ -103,15 +94,4 @@ class _BulletDetail<T> extends GameComponent
         ),
     );
   }
-
-  // @override
-  // void render(Canvas canvas) {
-  //   sprite?.render(
-  //     canvas,
-  //     size: size,
-  //     overridePaint: paint,
-  //   );
-
-  //   super.render(canvas);
-  // }
 }

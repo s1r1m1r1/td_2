@@ -1,8 +1,6 @@
-import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:td_2/controllers/grid_component.dart';
-import '../stage_map.dart';
 
 import '../units/base/enemy_unit.dart';
 import '../units/base/goblin.dart';
@@ -43,15 +41,7 @@ class GameManualController extends GameComponent
 
   void _addEnemyInWorld() {
     final tiles = gameRef.query<GridTileComponent>();
-    gameRef.addAll(
-        // List.generate((10), (i) => _randomG()),
-        [...tiles.map((i) => Goblin(i.position))]);
-  }
-
-  Goblin _randomG() {
-    double x = (StageMap.tileSize + 2) * (Random().nextInt(7));
-    double y = (StageMap.tileSize + 2) * (Random().nextInt(7));
-    return Goblin(Vector2(x, y));
+    gameRef.addAll([...tiles.map((i) => Goblin(i.position))]);
   }
 
   void _processRadarScan() {
