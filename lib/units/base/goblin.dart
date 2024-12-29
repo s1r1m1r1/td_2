@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
+import 'package:logging/logging.dart';
 
 import '../../render/priority.dart';
 import '../../stage_map.dart';
@@ -8,7 +9,10 @@ import '../../common_sprite_sheet.dart';
 import 'enemy_sprite_sheet.dart';
 import 'enemy_unit.dart';
 
+
 class Goblin extends ScannableEnemy with UseLifeBar {
+static const loggerName = 'Goblin';
+static final _log = Logger(loggerName);
   bool active = true;
   Goblin(Vector2 position)
       : super(
@@ -28,7 +32,7 @@ class Goblin extends ScannableEnemy with UseLifeBar {
   int get priority => Priority.enemies;
 
   void _removeLife(double life) {
-    debugPrint('remove life');
+    _log.info('remove life');
     showDamage(
       life,
       config: TextStyle(
@@ -40,10 +44,10 @@ class Goblin extends ScannableEnemy with UseLifeBar {
   }
 
   void onClash(dynamic d) {
-    debugPrint('onClash i: ${d.runtimeType} ');
+    _log.info('onClash i: ${d.runtimeType} ');
     if (isDead) return;
     if (d is double) {
-      debugPrint('onClash ok');
+      _log.info('onClash ok');
       _removeLife(d);
     }
   }
