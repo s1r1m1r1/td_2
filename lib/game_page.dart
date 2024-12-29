@@ -7,8 +7,8 @@ import 'stage_map.dart';
 import 'controllers/game_manual_controller.dart';
 import 'interface/towers_interface.dart';
 
-class GameManualMap extends StatelessWidget {
-  const GameManualMap({super.key});
+class GamePage extends StatelessWidget {
+  const GamePage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -36,7 +36,7 @@ mixin GameInstruction on GameComponent {
       case EnemyMissedGameEvent():
         _log.info('EnemyMissedGameEvent');
       case EnemyKilledGameEvent():
-        debugPrint('EnemyKilledGameEvent ${event.mineValue}');
+        _log.info('EnemyKilledGameEvent ${event.mineValue}');
       // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
@@ -47,10 +47,10 @@ mixin GameInstruction on GameComponent {
         // firstWhere
         for (final i in grids) {
           final isCover = i.isCover(event.position);
-          debugPrint('SetDraggableGameEvent: isCover $isCover');
+          _log.info('SetDraggableGameEvent: isCover $isCover');
           if (!isCover) continue;
           item = i;
-          debugPrint('SetDraggableGameEvent: isCover OK');
+          _log.info('SetDraggableGameEvent: isCover OK');
           break;
         }
         if (item == null) break;
