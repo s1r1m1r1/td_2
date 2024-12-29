@@ -46,7 +46,6 @@ class GamePage extends StatelessWidget {
           ...StageMap.enemies(),
           ...StageMap.decorations(),
           GameManualController(),
-          GridComponent()
         ],
         cameraConfig: CameraConfig(
           zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),

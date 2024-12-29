@@ -1,8 +1,8 @@
 
-import 'package:bonfire/bonfire.dart';
+import 'package:bonfire/bonfire.dart' hide TileComponent;
+import 'package:td_2/controller/game_event.dart';
 import 'package:td_2/world/grid_component.dart';
 
-import '../unit/base/enemy_unit.dart';
 import '../unit/base/goblin.dart';
 import '../unit/mixin/clash.dart';
 import '../unit/mixin/radar.dart';
@@ -12,8 +12,10 @@ import 'static_controller.dart';
 
 class GameManualController extends GameComponent
     with MoveCameraMixin, GameInstruction {
+
   @override
   void onMount() {
+    staticController.add(const GameEvent.createStage());
     gameRef.camera
       ..moveTo(Vector2.all(200))
       ..moveOnlyMapArea = true;
@@ -31,16 +33,16 @@ class GameManualController extends GameComponent
   void update(double dt) {
     _processInstruction();
     _processRadarScan();
-    if (checkInterval('check_living_enemies', 500, dt)) {
-      if (gameRef.query<ScannableEnemy>().length < 3) {
-        _addEnemyInWorld();
-      }
-    }
+    // if (checkInterval('check_living_enemies', 500, dt)) {
+    //   if (gameRef.query<ScannableEnemy>().length < 3) {
+    //     _addEnemyInWorld();
+    //   }
+    // }
     super.update(dt);
   }
 
   void _addEnemyInWorld() {
-    final tiles = gameRef.query<GridTileComponent>();
+    final tiles = gameRef.query<TileComponent>();
     gameRef.addAll([...tiles.map((i) => Goblin(i.position))]);
   }
 

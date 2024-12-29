@@ -1,36 +1,68 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/render/priority.dart';
 import 'package:td_2/unit/tower/tower_component.dart';
 
 import 'stage_map.dart';
-import '../unit/tower/tower.dart';
 import '../decoration/x_tile.dart';
-
-class GridComponent extends GameComponent {
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-    List.generate(10, (indexRow) {
-      return List.generate(10, (indexColumn) {
-        final g = GridTileComponent(
-            position: StageMap.getRelativeTilePosition(indexRow, indexColumn),
-            size: Vector2.all(StageMap.tileSize),
-            gridPos: Point(indexRow, indexColumn));
-        parent?.add(g);
-      });
-    });
-  }
-}
 
 enum TowerType { missile, rocket }
 
-class GridTileComponent extends GameComponent {
-  static const loggerName = "GridTileComponent";
+class StartGateTileComponent extends TileComponent {
+  StartGateTileComponent({
+    required super.size,
+    required super.position,
+    required super.gridPos,
+  });
+}
+
+class EndGateTileComponent extends TileComponent {
+  EndGateTileComponent({
+    required super.size,
+    required super.position,
+    required super.gridPos,
+  });
+}
+
+class FoundationTileComponent extends TileComponent {
+  FoundationTileComponent({
+    required super.size,
+    required super.position,
+    required super.gridPos,
+  });
+
+  void setTower(TowerType type) {
+    final component = switch (type) {
+      TowerType.missile => MissileTower(position: position),
+      TowerType.rocket => RocketTower(position: position),
+    };
+    super.setChild(component);
+  }
+
+  void removeTower() {
+    super.removeChild();
+  }
+
+  bool get hasTower => super.hasChild;
+}
+
+class RoadTileComponent extends TileComponent {
+  RoadTileComponent({
+    required super.size,
+    required super.position,
+    required super.gridPos,
+  });
+}
+
+abstract class TileComponent extends GameComponent {
+  static const loggerName = "TileComponent";
   static final _log = Logger(loggerName);
-  GridTileComponent({
+  TileComponent({
     required Vector2 size,
     required Vector2 position,
     required this.gridPos,
@@ -46,7 +78,34 @@ class GridTileComponent extends GameComponent {
 
   GameComponent? decoration;
   GameComponent? decoration2;
-  TowerComponent? tower;
+  GameComponent? child;
+  GameComponent? drawing;
+
+  void setNotAllowedFX() {
+    gameRef.add(
+      RectangleComponent(
+          position: position,
+          priority: Priority.overAll,
+          size: size,
+          paint: Paint()..color = Colors.red.withAlpha(50))
+        ..add(
+          RemoveEffect(delay: 0.016),
+        ),
+    );
+  }
+
+  void setAllowedFX() {
+    gameRef.add(
+      RectangleComponent(
+          priority: Priority.overAll,
+          position: position,
+          size: size,
+          paint: Paint()..color = Colors.green.withAlpha(50))
+        ..add(
+          RemoveEffect(delay: 0.016),
+        ),
+    );
+  }
 
   bool isCover(Vector2 pos) {
     final rect = Rect.fromLTWH(position.x, position.y, size.x, size.y);
@@ -56,22 +115,17 @@ class GridTileComponent extends GameComponent {
     return rect.contains(pos.toOffset());
   }
 
-  void setTower(TowerType type) {
-    switch (type) {
-      case TowerType.missile:
-        tower = MissileTower(position: position);
-      case TowerType.rocket:
-        tower = RocketTower(position: position);
-    }
-    gameRef.add(tower!);
+  void setChild(GameComponent component) {
+    child = component;
+    gameRef.add(component);
   }
 
-  void removeTower() {
-    tower?.removeFromParent();
-    tower = null;
+  void removeChild() {
+    child?.removeFromParent();
+    child = null;
   }
 
-  bool get hasTower => tower != null;
+  bool get hasChild => child != null;
 
   @override
   Future<void> onLoad() async {
@@ -93,10 +147,10 @@ class GridTileComponent extends GameComponent {
   void onRemove() {
     decoration?.removeFromParent();
     decoration2?.removeFromParent();
-    tower?.removeFromParent();
+    child?.removeFromParent();
     decoration = null;
     decoration2 = null;
-    tower = null;
+    child = null;
     super.onRemove();
   }
 }

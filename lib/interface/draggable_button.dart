@@ -49,6 +49,17 @@ class DraggableButton extends GameDecoration
   }
 
   @override
+  bool handlerPointerMove(PointerMoveEvent event) {
+    final isCover = _isPointerCover(event);
+    if (!isCover) return false;
+    final localPos = gameRef.camera.globalToLocal(event.position.toVector2());
+    staticController.add(GameEvent.moveDragButton(localPos));
+
+    return super.handlerPointerMove(event);
+  }
+
+
+  @override
   bool handlerPointerUp(PointerUpEvent event) {
     final isCover = _isPointerCover(event);
     if (!isCover) return false;
@@ -60,7 +71,7 @@ class DraggableButton extends GameDecoration
     staticText?.removeFromParent();
 
     final localPos = gameRef.camera.globalToLocal(event.position.toVector2());
-    staticController.add(GameEvent.setDraggable(localPos));
+    staticController.add(GameEvent.finishDragButton(localPos));
     return super.handlerPointerUp(event);
   }
 }

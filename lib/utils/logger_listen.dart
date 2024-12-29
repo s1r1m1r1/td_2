@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/controller/controller_process.dart';
 import 'package:td_2/utils/logger.dart';
 
 import '../unit/base/goblin.dart';
@@ -15,7 +16,8 @@ void watchRecords(LogRecord rec) {
     // GridTileComponent.loggerName,
     // Radar.loggerName,
     // Clash.loggerName,
-    Goblin.loggerName,
+    // Goblin.loggerName,
+    GameInstruction.loggerName,
   ];
   if (!names.contains(rec.loggerName)) return;
   if (rec.stackTrace != null) {

@@ -1,14 +1,46 @@
-import 'package:bonfire/bonfire.dart';
+import 'dart:math';
+
+import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import '../unit/base/goblin.dart';
+import '../world/stage_map.dart';
 import 'game_event.dart';
 import '../world/grid_component.dart';
 
-final _log = Logger('GameInstruction');
-
 mixin GameInstruction on GameComponent {
+  static const loggerName = 'GameInstruction';
+  final _log = Logger(loggerName);
   void process(GameEvent event) {
     switch (event) {
+      // Todo , with setting level
+      case CreateStageGameEvent():
+        _log.info('CreateStageGameEvent');
+        List.generate(10, (x) {
+          return List.generate(10, (y) {
+            final tile = switch ((x, y)) {
+              _ when y < 1 => RoadTileComponent(
+                  position: StageMap.getRelativeTilePosition(x, y),
+                  size: Vector2.all(StageMap.tileSize),
+                  gridPos: Point(x, y)),
+              _ => FoundationTileComponent(
+                  position: StageMap.getRelativeTilePosition(x, y),
+                  size: Vector2.all(StageMap.tileSize),
+                  gridPos: Point(x, y)),
+            };
+            final unit = switch ((x, y)) {
+              (int x, int y) when x > 1 && x < 9 && y > 1 && y < 9 =>
+                Goblin(tile.position),
+              _ => null
+            };
+
+            gameRef.add(tile);
+            if (unit != null) {
+              gameRef.add(unit);
+            }
+          });
+        });
+
       case StartedGameEvent():
         _log.info('StartedGameEvent');
       case PausedGameEvent():
@@ -40,10 +72,31 @@ mixin GameInstruction on GameComponent {
       // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
-      case SetDraggableGameEvent():
-        debugPrint('SetDraggableGameEvent: pos ${event.position}');
-        final grids = gameRef.query<GridTileComponent>();
-        GridTileComponent? item;
+      case MoveDragButtonGameEvent():
+        _log.info('MoveDragButtonGameEvent');
+        final grids = gameRef.query<TileComponent>();
+        TileComponent? item;
+        // firstWhere
+        for (final i in grids) {
+          final isCover = i.isCover(event.position);
+          _log.info('MoveDraggableGameEvent: isCover $isCover');
+          if (!isCover) continue;
+          item = i;
+          _log.info('MoveDraggableGameEvent: isCover OK');
+          break;
+        }
+        if (item == null) break;
+        if (!item.hasChild || item is FoundationTileComponent) {
+          item.setAllowedFX();
+        } else {
+          item.setNotAllowedFX(
+            
+          );
+        }
+      case FinishDragButtonGameEvent():
+        debugPrint('FinishDragButtonGameEvent: pos ${event.position}');
+        final grids = gameRef.query<FoundationTileComponent>();
+        FoundationTileComponent? item;
         // firstWhere
         for (final i in grids) {
           final isCover = i.isCover(event.position);
@@ -54,7 +107,7 @@ mixin GameInstruction on GameComponent {
           break;
         }
         if (item == null) break;
-        if(item.hasTower){
+        if (item.hasTower) {
           item.removeTower();
           break;
         }
@@ -63,8 +116,6 @@ mixin GameInstruction on GameComponent {
     }
   }
 }
-
-
 
 // class GameInstruction {
 //   GameEvent event;
