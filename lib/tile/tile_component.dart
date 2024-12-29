@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:logging/logging.dart';
 import 'package:td_2/render/priority.dart';
 import 'package:td_2/unit/tower/tower_component.dart';
@@ -12,21 +13,65 @@ import 'x_tile.dart';
 
 enum TowerType { missile, rocket }
 
+final _log = Logger(TileComponent.loggerName);
+
 class StartGateTileComponent extends TileComponent {
   StartGateTileComponent({
     required super.size,
     required super.position,
     required super.gridPos,
   });
+  Component? startGate;
+
+  @override
+  Future<void> onLoad() async {
+    _log.info("ON LOAD");
+    await super.onLoad();
+    startGate = RectangleComponent(
+        priority: Priority.overAll,
+        position: position,
+        size: size,
+        paint: Paint()..color = Colors.purple,
+        children: [TextComponent(position: Vec2.zero, text: "Start")]);
+    gameRef.add(startGate!);
+  }
+
+  @override
+  void onRemove() {
+    startGate?.removeFromParent();
+    super.onRemove();
+  }
 }
 
-class EndGateTileComponent extends TileComponent {
+class EndGateTileComponent extends TileComponent  {
   EndGateTileComponent({
     required super.size,
     required super.position,
     required super.gridPos,
   });
+  Component? endGate;
+
+  @override
+  Future<void> onLoad() async {
+    _log.info("ON LOAD");
+    await super.onLoad();
+    endGate = RectangleComponent(
+        priority: Priority.overAll,
+        position: position,
+        size: size,
+        paint: Paint()..color = Colors.purple,
+        children: [TextComponent(position: Vec2.zero, text: "END")]);
+    gameRef.add(endGate!);
+  }
+
+  @override
+  void onRemove() {
+    endGate?.removeFromParent();
+    super.onRemove();
+  }
 }
+
+
 
 class FoundationTileComponent extends TileComponent {
   FoundationTileComponent({
@@ -60,7 +105,6 @@ class RoadTileComponent extends TileComponent {
 
 sealed class TileComponent extends GameComponent {
   static const loggerName = "TileComponent";
-  static final _log = Logger(loggerName);
   TileComponent({
     required Vector2 size,
     required Vector2 position,
@@ -76,11 +120,8 @@ sealed class TileComponent extends GameComponent {
   final Point<int> gridPos;
 
   GameComponent? decoration;
-  GameComponent? decoration2;
   GameComponent? child;
   GameComponent? drawing;
-
-  
 
   bool isCover(Vector2 pos) {
     final rect = Rect.fromLTWH(position.x, position.y, size.x, size.y);
@@ -107,13 +148,7 @@ sealed class TileComponent extends GameComponent {
     await super.onLoad();
     decoration =
         XTile(position: position, size: Vector2.all(StageMap.tileSize * 0.8));
-    // decoration2 = GameDecoration.withSprite(
-    //   sprite: Sprite.load('itens/flag_red.png'),
-    //   position: position,
-    //   size: Vector2.all(StageMap.tileSize * 1.1),
-    // );
-    // decoration?.priority = 3000;
-    // decoration2?.priority = 9999;
+
     gameRef.add(decoration!);
     // gameRef.add(decoration2!);
   }
@@ -121,10 +156,8 @@ sealed class TileComponent extends GameComponent {
   @override
   void onRemove() {
     decoration?.removeFromParent();
-    decoration2?.removeFromParent();
     child?.removeFromParent();
     decoration = null;
-    decoration2 = null;
     child = null;
     super.onRemove();
   }

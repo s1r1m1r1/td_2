@@ -8,7 +8,6 @@ part 'game_event.freezed.dart';
     map: FreezedMapOptions.none, when: FreezedWhenOptions.none, copyWith: false)
 sealed class GameEvent with _$GameEvent {
   const GameEvent._();
-  const factory GameEvent.started() = StartedGameEvent;
   const factory GameEvent.paused() = PausedGameEvent;
   const factory GameEvent.resumed() = ResumedGameEvent;
   const factory GameEvent.weaponBuilding({required RotationTower component}) =

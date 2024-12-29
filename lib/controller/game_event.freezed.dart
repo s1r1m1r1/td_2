@@ -19,31 +19,6 @@ mixin _$GameEvent {}
 
 /// @nodoc
 
-class _$StartedGameEventImpl extends StartedGameEvent {
-  const _$StartedGameEventImpl() : super._();
-
-  @override
-  String toString() {
-    return 'GameEvent.started()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StartedGameEventImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
-abstract class StartedGameEvent extends GameEvent {
-  const factory StartedGameEvent() = _$StartedGameEventImpl;
-  const StartedGameEvent._() : super._();
-}
-
-/// @nodoc
-
 class _$PausedGameEventImpl extends PausedGameEvent {
   const _$PausedGameEventImpl() : super._();
 

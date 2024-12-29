@@ -64,21 +64,21 @@ class StageMap {
   static List<GameDecoration> decorations() {
     return [
       Spikes(
-        getRelativeTilePosition(0, 0),
+        toRelative(0, 0),
       ),
-      DraggableButton(getRelativeTilePosition(4, 4)),
+      DraggableButton(toRelative(4, 4)),
       GameDecorationWithCollision.withSprite(
         sprite: Sprite.load('itens/barrel.png'),
-        position: getRelativeTilePosition(0, 2),
+        position: toRelative(0, 2),
         size: Vector2(tileSize, tileSize),
         collisions: [
           RectangleHitbox(size: Vector2(tileSize / 1.5, tileSize / 1.5))
         ],
       ),
-      Chest(getRelativeTilePosition(0, 3)),
+      Chest(toRelative(0, 3)),
       GameDecorationWithCollision.withSprite(
         sprite: Sprite.load('itens/table.png'),
-        position: getRelativeTilePosition(0, 4),
+        position: toRelative(0, 4),
         size: Vector2(tileSize, tileSize),
         collisions: [
           RectangleHitbox(size: Vector2(tileSize, tileSize * 0.8)),
@@ -86,7 +86,7 @@ class StageMap {
       ),
       GameDecorationWithCollision.withSprite(
         sprite: Sprite.load('itens/table.png'),
-        position: getRelativeTilePosition(0, 4),
+        position: toRelative(0, 4),
         size: Vector2(tileSize, tileSize),
         collisions: [
           RectangleHitbox(size: Vector2(tileSize, tileSize * 0.8)),
@@ -95,22 +95,22 @@ class StageMap {
       // Torch(getRelativeTilePosition(0, 5)),
       GameDecoration.withSprite(
         sprite: Sprite.load('itens/flag_red.png'),
-        position: getRelativeTilePosition(0, 6),
+        position: toRelative(0, 6),
         size: Vector2(tileSize, tileSize),
       ),
       GameDecoration.withSprite(
         sprite: Sprite.load('itens/flag_red.png'),
-        position: getRelativeTilePosition(0, 7),
+        position: toRelative(0, 7),
         size: Vector2(tileSize, tileSize),
       ),
       GameDecoration.withSprite(
         sprite: Sprite.load('itens/prisoner.png'),
-        position: getRelativeTilePosition(0, 8),
+        position: toRelative(0, 8),
         size: Vector2(tileSize, tileSize),
       ),
       GameDecoration.withSprite(
         sprite: Sprite.load('itens/flag_red.png'),
-        position: getRelativeTilePosition(0, 9),
+        position: toRelative(0, 9),
         size: Vector2(tileSize, tileSize),
       ),
       // ...List.generate(10, (indexRow) {
@@ -124,7 +124,7 @@ class StageMap {
   static List<GameComponent> enemies() {
     return [
       // Goblin(getRelativeTilePosition(3, 3)),
-      MissileTower(position: getRelativeTilePosition(5, 5)),
+      MissileTower(position: toRelative(5, 5)),
 
     ];
   }
@@ -149,7 +149,7 @@ class StageMap {
     }
   }
 
-  static Vector2 getRelativeTilePosition(int x, int y) {
+  static Vector2 toRelative(int x, int y) {
     return Vector2(
       (x * tileSize).toDouble(),
       (y * tileSize).toDouble(),

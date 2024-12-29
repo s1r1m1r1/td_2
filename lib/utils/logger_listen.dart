@@ -14,12 +14,12 @@ import '../tile/tile_component.dart';
 void watchRecords(LogRecord rec) {
   // ---- filter --------
   final names = [
-    // GridTileComponent.loggerName,
+   TileComponent.loggerName,
     // Radar.loggerName,
     // Clash.loggerName,
     // Goblin.loggerName,
     // GameInstruction.loggerName,
-    TileFXController.loggerName,
+    // TileFXController.loggerName,
   ];
   if (!names.contains(rec.loggerName)) return;
   if (rec.stackTrace != null) {
