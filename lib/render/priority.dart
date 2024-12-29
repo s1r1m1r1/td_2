@@ -4,4 +4,5 @@ abstract class Priority {
 
   static const int enemies = 15000;
   static const int tileTower = 20000;
+  static const int overAll = 100000;
 }
