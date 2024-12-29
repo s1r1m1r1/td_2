@@ -3,11 +3,11 @@ import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/units/tower/tower_component.dart';
+import 'package:td_2/unit/tower/tower_component.dart';
 
-import '../stage_map.dart';
-import '../units/tower/tower.dart';
-import '../x_tile.dart';
+import 'stage_map.dart';
+import '../unit/tower/tower.dart';
+import '../decoration/x_tile.dart';
 
 class GridComponent extends GameComponent {
   @override

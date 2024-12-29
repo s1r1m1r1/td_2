@@ -1,11 +1,11 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
-import '../chest.dart';
-import '../controllers/game_event.dart';
-import '../controllers/static_controller.dart';
-import '../stage_map.dart';
-import '../common_sprite_sheet.dart';
+import '../decoration/chest.dart';
+import '../controller/game_event.dart';
+import '../controller/static_controller.dart';
+import '../world/stage_map.dart';
+import '../decoration/common_sprite_sheet.dart';
 
 class DraggableButton extends GameDecoration
     with DragGesture, Movement, BlockMovementCollision {

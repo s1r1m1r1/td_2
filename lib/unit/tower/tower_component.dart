@@ -3,11 +3,11 @@ import 'dart:math' as math;
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
-import 'package:td_2/units/base/math_ext.dart';
-import 'package:td_2/units/tower/tower.dart';
+import 'package:td_2/unit/base/math_ext.dart';
+import 'package:td_2/unit/tower/tower.dart';
 
 import '../../render/priority.dart';
-import '../../stage_map.dart';
+import '../../world/stage_map.dart';
 import 'base_detail.dart';
 import 'bullet_detail.dart';
 import '../mixin/radar.dart';

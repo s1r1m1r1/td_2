@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../units/tower/tower_component.dart';
+import '../unit/tower/tower_component.dart';
 
 part 'game_event.freezed.dart';
 

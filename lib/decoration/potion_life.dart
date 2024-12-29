@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'stage_map.dart';
+import '../world/stage_map.dart';
 import 'common_sprite_sheet.dart';
 
 class PotionLife extends GameDecoration with Sensor<Player>, Movement {

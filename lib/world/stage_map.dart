@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
-import 'interface/draggable_button.dart';
-import 'chest.dart';
-import 'spikes.dart';
-import 'units/tower/tower_component.dart';
+import '../interface/draggable_button.dart';
+import '../decoration/chest.dart';
+import '../decoration/spikes.dart';
+import '../unit/tower/tower_component.dart';
 
 abstract class Vec2 {
   static final zero = Vector2.zero();

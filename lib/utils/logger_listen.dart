@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/utils/logger.dart';
 
-import '../units/base/goblin.dart';
-import '../units/mixin/clash.dart';
-import '../units/mixin/radar.dart';
+import '../unit/base/goblin.dart';
+import '../unit/mixin/clash.dart';
+import '../unit/mixin/radar.dart';
 import '../world/grid_component.dart';
 
 void watchRecords(LogRecord rec) {
