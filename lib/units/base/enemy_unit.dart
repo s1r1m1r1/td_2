@@ -4,21 +4,14 @@ import 'package:bonfire/mixins/direction_animation.dart';
 
 class ScannableEnemy extends ScannableUnit with DirectionAnimation {
   ScannableEnemy({
-    required Vector2 position,
-    required Vector2 size,
+    required super.position,
+    required super.size,
     SimpleDirectionAnimation? animation,
-    double life = 100,
-    double? speed,
+    super.life = 100,
+    super.speed,
     Direction initDirection = Direction.right,
-    AcceptableAttackOriginEnum receivesAttackFrom =
-        AcceptableAttackOriginEnum.PLAYER_AND_ALLY,
-  }) : super(
-          position: position,
-          size: size,
-          life: life,
-          speed: speed,
-          receivesAttackFrom: receivesAttackFrom,
-        ) {
+    super.receivesAttackFrom,
+  }) {
     this.animation = animation;
     lastDirection = initDirection;
     lastDirectionHorizontal =
@@ -33,13 +26,13 @@ class ScannableEnemy extends ScannableUnit with DirectionAnimation {
 
 class ScannableUnit extends Unit with Attackable {
   ScannableUnit({
-    required Vector2 position,
-    required Vector2 size,
+    required super.position,
+    required super.size,
     double life = 10,
-    double? speed,
+    super.speed,
     AcceptableAttackOriginEnum receivesAttackFrom =
         AcceptableAttackOriginEnum.PLAYER_AND_ALLY,
-  }) : super(position: position, size: size, speed: speed) {
+  }) {
     this.receivesAttackFrom = receivesAttackFrom;
     initialLife(life);
   }

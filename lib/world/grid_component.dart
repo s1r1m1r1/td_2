@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:td_2/units/tower/tower_component.dart';
 
 import '../stage_map.dart';
@@ -28,12 +28,14 @@ class GridComponent extends GameComponent {
 enum TowerType { missile, rocket }
 
 class GridTileComponent extends GameComponent {
+  static const loggerName = "GridTileComponent";
+  static final _log = Logger(loggerName);
   GridTileComponent({
     required Vector2 size,
     required Vector2 position,
     required this.gridPos,
   }) {
-    debugPrint('added $gridPos');
+    _log.info('added $gridPos');
     this.size = size;
     this.position = position;
   }
@@ -48,9 +50,9 @@ class GridTileComponent extends GameComponent {
 
   bool isCover(Vector2 pos) {
     final rect = Rect.fromLTWH(position.x, position.y, size.x, size.y);
-    debugPrint('isCover rect: $rect');
-    debugPrint('isCover pos: $pos');
-    debugPrint('isCover contains: ${rect.contains(pos.toOffset())}');
+    _log.info('isCover rect: $rect');
+    _log.info('isCover pos: $pos');
+    _log.info('isCover contains: ${rect.contains(pos.toOffset())}');
     return rect.contains(pos.toOffset());
   }
 

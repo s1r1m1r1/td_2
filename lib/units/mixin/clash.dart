@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 import '../base/goblin.dart';
 
@@ -12,6 +13,8 @@ enum ClashMode {
 }
 
 mixin Clash<T> on PositionComponent {
+  static const loggerName = 'Clash';
+  static final _log = Logger(loggerName);
   T? effect;
   double explosionScan = 0.0;
   final mode = ClashMode.bestOne;

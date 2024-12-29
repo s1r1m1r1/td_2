@@ -10,7 +10,7 @@ import '../../render/priority.dart';
 import '../../stage_map.dart';
 import 'base_detail.dart';
 import 'bullet_detail.dart';
-import 'radar.dart';
+import '../mixin/radar.dart';
 import 'tower_sprite_sheet.dart';
 import 'turret_detail.dart';
 

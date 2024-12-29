@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
-import 'ui/draggable_button.dart';
+import 'interface/draggable_button.dart';
 import 'chest.dart';
 import 'spikes.dart';
 import 'units/tower/tower_component.dart';

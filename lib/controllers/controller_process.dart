@@ -1,12 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/chest.dart';
-import 'package:td_2/units/tower/tower_component.dart';
-import '../stage_map.dart';
 import 'game_event.dart';
-import 'game_manual_controller.dart';
-import 'grid_component.dart';
+import '../world/grid_component.dart';
 
 final _log = Logger('GameInstruction');
 
@@ -40,7 +36,7 @@ mixin GameInstruction on GameComponent {
       case EnemyMissedGameEvent():
         _log.info('EnemyMissedGameEvent');
       case EnemyKilledGameEvent():
-        debugPrint('EnemyKilledGameEvent ${event.mineValue}');
+        _log.info('EnemyKilledGameEvent ${event.mineValue}');
       // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
@@ -51,10 +47,10 @@ mixin GameInstruction on GameComponent {
         // firstWhere
         for (final i in grids) {
           final isCover = i.isCover(event.position);
-          debugPrint('SetDraggableGameEvent: isCover $isCover');
+          _log.info('SetDraggableGameEvent: isCover $isCover');
           if (!isCover) continue;
           item = i;
-          debugPrint('SetDraggableGameEvent: isCover OK');
+          _log.info('SetDraggableGameEvent: isCover OK');
           break;
         }
         if (item == null) break;
