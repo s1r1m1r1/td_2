@@ -1,4 +1,3 @@
-
 import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:td_2/controller/game_event.dart';
 import 'package:td_2/tile/tile_component.dart';
@@ -6,15 +5,16 @@ import 'package:td_2/tile/tile_component.dart';
 import '../unit/base/goblin.dart';
 import '../unit/mixin/clash.dart';
 import '../unit/mixin/radar.dart';
+import 'astar_mixin.dart';
 import 'controller_process.dart';
 import 'move_camera_mixin.dart';
 import 'static_controller.dart';
 
 class GameManualController extends GameComponent
     with MoveCameraMixin, GameInstruction {
-
   @override
   void onMount() {
+    // astarController.test();
     staticController.add(const GameEvent.createStage());
     gameRef.camera
       ..moveTo(Vector2.all(200))
@@ -33,17 +33,20 @@ class GameManualController extends GameComponent
   void update(double dt) {
     _processInstruction();
     _processRadarScan();
-    // if (checkInterval('check_living_enemies', 500, dt)) {
-    //   if (gameRef.query<ScannableEnemy>().length < 3) {
-    //     _addEnemyInWorld();
-    //   }
-    // }
+    if (checkInterval('check_living_enemies', 500, dt)) {
+      if (gameRef.query<Goblin>().length < 3) {
+        _addEnemyInWorld();
+        staticController.add(const GameEvent.enemyGo());
+      }
+    }
     super.update(dt);
   }
 
   void _addEnemyInWorld() {
-    final tiles = gameRef.query<TileComponent>();
-    gameRef.addAll([...tiles.map((i) => Goblin(i.position))]);
+    final tiles = gameRef.query<StartGateTileComponent>();
+    if (tiles.isNotEmpty) {
+      gameRef.addAll([Goblin(tiles.first.position)]);
+    }
   }
 
   void _processRadarScan() {

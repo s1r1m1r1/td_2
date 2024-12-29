@@ -27,6 +27,8 @@ sealed class GameEvent with _$GameEvent {
       EnemyKilledGameEvent;
   const factory GameEvent.enemyNextWave() = EnemyNextWaveGameEvent;
   //
+
+  const factory GameEvent.enemyGo() = EnemyGoGameEvent;
   const factory GameEvent.createStage() = CreateStageGameEvent;
   const factory GameEvent.moveDragButton(Vector2 position) = MoveDragButtonGameEvent;
   const factory GameEvent.finishDragButton(Vector2 position) = FinishDragButtonGameEvent;

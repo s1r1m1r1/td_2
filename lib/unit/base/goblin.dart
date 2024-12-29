@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/unit/base/movable.dart';
 
 import '../../render/priority.dart';
 import '../../tile/stage_map.dart';
@@ -9,10 +12,9 @@ import '../../decoration/common_sprite_sheet.dart';
 import 'enemy_sprite_sheet.dart';
 import 'enemy_unit.dart';
 
-
-class Goblin extends ScannableEnemy with UseLifeBar {
-static const loggerName = 'Goblin';
-static final _log = Logger(loggerName);
+class Goblin extends ScannableEnemy with UseLifeBar, Movable {
+  static const loggerName = 'Goblin';
+  static final _log = Logger(loggerName);
   bool active = true;
   Goblin(Vector2 position)
       : super(
@@ -20,7 +22,7 @@ static final _log = Logger(loggerName);
           position: position,
           size: Vector2.all(StageMap.tileSize * 0.8),
           speed: StageMap.tileSize,
-          life: 100,
+          life: 10000,
         ) {
     setupLifeBar(
       borderRadius: BorderRadius.circular(2),
@@ -54,34 +56,8 @@ static final _log = Logger(loggerName);
 
   @override
   void update(double dt) {
+    super.updateMovable(dt);
     super.update(dt);
-    if (!gameRef.sceneBuilderStatus.isRunning) {
-      // seeAndMoveToPlayer(
-      //   radiusVision: StageMap.tileSize,
-      //   closePlayer: (p) {
-      //     execAttack(attack);
-      //   },
-      //   notObserved: () {
-      //     seeAndMoveToAttackRange(
-      //       minDistanceFromPlayer: StageMap.tileSize * 2,
-      //       useDiagonal: false,
-      //       positioned: (p) {
-      //         execAttackRange(attack);
-      //       },
-      //       radiusVision: StageMap.tileSize * 3,
-      //       notObserved: () {
-      //         runRandomMovement(
-      //           dt,
-      //           speed: speed / 2,
-      //           maxDistance: (StageMap.tileSize * 3),
-      //         );
-      //         return false;
-      //       },
-      //     );
-      //     return false;
-      //   },
-      // );
-    }
   }
 
   @override
@@ -119,15 +95,26 @@ static final _log = Logger(loggerName);
     // );
   }
 
-  void execAttack(double damage) {
-    if (gameRef.player != null && gameRef.player?.isDead == true) return;
-    // simpleAttackMelee(
-    //   size: Vector2.all(width),
-    //   damage: damage / 2,
-    //   interval: 400,
-    //   sizePush: StageMap.tileSize / 2,
-    //   animationRight: CommonSpriteSheet.blackAttackEffectRight,
-    // );
+  var _path = <Point<int>>[];
+  Future<void> moveSmart(List<Point<int>> path) async {
+    _path = path;
+    pathNextMove();
+  }
+
+  void pathNextMove() {
+    if (_path.isNotEmpty) {
+      _log.info("Path no empty");
+      final next = _path.removeLast();
+      final from = position;
+      final to = StageMap.toRelative(next.x, next.y);
+      _log.info("Path from: ${position} to ${to}");
+      super.moveFromTo(
+        from: from,
+        to: to,
+        onFinish: pathNextMove,
+        fixedAngle: 0.0
+      );
+    }
   }
 
   @override

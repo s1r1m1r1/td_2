@@ -26,7 +26,12 @@ mixin Movable on GameComponent {
     _finish = false;
   }
 
-  void moveFromTo(Vector2 from, Vector2 to) {
+  void moveFromTo({
+    required Vector2 from,
+    required Vector2 to,
+    required void Function() onFinish,
+    double? fixedAngle,
+  }) {
     // Vector2 = from;
     final double dx = to.x - from.x;
     final double dy = to.y - from.y;
@@ -36,8 +41,8 @@ mixin Movable on GameComponent {
     _direction = Vector2(dx / dl, dy / dl);
     _movedLength = 0;
     _finish = false;
-    // onMoveFinish = onFinish;
-    angle = position.angleNearTo(to);
+    onMoveFinish = onFinish;
+    angle = fixedAngle ?? position.angleNearTo(to);
   }
 
   void updateMovable(double t) {

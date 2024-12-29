@@ -22,6 +22,11 @@ FutureOr<void> main() async {
     return true;
   };
 
+  FlutterError.onError = (details) {
+    debugPrintStack(
+        stackTrace: details.stack, label: '${red}FlutterError.onError $reset');
+  };
+
   runApp(const MaterialApp(
     home: GamePage(),
   ));

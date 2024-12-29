@@ -411,6 +411,31 @@ abstract class EnemyNextWaveGameEvent extends GameEvent {
 
 /// @nodoc
 
+class _$EnemyGoGameEventImpl extends EnemyGoGameEvent {
+  const _$EnemyGoGameEventImpl() : super._();
+
+  @override
+  String toString() {
+    return 'GameEvent.enemyGo()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$EnemyGoGameEventImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class EnemyGoGameEvent extends GameEvent {
+  const factory EnemyGoGameEvent() = _$EnemyGoGameEventImpl;
+  const EnemyGoGameEvent._() : super._();
+}
+
+/// @nodoc
+
 class _$CreateStageGameEventImpl extends CreateStageGameEvent {
   const _$CreateStageGameEventImpl() : super._();
 
