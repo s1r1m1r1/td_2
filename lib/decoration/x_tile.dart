@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
-import 'render/priority.dart';
+import '../render/priority.dart';
 
 class XTile extends GameDecoration {
   XTile({required super.position, required super.size});

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
-import 'package:td_2/units/base/math_ext.dart';
+import 'package:td_2/unit/base/math_ext.dart';
 
 mixin Movable on GameComponent {
   double speed = 0;

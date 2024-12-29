@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'world/grid_component.dart';
-import 'stage_map.dart';
-import 'controllers/game_manual_controller.dart';
+import 'world/stage_map.dart';
+import 'controller/game_manual_controller.dart';
 import 'interface/towers_interface.dart';
 
 class GamePage extends StatelessWidget {

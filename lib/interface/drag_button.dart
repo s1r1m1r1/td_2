@@ -2,8 +2,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
-import '../common_sprite_sheet.dart';
-import '../stage_map.dart';
+import '../decoration/common_sprite_sheet.dart';
+import '../world/stage_map.dart';
 
 class BarrelDraggable extends GameDecoration
     with DragGesture, Movement, BlockMovementCollision, HandleForces, Pushable {
