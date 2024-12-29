@@ -41,6 +41,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.0"
+  astar_dart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: develop
+      resolved-ref: "62ff35fa6a689c5d09b3bdf0e892df96b11cc36c"
+      url: "https://github.com/s1r1m1r1/astar_dart.git"
+    source: git
+    version: "0.0.13"
   async:
     dependency: transitive
     description:
@@ -98,7 +107,7 @@ packages:
     source: hosted
     version: "2.4.2"
   build_runner:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: build_runner
       sha256: "028819cfb90051c6b5440c7e574d1896f8037e3c96cf17aaeb054c9311cfbf4d"
@@ -348,7 +357,7 @@ packages:
     source: hosted
     version: "4.9.0"
   json_serializable:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: json_serializable
       sha256: ea1432d167339ea9b5bb153f0571d0039607a873d6e04e0117af043f14a1fd4b

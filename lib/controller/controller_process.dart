@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/controller/astar_mixin.dart';
 import 'package:td_2/tile/file_fx_controller.dart';
 import '../unit/base/goblin.dart';
 import '../tile/stage_map.dart';
@@ -12,22 +14,23 @@ import '../tile/tile_component.dart';
 mixin GameInstruction on GameComponent {
   static const loggerName = 'GameInstruction';
   final _log = Logger(loggerName);
-  void process(GameEvent event) {
+  FutureOr<void> process(GameEvent event) async {
     switch (event) {
       // Todo , with setting level
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
         final game = gameRef;
         game.add(TileFXController());
+        astarController.init(10, 10);
         List.generate(10, (y) {
           return List.generate(10, (x) {
             final TileComponent tile = switch ((x, y)) {
-              _ when x == 0 && y == 0 => StartGateTileComponent(
+              _ when x == 1 && y == 0 => StartGateTileComponent(
                   size: size,
                   position: StageMap.toRelative(x, y),
                   gridPos: Point(x, y),
                 ),
-              _ when x == 9 && y == 1 => EndGateTileComponent(
+              _ when x == 6 && y == 9 => EndGateTileComponent(
                   size: size,
                   position: StageMap.toRelative(x, y),
                   gridPos: Point(x, y)),
@@ -40,19 +43,34 @@ mixin GameInstruction on GameComponent {
                   size: Vector2.all(StageMap.tileSize),
                   gridPos: Point(x, y)),
             };
-            final unit = switch ((x, y)) {
-              (int x, int y) when x > 1 && x < 9 && y > 1 && y < 9 =>
-                Goblin(tile.position),
-              _ => null
-            };
+            // final unit = switch ((x, y)) {
+            //   (int x, int y) when x > 1 && x < 9 && y > 1 && y < 9 =>
+            //     Goblin(tile.position),
+            //   _ => null
+            // };
 
             game.add(tile);
-            if (unit != null) {
-              game.add(unit);
-            }
+            // if (unit != null) {
+            //   game.add(unit);
+            // }
           });
         });
-
+      case EnemyGoGameEvent():
+        final enemies = gameRef.query<Goblin>();
+        final endGate = gameRef.query<EndGateTileComponent>().firstOrNull;
+        if (endGate == null) break;
+        for (final enemy in enemies) {
+          final start = StageMap.toAstarPos(enemy.position);
+          _log.warning("START $start G: ${endGate.gridPos}");
+          try {
+            final path = await astarController.findPath(
+                start: start, end: endGate.gridPos);
+            _log.warning("path $path:");
+            enemy.moveSmart(path);
+          } catch (error, stack) {
+            _log.warning("What?",null,stack);
+          }
+        }
       case PausedGameEvent():
         _log.info('PausedGameEvent');
       case ResumedGameEvent():
@@ -130,102 +148,3 @@ mixin GameInstruction on GameComponent {
     }
   }
 }
-
-// class GameInstruction {
-//   GameEvent event;
-
-//   GameInstruction(this.event);
-
-//   Future<void> process(GameEvent event,GameController controller) async {
-//     switch (event) {
-//       case StartedGameEvent():
-//         // controller.gameRef.started;
-//         break;
-//       case ResumedGameEvent():
-//         controller.gameRef.resumeEngine();
-//       case PausedGameEvent():
-//         controller.gameRef.pauseEngine();
-//       case WeaponBuildingGameEvent(:final component):
-//         debugPrint('WEAPON BUILDING');
-//         // hide
-//         controller.repository.setSelectedWeapon(null);
-//         // controller.gameRef.read<InventoryBloc>().add();
-//         final weapon = WeaponComponent.create(
-//             component.position, controller.repository.weaponTypeNotifier.value);
-//         controller.add(weapon);
-//         controller.buildingWeapon?.removeFromParent();
-//         controller.buildingWeapon = weapon;
-//         weapon.blockMap = weapon.collision(controller.gateStart) ||
-//             weapon.collision(controller.gateEnd) ||
-//             (await controller.gameRef.tileGridPlant
-//                 .isBlockPath(weapon.position));
-//       case WeaponSelectedGameEvent():
-//         debugPrint('WEAPON SELECTED');
-//         // hide
-//         controller.repository.setSelectedWeapon(null);
-
-//         // WeaponViewWidget.hide();
-//         // controller.gameRef.weaponFactory.select(source as SingleWeaponView);
-//         if (controller.buildingWeapon != null) {
-//           controller.send(
-//               GameEvent.weaponBuilding(component: controller.buildingWeapon!));
-//         }
-//       case WeaponUnSelectedGameEvent():
-//         debugPrint('WEAPON UNSELECTED');
-//         // hide
-//         controller.repository.setSelectedWeapon(null);
-
-//       case WeaponBuildDoneGameEvent(:final weapon):
-//         debugPrint('WEAPON BUILDING DONE');
-//         // controller.buildingWeapon.buildDone = true;
-//         controller.onBuildDone(weapon);
-//         controller.gameRef.tileGridPlant
-//             .addBarrier(pos: weapon.position, tileSize: gameSetting.tileSize);
-//         controller.buildingWeapon = null;
-//         controller.processEnemySmartMove();
-//       case WeaponBlockedGameEvent():
-//         debugPrint('WEAPON BLOCKED');
-//       case WeaponDestroyedGameEvent():
-//         debugPrint('WEAPON DESTROYED');
-//         // hide
-//         final weapon = controller.repository.selectedWeaponSubject.value;
-//         if (weapon == null) {
-//           return;
-//         }
-//         debugPrint('WEAPON DESTROYED 2');
-//         weapon.removeFromParent();
-//         controller.onDestroy(weapon);
-//         controller.repository.setSelectedWeapon(null);
-
-//         controller.gameRef.tileGridPlant.removeBarrier(
-//             pos: weapon.position, tileSize: gameSetting.tileSize);
-//         controller.processEnemySmartMove();
-//       case EnemySpawnGameEvent():
-//         debugPrint('ENEMY SPAWN');
-//         controller.enemyPlant.start();
-//       case EnemyMissedGameEvent():
-//         controller.repository.incrementMissed();
-
-//       case EnemyKilledGameEvent(:final mineValue):
-//         debugPrint('ENEMY KILLED');
-//         controller.repository.incrementKilled();
-//         controller.repository.addMinerals(mineValue);
-
-//       case EnemyNextWaveGameEvent():
-//         debugPrint('ENEMY NEXT WAVE');
-//         controller.repository.incrementWave();
-
-//       case WeaponShowActionGameEvent(:final weapon):
-//         debugPrint('WEAPON SHOW ACTION');
-//         // weapon.gameRef.camera.moveTo(weapon.position);
-//         if (weapon.showed) {
-//           return;
-//         }
-//         controller.repository.setSelectedWeapon(null);
-//         controller.repository.setSelectedWeapon(weapon);
-//         weapon.showMenu(
-//             controller.repository, weapon.size, weapon.absolutePosition);
-//       default:
-//     }
-//   }
-// }

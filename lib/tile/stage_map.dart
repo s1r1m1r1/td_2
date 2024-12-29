@@ -63,9 +63,9 @@ class StageMap {
 
   static List<GameDecoration> decorations() {
     return [
-      Spikes(
-        toRelative(0, 0),
-      ),
+      // Spikes(
+      //   toRelative(0, 0),
+      // ),
       DraggableButton(toRelative(4, 4)),
       GameDecorationWithCollision.withSprite(
         sprite: Sprite.load('itens/barrel.png'),
@@ -125,7 +125,6 @@ class StageMap {
     return [
       // Goblin(getRelativeTilePosition(3, 3)),
       MissileTower(position: toRelative(5, 5)),
-
     ];
   }
 
@@ -153,6 +152,13 @@ class StageMap {
     return Vector2(
       (x * tileSize).toDouble(),
       (y * tileSize).toDouble(),
+    );
+  }
+
+  static Point<int> toAstarPos(Vector2 position) {
+    return Point(
+      position.x ~/ tileSize,
+      position.y ~/ tileSize,
     );
   }
 }
