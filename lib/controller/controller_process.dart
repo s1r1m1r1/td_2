@@ -19,15 +19,24 @@ mixin GameInstruction on GameComponent {
         _log.info('CreateStageGameEvent');
         final game = gameRef;
         game.add(TileFXController());
-        List.generate(10, (x) {
-          return List.generate(10, (y) {
-            final tile = switch ((x, y)) {
+        List.generate(10, (y) {
+          return List.generate(10, (x) {
+            final TileComponent tile = switch ((x, y)) {
+              _ when x == 0 && y == 0 => StartGateTileComponent(
+                  size: size,
+                  position: StageMap.toRelative(x, y),
+                  gridPos: Point(x, y),
+                ),
+              _ when x == 9 && y == 1 => EndGateTileComponent(
+                  size: size,
+                  position: StageMap.toRelative(x, y),
+                  gridPos: Point(x, y)),
               _ when y < 1 => RoadTileComponent(
-                  position: StageMap.getRelativeTilePosition(x, y),
+                  position: StageMap.toRelative(x, y),
                   size: Vector2.all(StageMap.tileSize),
                   gridPos: Point(x, y)),
               _ => FoundationTileComponent(
-                  position: StageMap.getRelativeTilePosition(x, y),
+                  position: StageMap.toRelative(x, y),
                   size: Vector2.all(StageMap.tileSize),
                   gridPos: Point(x, y)),
             };
@@ -44,8 +53,6 @@ mixin GameInstruction on GameComponent {
           });
         });
 
-      case StartedGameEvent():
-        _log.info('StartedGameEvent');
       case PausedGameEvent():
         _log.info('PausedGameEvent');
       case ResumedGameEvent():
@@ -107,10 +114,10 @@ mixin GameInstruction on GameComponent {
         // firstWhere
         for (final i in grids) {
           final isCover = i.isCover(event.position);
-          _log.info('SetDraggableGameEvent: isCover $isCover');
+          // _log.info('SetDraggableGameEvent: isCover $isCover');
           if (!isCover) continue;
           item = i;
-          _log.info('SetDraggableGameEvent: isCover OK');
+          // _log.info('SetDraggableGameEvent: isCover OK');
           break;
         }
         if (item == null) break;
@@ -118,7 +125,7 @@ mixin GameInstruction on GameComponent {
           item.removeTower();
           break;
         }
-        debugPrint('SetDraggableGameEvent: SET ${event.position}');
+        // debugPrint('SetDraggableGameEvent: SET ${event.position}');
         item.setTower(TowerType.missile);
     }
   }
