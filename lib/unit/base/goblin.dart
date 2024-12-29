@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 
 import '../../render/priority.dart';
-import '../../world/stage_map.dart';
+import '../../tile/stage_map.dart';
 import '../../decoration/common_sprite_sheet.dart';
 import 'enemy_sprite_sheet.dart';
 import 'enemy_unit.dart';

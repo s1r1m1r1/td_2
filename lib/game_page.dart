@@ -2,8 +2,8 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'world/grid_component.dart';
-import 'world/stage_map.dart';
+import 'tile/tile_component.dart';
+import 'tile/stage_map.dart';
 import 'controller/game_manual_controller.dart';
 import 'interface/towers_interface.dart';
 

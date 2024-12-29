@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
-import '../../world/stage_map.dart';
+import '../../tile/stage_map.dart';
 import '../base/movable.dart';
 import '../mixin/clash.dart';
 import 'tower_sprite_sheet.dart';

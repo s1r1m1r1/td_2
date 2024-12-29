@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
-import '../world/stage_map.dart';
+import '../tile/stage_map.dart';
 import 'common_sprite_sheet.dart';
 
 class Torch extends GameDecoration {

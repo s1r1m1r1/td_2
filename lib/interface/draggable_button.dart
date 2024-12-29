@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../decoration/chest.dart';
 import '../controller/game_event.dart';
 import '../controller/static_controller.dart';
-import '../world/stage_map.dart';
+import '../tile/stage_map.dart';
 import '../decoration/common_sprite_sheet.dart';
 
 class DraggableButton extends GameDecoration

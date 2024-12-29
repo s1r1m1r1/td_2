@@ -1,7 +1,7 @@
 
 import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:td_2/controller/game_event.dart';
-import 'package:td_2/world/grid_component.dart';
+import 'package:td_2/tile/tile_component.dart';
 
 import '../unit/base/goblin.dart';
 import '../unit/mixin/clash.dart';

@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import '../world/stage_map.dart';
+import '../tile/stage_map.dart';
 import 'common_sprite_sheet.dart';
 
 class Spikes extends GameDecoration with Sensor<Attackable> {

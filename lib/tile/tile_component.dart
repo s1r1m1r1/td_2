@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'package:td_2/render/priority.dart';
 import 'package:td_2/unit/tower/tower_component.dart';
 
 import 'stage_map.dart';
-import '../decoration/x_tile.dart';
+import 'x_tile.dart';
 
 enum TowerType { missile, rocket }
 
@@ -59,7 +58,7 @@ class RoadTileComponent extends TileComponent {
   });
 }
 
-abstract class TileComponent extends GameComponent {
+sealed class TileComponent extends GameComponent {
   static const loggerName = "TileComponent";
   static final _log = Logger(loggerName);
   TileComponent({
@@ -81,31 +80,7 @@ abstract class TileComponent extends GameComponent {
   GameComponent? child;
   GameComponent? drawing;
 
-  void setNotAllowedFX() {
-    gameRef.add(
-      RectangleComponent(
-          position: position,
-          priority: Priority.overAll,
-          size: size,
-          paint: Paint()..color = Colors.red.withAlpha(50))
-        ..add(
-          RemoveEffect(delay: 0.016),
-        ),
-    );
-  }
-
-  void setAllowedFX() {
-    gameRef.add(
-      RectangleComponent(
-          priority: Priority.overAll,
-          position: position,
-          size: size,
-          paint: Paint()..color = Colors.green.withAlpha(50))
-        ..add(
-          RemoveEffect(delay: 0.016),
-        ),
-    );
-  }
+  
 
   bool isCover(Vector2 pos) {
     final rect = Rect.fromLTWH(position.x, position.y, size.x, size.y);

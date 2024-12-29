@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/tile/file_fx_controller.dart';
 import '../unit/base/goblin.dart';
-import '../world/stage_map.dart';
+import '../tile/stage_map.dart';
 import 'game_event.dart';
-import '../world/grid_component.dart';
+import '../tile/tile_component.dart';
 
 mixin GameInstruction on GameComponent {
   static const loggerName = 'GameInstruction';
@@ -16,6 +17,8 @@ mixin GameInstruction on GameComponent {
       // Todo , with setting level
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
+        final game = gameRef;
+        game.add(TileFXController());
         List.generate(10, (x) {
           return List.generate(10, (y) {
             final tile = switch ((x, y)) {
@@ -34,9 +37,9 @@ mixin GameInstruction on GameComponent {
               _ => null
             };
 
-            gameRef.add(tile);
+            game.add(tile);
             if (unit != null) {
-              gameRef.add(unit);
+              game.add(unit);
             }
           });
         });
@@ -85,16 +88,20 @@ mixin GameInstruction on GameComponent {
           _log.info('MoveDraggableGameEvent: isCover OK');
           break;
         }
-        if (item == null) break;
-        if (!item.hasChild || item is FoundationTileComponent) {
-          item.setAllowedFX();
+        final fx = gameRef.query<TileFXController>().firstOrNull;
+        if (item == null) {
+          fx?.removeFX();
+          break;
+        }
+        if (item case FoundationTileComponent() when !item.hasTower) {
+          fx?.setAllowedFX(pos: item.position, size: item.size);
         } else {
-          item.setNotAllowedFX(
-            
-          );
+          fx?.setNotAllowedFX(pos: item.position, size: item.size);
         }
       case FinishDragButtonGameEvent():
         debugPrint('FinishDragButtonGameEvent: pos ${event.position}');
+        final fx = gameRef.query<TileFXController>().firstOrNull;
+        fx?.removeFX();
         final grids = gameRef.query<FoundationTileComponent>();
         FoundationTileComponent? item;
         // firstWhere
