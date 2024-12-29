@@ -2,7 +2,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'game_event.dart';
-import 'grid_component.dart';
+import '../world/grid_component.dart';
 
 final _log = Logger('GameInstruction');
 

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../stage_map.dart';
 import '../base/movable.dart';
-import 'clash.dart';
+import '../mixin/clash.dart';
 import 'tower_sprite_sheet.dart';
 
 class MissileDetail extends _BulletDetail {

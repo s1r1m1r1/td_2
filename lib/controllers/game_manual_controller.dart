@@ -1,11 +1,11 @@
 
 import 'package:bonfire/bonfire.dart';
-import 'package:td_2/controllers/grid_component.dart';
+import 'package:td_2/world/grid_component.dart';
 
 import '../units/base/enemy_unit.dart';
 import '../units/base/goblin.dart';
-import '../units/tower/clash.dart';
-import '../units/tower/radar.dart';
+import '../units/mixin/clash.dart';
+import '../units/mixin/radar.dart';
 import 'controller_process.dart';
 import 'move_camera_mixin.dart';
 import 'static_controller.dart';

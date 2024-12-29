@@ -2,10 +2,10 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'controllers/grid_component.dart';
+import 'world/grid_component.dart';
 import 'stage_map.dart';
 import 'controllers/game_manual_controller.dart';
-import 'ui/towers_interface.dart';
+import 'interface/towers_interface.dart';
 
 class GameManualMap extends StatelessWidget {
   const GameManualMap({super.key});
