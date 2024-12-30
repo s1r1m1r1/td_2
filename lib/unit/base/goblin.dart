@@ -108,7 +108,7 @@ class Goblin extends ScannableEnemy with UseLifeBar, Movable {
       final next = _path.removeLast();
       final from = position;
       final to = StageMap.toRelative(next.x, next.y);
-      _log.info("Path from: ${position} to ${to}");
+      _log.info("Path from: $position to $to");
       super.moveFromTo(
           from: from, to: to, onFinish: pathNextMove, fixedAngle: 0.0);
     }

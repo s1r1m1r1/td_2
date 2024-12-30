@@ -54,13 +54,10 @@ class AstarController {
   // }
 
   void addBarrier(int x, int y) {
-    // final point = _positionToNode(pos: pos, tileSize: tileSize);
-    // _log.info('BARRIERS setBarrier: $point}');
     _barriers[x][y] = Barrier.block;
   }
 
   void removeBarrier(int x, int y) {
-    // final point = _positionToNode(pos: pos, tileSize: tileSize);
     _barriers[x][y] = Barrier.pass;
   }
 
@@ -76,18 +73,4 @@ class AstarController {
     final path = await _astar.findPath(start: start, end: end);
     return path.toPointList();
   }
-
-  // Point<int> _positionToNode(
-  //     {required Vector2 pos, required Vector2 tileSize}) {
-  //   return Point<int>(pos.x ~/ tileSize.x, pos.y ~/ tileSize.y);
-  // }
-
-  // // // leftTop position
-  // Vector2 nodeToPosition(
-  //     {required Point<int> node, required Vector2 tileSize}) {
-  //   final v = Vector2(node.x * tileSize.x, node.y * tileSize.y);
-  //   _log.info("NODE POS: $node");
-  //   _log.info("NODE MapPos: $v");
-  //   return v;
-  // }
 }
