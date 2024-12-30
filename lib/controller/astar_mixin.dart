@@ -57,6 +57,22 @@ class AstarController {
     _barriers[x][y] = Barrier.block;
   }
 
+  void clearBarriers() {
+    for (var x = 0; x < _barriers.array.length; x++) {
+      final row = _barriers[x];
+      for (var y = 0; y < row.length; y++) {
+        _barriers[x][y] = Barrier.pass;
+      }
+    }
+    _barriers;
+  }
+
+  void addAllBarrier(List<Point<int>> barriers) {
+    for (var b in barriers) {
+      _barriers[b.x][b.y] = Barrier.block;
+    }
+  }
+
   void removeBarrier(int x, int y) {
     _barriers[x][y] = Barrier.pass;
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart' hide TileComponent;
+import 'package:bonfire/map/base/layer.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/bloc/stage_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:td_2/domain/enums/enemy_type.dart';
 import 'package:td_2/tile/file_fx_controller.dart';
 import '../unit/base/goblin.dart';
 import '../tile/stage_map.dart';
+import '../unit/tower/tower_component.dart';
 import 'game_event.dart';
 import '../tile/tile_component.dart';
 
@@ -27,6 +29,7 @@ abstract class GameInstruction {
         _log.info('CreateStageGameEvent');
         controller.game.add(TileFXController());
         astarController.init(10, 10);
+        final grounds = <Tile>[];
         List.generate(10, (y) {
           return List.generate(10, (x) {
             final TileComponent tile = switch ((x, y)) {
@@ -39,7 +42,7 @@ abstract class GameInstruction {
                   size: Vector2.all(StageMap.tileSize),
                   position: StageMap.toRelative(x, y),
                   gridPos: Point(x, y)),
-              _ when y < 1 => RoadTileComponent(
+              _ when x.isEven || y.isOdd => RoadTileComponent(
                   position: StageMap.toRelative(x, y),
                   size: Vector2.all(StageMap.tileSize),
                   gridPos: Point(x, y)),
@@ -48,6 +51,15 @@ abstract class GameInstruction {
                   size: Vector2.all(StageMap.tileSize),
                   gridPos: Point(x, y)),
             };
+            grounds.add(
+              Tile(
+                sprite: TileSprite(path: StageMap.floor_1),
+                x: x.toDouble(),
+                y: y.toDouble(),
+                width: StageMap.tileSize,
+                height: StageMap.tileSize,
+              ),
+            );
             // final unit = switch ((x, y)) {
             //   (int x, int y) when x > 1 && x < 9 && y > 1 && y < 9 =>
             //     Goblin(tile.position),
@@ -55,11 +67,25 @@ abstract class GameInstruction {
             // };
 
             controller.game.add(tile);
+            final towerType = switch ((x, y)) {
+              (3, 6) || (5, 5) => TowerType.missile,
+              _ => null
+            };
+            if (towerType != null && tile is FoundationTileComponent) {
+              tile.setTower(towerType);
+            }
+
             // if (unit != null) {
             //   game.add(unit);
             // }
           });
         });
+        _log.warning('add Layer ${grounds.length}');
+      // controller.game.map.refreshMap();
+      // addLayer(Layer(id: 1, tiles: grounds));
+
+      case EnemyGetDamagedGameEvent():
+        _log.info('EnemyGetDamagedGameEvent');
       case SpawnOneGameEvent():
         _log.info('SpawnOneGameEvent');
         switch (event.type) {
@@ -80,6 +106,9 @@ abstract class GameInstruction {
       case EnemyGoGameEvent():
         _log.info('EnemyGoGameEvent');
         final start = StageMap.toAstarPos(event.enemy.position);
+        final barriers = controller.game.query<FoundationTileComponent>();
+        astarController.clearBarriers();
+        astarController.addAllBarrier(barriers.map((i) => i.gridPos).toList());
         try {
           final path = await astarController.findPath(
               start: start, end: controller.endGate.gridPos);

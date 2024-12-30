@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../domain/enums/enemy_type.dart';
+import '../unit/base/enemy_id.dart';
 import '../unit/base/goblin.dart';
 import '../unit/tower/tower_component.dart';
 
@@ -29,6 +30,8 @@ sealed class GameEvent with _$GameEvent {
   const factory GameEvent.enemyNextWave() = EnemyNextWaveGameEvent;
   //
 
+  const factory GameEvent.enemyGetDamaged(EnemyId id) =
+      EnemyGetDamagedGameEvent;
   const factory GameEvent.enemySpawn() = EnemySpawnGameEvent;
   const factory GameEvent.spawnOne(EnemyType type) = SpawnOneGameEvent;
   const factory GameEvent.enemyGo(Goblin enemy) = EnemyGoGameEvent;

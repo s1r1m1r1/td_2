@@ -7,7 +7,7 @@ mixin MoveCameraMixin on GameComponent {
   bool _onlyMouse = false;
   MouseButton _mouseButton = MouseButton.left;
 
-  bool _moveCameraEnable = false;
+  bool _moveCameraEnable = true;
 
   void switchMoveCamera(bool enabled) {
     _moveCameraEnable = enabled;

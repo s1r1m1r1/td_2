@@ -18,7 +18,6 @@ mixin EnemySpawnMixin on GameComponent {
   int? enemyInterval;
 
   void processEnemySpawn(double dt) {
-      _log.info("processEnemySpawn");
     if (waveInterval == null && waves.isNotEmpty) {
       _log.info("waveInterval == null && isNotEmpty");
       final wave = waves.removeFirst();
@@ -31,7 +30,7 @@ mixin EnemySpawnMixin on GameComponent {
       );
     }
     if (waveInterval != null) {
-      _log.info("waveInterval != null");
+      // _log.info("waveInterval != null");
       if (checkInterval('check next wave', waveInterval!, dt)) {
         _log.info("waveInterval checked");
         // resetWaveInterval = true;

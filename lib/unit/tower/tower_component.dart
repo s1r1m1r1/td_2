@@ -53,7 +53,7 @@ abstract class RotationTower extends TowerComponent with Radar, Lighting {
         ) {
     distScan = scan + (size.x / 2);
     _bulletDistance = bulletDistance + (size.x / 2);
-    lightingEnabled = false;
+    lightingEnabled = true;
     setupLighting(
       LightingConfig(
         radius: size.x * 2,
@@ -100,7 +100,6 @@ abstract class RotationTower extends TowerComponent with Radar, Lighting {
 
   void _fireBullet() {
     if (_targetEnemy != null) {
-      lightingEnabled = true;
       fireBullet(_targetEnemy!);
     }
     _targetEnemy = null;
@@ -113,7 +112,7 @@ abstract class RotationTower extends TowerComponent with Radar, Lighting {
     )
       // ..anchor = Anchor.center
       ..angle = 2.0
-      ..effect = 100.0
+      ..effect = 10.0
       ..speed = 200;
     bullet.moveToByDistance(to: target, distance: _bulletDistance);
     gameRef.add(bullet);

@@ -4,6 +4,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/unit/base/enemy_id.dart';
 import 'package:td_2/unit/base/movable.dart';
 
 import '../../render/priority.dart';
@@ -17,18 +18,20 @@ final _log = Logger(Goblin.loggerName);
 class Goblin extends ScannableEnemy with UseLifeBar, Movable {
   static const loggerName = 'Goblin';
   bool active = true;
+  late final EnemyId id;
   Goblin(Vector2 position)
       : super(
           animation: EnemySpriteSheet.simpleDirectionAnimation,
           position: position,
           size: Vector2.all(StageMap.tileSize * 0.8),
           speed: StageMap.tileSize,
-          life: 10000,
+          life: 100,
         ) {
     setupLifeBar(
       borderRadius: BorderRadius.circular(2),
       borderWidth: 2,
     );
+    id = EnemyId.newId();
   }
 
   @override
@@ -73,27 +76,6 @@ class Goblin extends ScannableEnemy with UseLifeBar, Movable {
       ),
     );
     removeFromParent();
-  }
-
-  void execAttackRange(double damage) {
-    if (gameRef.player != null && gameRef.player?.isDead == true) return;
-    // simpleAttackRange(
-    //   animationRight: CommonSpriteSheet.fireBallRight,
-    //   animationDestroy: CommonSpriteSheet.explosionAnimation,
-    //   id: 35,
-    //   size: Vector2.all(width * 0.9),
-    //   damage: damage,
-    //   speed: StageMap.tileSize * 3,
-    //   collision: RectangleHitbox(
-    //     size: Vector2.all(width / 2),
-    //     position: Vector2(width * 0.25, width * 0.25),
-    //   ),
-    //   lightingConfig: LightingConfig(
-    //     radius: width / 2,
-    //     blurBorder: width,
-    //     color: Colors.orange.withOpacity(0.3),
-    //   ),
-    // );
   }
 
   var _path = <Point<int>>[];
