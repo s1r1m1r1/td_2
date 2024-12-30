@@ -3,6 +3,7 @@ import 'package:td_2/bloc/stage_bloc.dart';
 import 'package:td_2/bloc/stage_stats_bloc.dart';
 import 'package:td_2/bloc/stage_treasury_bloc.dart';
 import 'package:td_2/controller/controller_process.dart';
+import 'package:td_2/controller/enemy_spawn_mixin.dart';
 import 'package:td_2/controller/game_event.dart';
 import 'package:td_2/tile/tile_component.dart';
 
@@ -11,7 +12,8 @@ import '../unit/mixin/clash.dart';
 import '../unit/mixin/radar.dart';
 import 'move_camera_mixin.dart';
 
-class GameController extends GameComponent with MoveCameraMixin {
+class GameController extends GameComponent
+    with MoveCameraMixin, EnemySpawnMixin {
   GameController({
     required this.stageBloc,
     required this.stageStatsBloc,
@@ -63,12 +65,13 @@ class GameController extends GameComponent with MoveCameraMixin {
   void update(double dt) {
     _processInstruction();
     _processRadarScan();
-    if (checkInterval('check_living_enemies', 500, dt)) {
-      if (game.query<Goblin>().length < 3) {
-        _addEnemyInWorld();
-        // event(const GameEvent.enemyGo());
-      }
-    }
+    processEnemySpawn(dt);
+    // if (checkInterval('check_living_enemies', 500, dt)) {
+    //   if (game.query<Goblin>().length < 3) {
+    //     _addEnemyInWorld();
+    //     // event(const GameEvent.enemyGo());
+    //   }
+    // }
     super.update(dt);
   }
 

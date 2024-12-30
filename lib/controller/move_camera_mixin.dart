@@ -7,14 +7,10 @@ mixin MoveCameraMixin on GameComponent {
   bool _onlyMouse = false;
   MouseButton _mouseButton = MouseButton.left;
 
-  bool moveCameraMixinEnable = false;
+  bool _moveCameraEnable = false;
 
-  void setupMoveCameraUsingGesture({
-    bool onlyMouse = false,
-    MouseButton mouseButton = MouseButton.left,
-  }) {
-    _mouseButton = mouseButton;
-    _onlyMouse = onlyMouse;
+  void switchMoveCamera(bool enabled) {
+    _moveCameraEnable = enabled;
   }
 
   @override
@@ -59,8 +55,8 @@ mixin MoveCameraMixin on GameComponent {
   }
 
   @override
-  bool hasGesture() => moveCameraMixinEnable;
+  bool hasGesture() => _moveCameraEnable;
 
   @override
-  bool get isVisible => moveCameraMixinEnable;
+  bool get isVisible => _moveCameraEnable;
 }

@@ -31,7 +31,10 @@ mixin EnemySpawnMixin on GameComponent {
     if (waveInterval != null) {
       if (checkInterval('check next wave', waveInterval!, dt)) {
         // resetWaveInterval = true;
-        // GameController.event(GameEvent.enemyGo());
+        if (units.isEmpty) return;
+        final enemy = units.removeLast();
+        enemyInterval = enemy.key;
+        GameController.event(GameEvent.spawnOne(enemy.value));
       }
     }
   }

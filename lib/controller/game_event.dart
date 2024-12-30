@@ -33,6 +33,8 @@ sealed class GameEvent with _$GameEvent {
   const factory GameEvent.spawnOne(EnemyType type) = SpawnOneGameEvent;
   const factory GameEvent.enemyGo(Goblin enemy) = EnemyGoGameEvent;
   const factory GameEvent.createStage() = CreateStageGameEvent;
+  const factory GameEvent.startDragButton(Vector2 position) =
+      StartDragButtonGameEvent;
   const factory GameEvent.moveDragButton(Vector2 position) =
       MoveDragButtonGameEvent;
   const factory GameEvent.finishDragButton(Vector2 position) =
