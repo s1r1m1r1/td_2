@@ -48,6 +48,7 @@ class GameController extends GameComponent
   void onMount() {
     // astarController.test();
     event(const GameEvent.createStage());
+    event(const GameEvent.enemySpawn());
     gameRef.camera
       ..moveTo(Vector2.all(200))
       ..moveOnlyMapArea = true;

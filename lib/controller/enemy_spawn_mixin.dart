@@ -18,7 +18,9 @@ mixin EnemySpawnMixin on GameComponent {
   int? enemyInterval;
 
   void processEnemySpawn(double dt) {
+      _log.info("processEnemySpawn");
     if (waveInterval == null && waves.isNotEmpty) {
+      _log.info("waveInterval == null && isNotEmpty");
       final wave = waves.removeFirst();
       waveInterval = wave.nextWave.inMilliseconds;
       units.addAll(
@@ -29,9 +31,12 @@ mixin EnemySpawnMixin on GameComponent {
       );
     }
     if (waveInterval != null) {
+      _log.info("waveInterval != null");
       if (checkInterval('check next wave', waveInterval!, dt)) {
+        _log.info("waveInterval checked");
         // resetWaveInterval = true;
         if (units.isEmpty) return;
+        _log.info("waveInterval checked unit");
         final enemy = units.removeLast();
         enemyInterval = enemy.key;
         GameController.event(GameEvent.spawnOne(enemy.value));

@@ -19,7 +19,7 @@ sealed class StageEvent with _$StageEvent {
 
 @Freezed(
     map: FreezedMapOptions.none, when: FreezedWhenOptions.none, copyWith: true)
-class StageState with _$StageState {
+sealed class StageState with _$StageState {
   const StageState._();
   const factory StageState.init() = $InitStageState;
   const factory StageState.processing() = $ProcessingStageState;
