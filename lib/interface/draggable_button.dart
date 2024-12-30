@@ -1,9 +1,9 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:td_2/controller/game_controller.dart';
 
 import '../decoration/chest.dart';
 import '../controller/game_event.dart';
-import '../controller/static_controller.dart';
 import '../tile/stage_map.dart';
 import '../decoration/common_sprite_sheet.dart';
 
@@ -53,7 +53,7 @@ class DraggableButton extends GameDecoration
     final isCover = _isPointerCover(event);
     if (!isCover) return false;
     final localPos = gameRef.camera.globalToLocal(event.position.toVector2());
-    staticController.add(GameEvent.moveDragButton(localPos));
+    GameController.event(GameEvent.moveDragButton(localPos));
 
     return super.handlerPointerMove(event);
   }
@@ -71,7 +71,7 @@ class DraggableButton extends GameDecoration
     staticText?.removeFromParent();
 
     final localPos = gameRef.camera.globalToLocal(event.position.toVector2());
-    staticController.add(GameEvent.finishDragButton(localPos));
+    GameController.event(GameEvent.finishDragButton(localPos));
     return super.handlerPointerUp(event);
   }
 }

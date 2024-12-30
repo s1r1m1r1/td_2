@@ -5,33 +5,37 @@ import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/controller/astar_mixin.dart';
+import 'package:td_2/controller/game_controller.dart';
+import 'package:td_2/domain/enums/enemy_type.dart';
 import 'package:td_2/tile/file_fx_controller.dart';
 import '../unit/base/goblin.dart';
 import '../tile/stage_map.dart';
 import 'game_event.dart';
 import '../tile/tile_component.dart';
 
-mixin GameInstruction on GameComponent {
+final _log = Logger(GameInstruction.loggerName);
+
+abstract class GameInstruction {
   static const loggerName = 'GameInstruction';
-  final _log = Logger(loggerName);
-  FutureOr<void> process(GameEvent event) async {
+
+  static FutureOr<void> process(
+      GameEvent event, GameController controller) async {
     switch (event) {
       // Todo , with setting level
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
-        final game = gameRef;
-        game.add(TileFXController());
+        controller.game.add(TileFXController());
         astarController.init(10, 10);
         List.generate(10, (y) {
           return List.generate(10, (x) {
             final TileComponent tile = switch ((x, y)) {
               _ when x == 1 && y == 0 => StartGateTileComponent(
-                  size: size,
+                  size: Vector2.all(StageMap.tileSize),
                   position: StageMap.toRelative(x, y),
                   gridPos: Point(x, y),
                 ),
               _ when x == 6 && y == 9 => EndGateTileComponent(
-                  size: size,
+                  size: Vector2.all(StageMap.tileSize),
                   position: StageMap.toRelative(x, y),
                   gridPos: Point(x, y)),
               _ when y < 1 => RoadTileComponent(
@@ -49,15 +53,26 @@ mixin GameInstruction on GameComponent {
             //   _ => null
             // };
 
-            game.add(tile);
+            controller.game.add(tile);
             // if (unit != null) {
             //   game.add(unit);
             // }
           });
         });
+      case SpawnOneGameEvent():
+        switch (event.type) {
+          case EnemyType.goblin:
+          case EnemyType.goblin2:
+            final goblin = Goblin(controller.startGate.position);
+            controller.game.add(goblin);
+            GameController.event(GameEvent.enemyGo(goblin));
+        }
+      case EnemySpawnGameEvent():
+        _log.info('EnemySpawnGameEvent');
       case EnemyGoGameEvent():
-        final enemies = gameRef.query<Goblin>();
-        final endGate = gameRef.query<EndGateTileComponent>().firstOrNull;
+        final enemies = controller.gameRef.query<Goblin>();
+        final endGate =
+            controller.gameRef.query<EndGateTileComponent>().firstOrNull;
         if (endGate == null) break;
         for (final enemy in enemies) {
           final start = StageMap.toAstarPos(enemy.position);
@@ -68,7 +83,7 @@ mixin GameInstruction on GameComponent {
             _log.warning("path $path:");
             enemy.moveSmart(path);
           } catch (error, stack) {
-            _log.warning("What?",null,stack);
+            _log.warning("What?", null, stack);
           }
         }
       case PausedGameEvent():
@@ -91,8 +106,7 @@ mixin GameInstruction on GameComponent {
         _log.info('WeaponShowActionGameEvent');
       case WeaponShowProfileGameEvent():
         _log.info('WeaponShowProfileGameEvent');
-      case EnemySpawnGameEvent():
-        _log.info('EnemySpawnGameEvent');
+
       case EnemyMissedGameEvent():
         _log.info('EnemyMissedGameEvent');
       case EnemyKilledGameEvent():
@@ -102,7 +116,7 @@ mixin GameInstruction on GameComponent {
         _log.info('EnemyKilledGameEvent');
       case MoveDragButtonGameEvent():
         _log.info('MoveDragButtonGameEvent');
-        final grids = gameRef.query<TileComponent>();
+        final grids = controller.gameRef.query<TileComponent>();
         TileComponent? item;
         // firstWhere
         for (final i in grids) {
@@ -113,7 +127,7 @@ mixin GameInstruction on GameComponent {
           _log.info('MoveDraggableGameEvent: isCover OK');
           break;
         }
-        final fx = gameRef.query<TileFXController>().firstOrNull;
+        final fx = controller.gameRef.query<TileFXController>().firstOrNull;
         if (item == null) {
           fx?.removeFX();
           break;
@@ -125,9 +139,9 @@ mixin GameInstruction on GameComponent {
         }
       case FinishDragButtonGameEvent():
         debugPrint('FinishDragButtonGameEvent: pos ${event.position}');
-        final fx = gameRef.query<TileFXController>().firstOrNull;
+        final fx = controller.gameRef.query<TileFXController>().firstOrNull;
         fx?.removeFX();
-        final grids = gameRef.query<FoundationTileComponent>();
+        final grids = controller.gameRef.query<FoundationTileComponent>();
         FoundationTileComponent? item;
         // firstWhere
         for (final i in grids) {

@@ -299,32 +299,6 @@ abstract class WeaponShowProfileGameEvent extends GameEvent {
 
 /// @nodoc
 
-class _$EnemySpawnGameEventImpl extends EnemySpawnGameEvent {
-  const _$EnemySpawnGameEventImpl() : super._();
-
-  @override
-  String toString() {
-    return 'GameEvent.enemySpawn()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EnemySpawnGameEventImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
-abstract class EnemySpawnGameEvent extends GameEvent {
-  const factory EnemySpawnGameEvent() = _$EnemySpawnGameEventImpl;
-  const EnemySpawnGameEvent._() : super._();
-}
-
-/// @nodoc
-
 class _$EnemyMissedGameEventImpl extends EnemyMissedGameEvent {
   const _$EnemyMissedGameEventImpl() : super._();
 
@@ -411,27 +385,93 @@ abstract class EnemyNextWaveGameEvent extends GameEvent {
 
 /// @nodoc
 
-class _$EnemyGoGameEventImpl extends EnemyGoGameEvent {
-  const _$EnemyGoGameEventImpl() : super._();
+class _$EnemySpawnGameEventImpl extends EnemySpawnGameEvent {
+  const _$EnemySpawnGameEventImpl() : super._();
 
   @override
   String toString() {
-    return 'GameEvent.enemyGo()';
+    return 'GameEvent.enemySpawn()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$EnemyGoGameEventImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$EnemySpawnGameEventImpl);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 }
 
+abstract class EnemySpawnGameEvent extends GameEvent {
+  const factory EnemySpawnGameEvent() = _$EnemySpawnGameEventImpl;
+  const EnemySpawnGameEvent._() : super._();
+}
+
+/// @nodoc
+
+class _$SpawnOneGameEventImpl extends SpawnOneGameEvent {
+  const _$SpawnOneGameEventImpl(this.type) : super._();
+
+  @override
+  final EnemyType type;
+
+  @override
+  String toString() {
+    return 'GameEvent.spawnOne(type: $type)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpawnOneGameEventImpl &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, type);
+}
+
+abstract class SpawnOneGameEvent extends GameEvent {
+  const factory SpawnOneGameEvent(final EnemyType type) =
+      _$SpawnOneGameEventImpl;
+  const SpawnOneGameEvent._() : super._();
+
+  EnemyType get type;
+}
+
+/// @nodoc
+
+class _$EnemyGoGameEventImpl extends EnemyGoGameEvent {
+  const _$EnemyGoGameEventImpl(this.enemy) : super._();
+
+  @override
+  final Goblin enemy;
+
+  @override
+  String toString() {
+    return 'GameEvent.enemyGo(enemy: $enemy)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EnemyGoGameEventImpl &&
+            (identical(other.enemy, enemy) || other.enemy == enemy));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, enemy);
+}
+
 abstract class EnemyGoGameEvent extends GameEvent {
-  const factory EnemyGoGameEvent() = _$EnemyGoGameEventImpl;
+  const factory EnemyGoGameEvent(final Goblin enemy) = _$EnemyGoGameEventImpl;
   const EnemyGoGameEvent._() : super._();
+
+  Goblin get enemy;
 }
 
 /// @nodoc

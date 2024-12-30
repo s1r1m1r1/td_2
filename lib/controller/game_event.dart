@@ -1,5 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../domain/enums/enemy_type.dart';
+import '../unit/base/goblin.dart';
 import '../unit/tower/tower_component.dart';
 
 part 'game_event.freezed.dart';
@@ -21,15 +23,18 @@ sealed class GameEvent with _$GameEvent {
   const factory GameEvent.weaponShowAction({required RotationTower weapon}) =
       WeaponShowActionGameEvent;
   const factory GameEvent.weaponShowProfile() = WeaponShowProfileGameEvent;
-  const factory GameEvent.enemySpawn() = EnemySpawnGameEvent;
   const factory GameEvent.enemyMissed() = EnemyMissedGameEvent;
   const factory GameEvent.enemyKilled({required int mineValue}) =
       EnemyKilledGameEvent;
   const factory GameEvent.enemyNextWave() = EnemyNextWaveGameEvent;
   //
 
-  const factory GameEvent.enemyGo() = EnemyGoGameEvent;
+  const factory GameEvent.enemySpawn() = EnemySpawnGameEvent;
+  const factory GameEvent.spawnOne(EnemyType type) = SpawnOneGameEvent;
+  const factory GameEvent.enemyGo(Goblin enemy) = EnemyGoGameEvent;
   const factory GameEvent.createStage() = CreateStageGameEvent;
-  const factory GameEvent.moveDragButton(Vector2 position) = MoveDragButtonGameEvent;
-  const factory GameEvent.finishDragButton(Vector2 position) = FinishDragButtonGameEvent;
+  const factory GameEvent.moveDragButton(Vector2 position) =
+      MoveDragButtonGameEvent;
+  const factory GameEvent.finishDragButton(Vector2 position) =
+      FinishDragButtonGameEvent;
 }
