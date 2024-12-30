@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/bloc/stage_bloc.dart';
 import 'package:td_2/controller/astar_mixin.dart';
 import 'package:td_2/controller/game_controller.dart';
 import 'package:td_2/domain/enums/enemy_type.dart';
@@ -60,6 +61,7 @@ abstract class GameInstruction {
           });
         });
       case SpawnOneGameEvent():
+        _log.info('SpawnOneGameEvent');
         switch (event.type) {
           case EnemyType.goblin:
           case EnemyType.goblin2:
@@ -68,23 +70,23 @@ abstract class GameInstruction {
             GameController.event(GameEvent.enemyGo(goblin));
         }
       case EnemySpawnGameEvent():
+        final waves = switch (controller.stageBloc.state) {
+          $SuccessStageState(:final result) => result.waves,
+          _ => null,
+        };
+        if (waves == null) break;
+        controller.waves.addAll(waves);
         _log.info('EnemySpawnGameEvent');
       case EnemyGoGameEvent():
-        final enemies = controller.gameRef.query<Goblin>();
-        final endGate =
-            controller.gameRef.query<EndGateTileComponent>().firstOrNull;
-        if (endGate == null) break;
-        for (final enemy in enemies) {
-          final start = StageMap.toAstarPos(enemy.position);
-          _log.warning("START $start G: ${endGate.gridPos}");
-          try {
-            final path = await astarController.findPath(
-                start: start, end: endGate.gridPos);
-            _log.warning("path $path:");
-            enemy.moveSmart(path);
-          } catch (error, stack) {
-            _log.warning("What?", null, stack);
-          }
+        _log.info('EnemyGoGameEvent');
+        final start = StageMap.toAstarPos(event.enemy.position);
+        try {
+          final path = await astarController.findPath(
+              start: start, end: controller.endGate.gridPos);
+          _log.warning("path $path:");
+          event.enemy.moveSmart(path);
+        } catch (error, stack) {
+          _log.warning("What?", null, stack);
         }
       case PausedGameEvent():
         _log.info('PausedGameEvent');
