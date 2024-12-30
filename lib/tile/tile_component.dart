@@ -101,6 +101,15 @@ class RoadTileComponent extends TileComponent {
     required super.position,
     required super.gridPos,
   });
+
+  @override
+  Future<void> onLoad() {
+    add(RectangleComponent(
+      size: size,
+      paint: Paint()..color = Colors.white24,priority: Priority.overAll));
+    return super.onLoad();
+  }
+  
 }
 
 sealed class TileComponent extends GameComponent {

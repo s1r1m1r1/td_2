@@ -123,7 +123,7 @@ class StageMap {
   static List<GameComponent> enemies() {
     return [
       // Goblin(getRelativeTilePosition(3, 3)),
-      MissileTower(position: toRelative(5, 5)),
+      // MissileTower(position: toRelative(5, 5)),
     ];
   }
 

@@ -385,6 +385,39 @@ abstract class EnemyNextWaveGameEvent extends GameEvent {
 
 /// @nodoc
 
+class _$EnemyGetDamagedGameEventImpl extends EnemyGetDamagedGameEvent {
+  const _$EnemyGetDamagedGameEventImpl(this.id) : super._();
+
+  @override
+  final EnemyId id;
+
+  @override
+  String toString() {
+    return 'GameEvent.enemyGetDamaged(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EnemyGetDamagedGameEventImpl &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+}
+
+abstract class EnemyGetDamagedGameEvent extends GameEvent {
+  const factory EnemyGetDamagedGameEvent(final EnemyId id) =
+      _$EnemyGetDamagedGameEventImpl;
+  const EnemyGetDamagedGameEvent._() : super._();
+
+  EnemyId get id;
+}
+
+/// @nodoc
+
 class _$EnemySpawnGameEventImpl extends EnemySpawnGameEvent {
   const _$EnemySpawnGameEventImpl() : super._();
 
