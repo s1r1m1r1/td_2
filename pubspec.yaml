@@ -20,6 +20,9 @@ dependencies:
     git:
       url: https://github.com/s1r1m1r1/astar_dart.git
       ref: develop 
+  flutter_bloc: ^8.1.6
+  injectable: ^2.5.0
+  get_it: ^8.0.3
 
 
 dev_dependencies:
@@ -28,6 +31,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   flutter_lints: ^4.0.0
   freezed: ^2.5.2
+  injectable_generator: ^2.6.2
 
 
 

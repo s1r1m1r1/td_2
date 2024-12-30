@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/injector/get_it.config.dart';
 import 'package:td_2/utils/logger.dart';
 import 'package:td_2/utils/logger_listen.dart';
 import 'game_page.dart';
@@ -16,7 +18,7 @@ FutureOr<void> main() async {
   }
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen(watchRecords);
-
+  GetIt.I.init();
   PlatformDispatcher.instance.onError = (error, stack) {
     debugPrintStack(stackTrace: stack, label: '${red}PlatformDispatcher$reset');
     return true;

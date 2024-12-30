@@ -1,9 +1,13 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:td_2/bloc/stage_treasury_bloc.dart';
 
+import 'bloc/stage_bloc.dart';
+import 'bloc/stage_stats_bloc.dart';
 import 'tile/stage_map.dart';
-import 'controller/game_manual_controller.dart';
+import 'controller/game_controller.dart';
 import 'interface/towers_interface.dart';
 
 class GamePage extends StatelessWidget {
@@ -25,7 +29,11 @@ class GamePage extends StatelessWidget {
         components: [
           ...StageMap.enemies(),
           ...StageMap.decorations(),
-          GameManualController(),
+          GameController(
+            stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
+            stageTreasuryBloc: GetIt.I.get<StageTreasuryBloc>(),
+            stageBloc: GetIt.I.get<StageBloc>(),
+          ),
         ],
         cameraConfig: CameraConfig(
           zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),

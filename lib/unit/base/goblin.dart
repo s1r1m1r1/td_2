@@ -12,9 +12,10 @@ import '../../decoration/common_sprite_sheet.dart';
 import 'enemy_sprite_sheet.dart';
 import 'enemy_unit.dart';
 
+final _log = Logger(Goblin.loggerName);
+
 class Goblin extends ScannableEnemy with UseLifeBar, Movable {
   static const loggerName = 'Goblin';
-  static final _log = Logger(loggerName);
   bool active = true;
   Goblin(Vector2 position)
       : super(
@@ -109,11 +110,7 @@ class Goblin extends ScannableEnemy with UseLifeBar, Movable {
       final to = StageMap.toRelative(next.x, next.y);
       _log.info("Path from: ${position} to ${to}");
       super.moveFromTo(
-        from: from,
-        to: to,
-        onFinish: pathNextMove,
-        fixedAngle: 0.0
-      );
+          from: from, to: to, onFinish: pathNextMove, fixedAngle: 0.0);
     }
   }
 
