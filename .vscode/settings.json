@@ -3,6 +3,7 @@
   "Astar",
   "Attackable",
   "Hitbox",
+  "LTWH",
   "Pushable",
   "Spritesheet"
  ]

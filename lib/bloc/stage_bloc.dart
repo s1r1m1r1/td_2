@@ -77,11 +77,11 @@ class StageBloc extends Bloc<StageEvent, StageState> {
   Future<void> _completed(
       _CompletedStageEvent event, Emitter<StageState> emitter) async {
     emitter(const StageState.processing());
-    try {
-// write something
-    } catch (error, stackTrace) {
-      //  e
-      //mitter(const StageState.failure());
-    }
+//     try {
+// // write something
+//     } catch (error, stackTrace) {
+//       //  e
+//       //mitter(const StageState.failure());
+//     }
   }
 }
