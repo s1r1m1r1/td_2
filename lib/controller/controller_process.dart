@@ -114,6 +114,9 @@ abstract class GameInstruction {
       // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
+      case StartDragButtonGameEvent():
+        _log.info('EnemyKilledGameEvent');
+        controller.switchMoveCamera(false);
       case MoveDragButtonGameEvent():
         _log.info('MoveDragButtonGameEvent');
         final grids = controller.gameRef.query<TileComponent>();
@@ -138,6 +141,7 @@ abstract class GameInstruction {
           fx?.setNotAllowedFX(pos: item.position, size: item.size);
         }
       case FinishDragButtonGameEvent():
+        controller.switchMoveCamera(true);
         debugPrint('FinishDragButtonGameEvent: pos ${event.position}');
         final fx = controller.gameRef.query<TileFXController>().firstOrNull;
         fx?.removeFX();

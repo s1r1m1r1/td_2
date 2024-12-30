@@ -45,6 +45,7 @@ class DraggableButton extends GameDecoration
     );
     parent?.add(staticImage!);
     staticImage?.add(staticText!);
+    GameController.event(GameEvent.startDragButton(position));
     return super.handlerPointerDown(event);
   }
 
@@ -57,7 +58,6 @@ class DraggableButton extends GameDecoration
 
     return super.handlerPointerMove(event);
   }
-
 
   @override
   bool handlerPointerUp(PointerUpEvent event) {

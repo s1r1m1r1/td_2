@@ -502,6 +502,40 @@ abstract class CreateStageGameEvent extends GameEvent {
 
 /// @nodoc
 
+class _$StartDragButtonGameEventImpl extends StartDragButtonGameEvent {
+  const _$StartDragButtonGameEventImpl(this.position) : super._();
+
+  @override
+  final Vector2 position;
+
+  @override
+  String toString() {
+    return 'GameEvent.startDragButton(position: $position)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StartDragButtonGameEventImpl &&
+            (identical(other.position, position) ||
+                other.position == position));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, position);
+}
+
+abstract class StartDragButtonGameEvent extends GameEvent {
+  const factory StartDragButtonGameEvent(final Vector2 position) =
+      _$StartDragButtonGameEventImpl;
+  const StartDragButtonGameEvent._() : super._();
+
+  Vector2 get position;
+}
+
+/// @nodoc
+
 class _$MoveDragButtonGameEventImpl extends MoveDragButtonGameEvent {
   const _$MoveDragButtonGameEventImpl(this.position) : super._();
 
