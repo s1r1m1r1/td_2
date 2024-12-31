@@ -1,4 +1,5 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire/map/base/layer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,10 +71,9 @@ class GameView extends StatelessWidget {
                         )
                       ],
                       components: [
-                        ...StageMap.enemies(),
-                        ...StageMap.decorations(),
+                        // ...StageMap.enemies(),
+                        // ...StageMap.decorations(),
 
-                        /// Todo listen Gesture overlay for scroll
                         moveCamera,
                         GameController(
                           stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
@@ -86,7 +86,16 @@ class GameView extends StatelessWidget {
                             context, StageMap.tileSize, 20),
                       ),
                       interface: TowersInterface(moveCamera),
-                      map: StageMap.map(),
+                      map: WorldMap([
+                        Layer(id: 0, tiles: [
+                          ...state.result.layer.tiles.map((i) => Tile(
+                              x: i.x.toDouble(),
+                              y: i.y.toDouble(),
+                              width: StageMap.tileSize,
+                              height: StageMap.tileSize,
+                              sprite: TileSprite(path: i.assetPath)))
+                        ])
+                      ]),
                       backgroundColor: Colors.blueGrey[900]!,
                       lightingColorGame: Colors.black.withOpacity(0.75),
                     ),
