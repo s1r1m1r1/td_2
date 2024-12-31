@@ -9,12 +9,12 @@ import 'package:td_2/game_core/controller/game_event.dart';
 
 final _log = Logger(TimerProcess.loggerName);
 
-mixin TimerProcess on GameComponent {
+abstract class TimerProcess extends Component {
   static const loggerName = 'TimerController';
   void process(double dt);
 }
 
-class EnemySpawnController extends GameComponent with TimerProcess {
+class EnemySpawnController extends TimerProcess {
   EnemySpawnController({
     required this.type,
     required this.count,
@@ -55,7 +55,7 @@ class EnemySpawnController extends GameComponent with TimerProcess {
   }
 }
 
-class WaveSpawnController extends GameComponent with TimerProcess {
+class WaveSpawnController extends  TimerProcess {
   WaveSpawnController({
     // in seconds
     required this.interval,
