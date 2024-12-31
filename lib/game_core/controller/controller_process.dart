@@ -104,7 +104,7 @@ abstract class GameInstruction {
         if (count == null) break;
         controller.addAll([
           WaveSpawnController(
-              interval: const Duration(seconds: 10).inMilliseconds, index: 0, max: count)
+              interval:  const Duration(seconds: 10).inSeconds.toDouble(), index: 0, max: count)
         ]);
 
         _log.info('EnemySpawnGameEvent');
@@ -118,7 +118,7 @@ abstract class GameInstruction {
         controller.add(EnemySpawnController(
             type: wave.enemyType,
             count: wave.count,
-            interval: wave.unitInterval.inMilliseconds));
+            interval: wave.unitInterval.inSeconds.toDouble()));
 
         _log.info('EnemySpawnGameEvent');
 

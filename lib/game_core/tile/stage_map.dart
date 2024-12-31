@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
-import '../interface/draggable_button.dart';
+import '../ui/draggable_button.dart';
 import '../decoration/chest.dart';
 
 abstract class Vec2 {
@@ -64,7 +64,7 @@ class StageMap {
       // Spikes(
       //   toRelative(0, 0),
       // ),
-      DraggableButton(toRelative(4, 4)),
+      // DraggableButton(toRelative(4, 4)),
       GameDecorationWithCollision.withSprite(
         sprite: Sprite.load('itens/barrel.png'),
         position: toRelative(0, 2),
