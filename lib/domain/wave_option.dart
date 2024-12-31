@@ -1,16 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:td_2/domain/enums/enemy_type.dart';
-part 'wave.freezed.dart';
+part 'wave_option.freezed.dart';
 
 @Freezed(
     map: FreezedMapOptions.none, when: FreezedWhenOptions.none, copyWith: false)
-class Wave with _$Wave {
-  const Wave._();
-  const factory Wave({
+class WaveOption with _$WaveOption {
+  const WaveOption._();
+  const factory WaveOption({
     required int id,
     required int count,
     required EnemyType enemyType,
     required Duration unitInterval,
     required Duration nextWave,
-  }) = $Wave;
+  }) = $WaveOption;
 }

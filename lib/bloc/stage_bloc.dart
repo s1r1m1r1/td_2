@@ -2,9 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:td_2/domain/enums/enemy_type.dart';
-import 'package:td_2/domain/wave.dart';
+import 'package:td_2/domain/wave_option.dart';
 
-import '../domain/stage.dart';
+import '../domain/stage_option.dart';
 
 part 'stage_bloc.freezed.dart';
 
@@ -23,7 +23,7 @@ sealed class StageState with _$StageState {
   const StageState._();
   const factory StageState.init() = $InitStageState;
   const factory StageState.processing() = $ProcessingStageState;
-  const factory StageState.success(Stage result) = $SuccessStageState;
+  const factory StageState.success(StageOption result) = $SuccessStageState;
 }
 
 @lazySingleton
@@ -52,36 +52,36 @@ class StageBloc extends Bloc<StageEvent, StageState> {
   Future<void> _read(_ReadStageEvent event, Emitter<StageState> emitter) async {
     emitter(const StageState.processing());
     try {
-      const result = Stage(id: 0, waves: [
-        Wave(
+      const result = StageOption(id: 0, waves: [
+        WaveOption(
           id: 0,
           count: 5,
           enemyType: EnemyType.goblin,
           unitInterval: Duration(milliseconds: 1000),
           nextWave: Duration(seconds: 10),
         ),
-        Wave(
+        WaveOption(
           id: 1,
           count: 7,
           enemyType: EnemyType.goblin,
           unitInterval: Duration(milliseconds: 1000),
           nextWave: Duration.zero,
         ),
-        Wave(
+        WaveOption(
           id: 1,
           count: 2,
           enemyType: EnemyType.goblin,
           unitInterval: Duration(milliseconds: 1000),
           nextWave: Duration.zero,
         ),
-        Wave(
+        WaveOption(
           id: 1,
           count: 8,
           enemyType: EnemyType.goblin,
           unitInterval: Duration(milliseconds: 1000),
           nextWave: Duration.zero,
         ),
-        Wave(
+        WaveOption(
           id: 1,
           count: 5,
           enemyType: EnemyType.goblin,

@@ -179,7 +179,7 @@ abstract class _$$$SuccessStageStateImplCopyWith<$Res> {
           $Res Function(_$$SuccessStageStateImpl) then) =
       __$$$SuccessStageStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Stage result});
+  $Res call({StageOption result});
 }
 
 /// @nodoc
@@ -199,7 +199,7 @@ class __$$$SuccessStageStateImplCopyWithImpl<$Res>
       null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
-              as Stage,
+              as StageOption,
     ));
   }
 }
@@ -210,7 +210,7 @@ class _$$SuccessStageStateImpl extends $SuccessStageState {
   const _$$SuccessStageStateImpl(this.result) : super._();
 
   @override
-  final Stage result;
+  final StageOption result;
 
   @override
   String toString() {
@@ -237,11 +237,11 @@ class _$$SuccessStageStateImpl extends $SuccessStageState {
 }
 
 abstract class $SuccessStageState extends StageState {
-  const factory $SuccessStageState(final Stage result) =
+  const factory $SuccessStageState(final StageOption result) =
       _$$SuccessStageStateImpl;
   const $SuccessStageState._() : super._();
 
-  Stage get result;
+  StageOption get result;
   @JsonKey(ignore: true)
   _$$$SuccessStageStateImplCopyWith<_$$SuccessStageStateImpl> get copyWith =>
       throw _privateConstructorUsedError;

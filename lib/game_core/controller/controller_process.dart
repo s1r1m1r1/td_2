@@ -5,7 +5,7 @@ import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/bloc/stage_bloc.dart';
-import 'package:td_2/domain/wave.dart';
+import 'package:td_2/domain/wave_option.dart';
 import 'package:td_2/game_core/controller/astar_controller.dart';
 import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_controller.dart';
@@ -111,7 +111,7 @@ abstract class GameInstruction {
       case NextWaveGameEvent():
         debugPrint('NEXT WAVE EVETnt');
         if (event.index > (controller.stage.waves.length - 1)) break;
-        Wave wave = controller.stage.waves[event.index];
+        final wave = controller.stage.waves[event.index];
 
         controller.add(EnemySpawnController(
             type: wave.enemyType,
