@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:td_2/bloc/stage_treasury_bloc.dart';
-import 'package:td_2/controller/move_camera_mixin.dart';
+import 'package:td_2/game_core/controller/move_camera_controller.dart';
 
 import 'bloc/stage_bloc.dart';
 import 'bloc/stage_stats_bloc.dart';
-import 'tile/stage_map.dart';
-import 'controller/game_controller.dart';
-import 'interface/towers_interface.dart';
+import 'game_core/tile/stage_map.dart';
+import 'game_core/controller/game_controller.dart';
+import 'game_core/interface/towers_interface.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
