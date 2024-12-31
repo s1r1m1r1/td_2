@@ -23,6 +23,7 @@ abstract class GameInstruction {
 
   static FutureOr<void> process(
       GameEvent event, GameController controller) async {
+    var continueEvent = event;
     switch (event) {
       // Todo , with setting level
       case CreateStageGameEvent():
@@ -109,6 +110,7 @@ abstract class GameInstruction {
         _log.info('EnemySpawnGameEvent');
       case NextWaveGameEvent():
         debugPrint('NEXT WAVE EVETnt');
+        if (event.index > (controller.stage.waves.length - 1)) break;
         Wave wave = controller.stage.waves[event.index];
 
         controller.add(EnemySpawnController(
@@ -160,17 +162,15 @@ abstract class GameInstruction {
       // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
-      case MoveDragButtonGameEvent():
-        _log.info('MoveDragButtonGameEvent');
+      case MovePointerGlobalGameEvent():
+        final localPos = controller.game.camera.globalToLocal(event.position);
         final grids = controller.gameRef.query<TileComponent>();
         TileComponent? item;
         // firstWhere
         for (final i in grids) {
-          final isCover = i.isCover(event.position);
-          _log.info('MoveDraggableGameEvent: isCover $isCover');
+          final isCover = i.isCover(localPos);
           if (!isCover) continue;
           item = i;
-          _log.info('MoveDraggableGameEvent: isCover OK');
           break;
         }
         final fx = controller.gameRef.query<TileFXController>().firstOrNull;
@@ -183,20 +183,17 @@ abstract class GameInstruction {
         } else {
           fx?.setNotAllowedFX(pos: item.position, size: item.size);
         }
-      case FinishDragButtonGameEvent():
-        // controller.game.query<MoveCameraController>().firstOrNull?.switchMoveCamera(true);
-        debugPrint('FinishDragButtonGameEvent: pos ${event.position}');
+      case FinishPointerGlobalGameEvent():
+        final localPos = controller.game.camera.globalToLocal(event.position);
         final fx = controller.gameRef.query<TileFXController>().firstOrNull;
         fx?.removeFX();
         final grids = controller.gameRef.query<FoundationTileComponent>();
         FoundationTileComponent? item;
         // firstWhere
         for (final i in grids) {
-          final isCover = i.isCover(event.position);
-          // _log.info('SetDraggableGameEvent: isCover $isCover');
+          final isCover = i.isCover(localPos);
           if (!isCover) continue;
           item = i;
-          // _log.info('SetDraggableGameEvent: isCover OK');
           break;
         }
         if (item == null) break;

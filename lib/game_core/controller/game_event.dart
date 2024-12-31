@@ -37,7 +37,12 @@ sealed class GameEvent with _$GameEvent {
   const factory GameEvent.nextWave(int index) = NextWaveGameEvent;
   const factory GameEvent.enemyGo(Goblin enemy) = EnemyGoGameEvent;
   const factory GameEvent.createStage() = CreateStageGameEvent;
-  const factory GameEvent.moveDragButton(Vector2 position) = MoveDragButtonGameEvent;
-  const factory GameEvent.finishDragButton(Vector2 position) =
-      FinishDragButtonGameEvent;
+  const factory GameEvent.movePointerGlobal(Vector2 position) =
+      MovePointerGlobalGameEvent;
+  const factory GameEvent.finishPointerGlobal(Vector2 position) =
+      FinishPointerGlobalGameEvent;
+  // const factory GameEvent.moveDragButton(Vector2 position) =
+      // MoveDragButtonGameEvent;
+  // const factory GameEvent.finishDragButton(Vector2 position) =
+      // FinishDragButtonGameEvent;
 }
