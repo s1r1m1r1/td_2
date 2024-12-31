@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
-import '../ui/draggable_button.dart';
 import '../decoration/chest.dart';
 
 abstract class Vec2 {
