@@ -6,7 +6,7 @@ import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_event.dart';
 import 'package:td_2/game_core/tile/tile_component.dart';
 
-import '../../domain/stage.dart';
+import '../../domain/stage_option.dart';
 import '../mixin/clash.dart';
 import '../mixin/radar.dart';
 import '../unit/enemy/goblin.dart';
@@ -32,7 +32,7 @@ class GameController extends GameComponent {
     return _end!;
   }
 
-  final Stage stage;
+  final StageOption stage;
   final StageStatsBloc stageStatsBloc;
   final StageTreasuryBloc stageTreasuryBloc;
 

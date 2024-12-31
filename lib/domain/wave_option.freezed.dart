@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'wave.dart';
+part of 'wave_option.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$Wave {
+mixin _$WaveOption {
   int get id => throw _privateConstructorUsedError;
   int get count => throw _privateConstructorUsedError;
   EnemyType get enemyType => throw _privateConstructorUsedError;
@@ -25,8 +25,8 @@ mixin _$Wave {
 
 /// @nodoc
 
-class _$$WaveImpl extends $Wave {
-  const _$$WaveImpl(
+class _$$WaveOptionImpl extends $WaveOption {
+  const _$$WaveOptionImpl(
       {required this.id,
       required this.count,
       required this.enemyType,
@@ -47,14 +47,14 @@ class _$$WaveImpl extends $Wave {
 
   @override
   String toString() {
-    return 'Wave(id: $id, count: $count, enemyType: $enemyType, unitInterval: $unitInterval, nextWave: $nextWave)';
+    return 'WaveOption(id: $id, count: $count, enemyType: $enemyType, unitInterval: $unitInterval, nextWave: $nextWave)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$$WaveImpl &&
+            other is _$$WaveOptionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.count, count) || other.count == count) &&
             (identical(other.enemyType, enemyType) ||
@@ -70,14 +70,14 @@ class _$$WaveImpl extends $Wave {
       Object.hash(runtimeType, id, count, enemyType, unitInterval, nextWave);
 }
 
-abstract class $Wave extends Wave {
-  const factory $Wave(
+abstract class $WaveOption extends WaveOption {
+  const factory $WaveOption(
       {required final int id,
       required final int count,
       required final EnemyType enemyType,
       required final Duration unitInterval,
-      required final Duration nextWave}) = _$$WaveImpl;
-  const $Wave._() : super._();
+      required final Duration nextWave}) = _$$WaveOptionImpl;
+  const $WaveOption._() : super._();
 
   @override
   int get id;

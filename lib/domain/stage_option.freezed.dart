@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'stage.dart';
+part of 'stage_option.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,23 +15,24 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$Stage {
+mixin _$StageOption {
   int get id => throw _privateConstructorUsedError;
-  List<Wave> get waves => throw _privateConstructorUsedError;
+  List<WaveOption> get waves => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 
-class _$StageImpl extends _Stage {
-  const _$StageImpl({required this.id, required final List<Wave> waves})
+class _$StageOptionImpl extends _StageOption {
+  const _$StageOptionImpl(
+      {required this.id, required final List<WaveOption> waves})
       : _waves = waves,
         super._();
 
   @override
   final int id;
-  final List<Wave> _waves;
+  final List<WaveOption> _waves;
   @override
-  List<Wave> get waves {
+  List<WaveOption> get waves {
     if (_waves is EqualUnmodifiableListView) return _waves;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_waves);
@@ -39,14 +40,14 @@ class _$StageImpl extends _Stage {
 
   @override
   String toString() {
-    return 'Stage(id: $id, waves: $waves)';
+    return 'StageOption(id: $id, waves: $waves)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StageImpl &&
+            other is _$StageOptionImpl &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality().equals(other._waves, _waves));
   }
@@ -56,13 +57,14 @@ class _$StageImpl extends _Stage {
       Object.hash(runtimeType, id, const DeepCollectionEquality().hash(_waves));
 }
 
-abstract class _Stage extends Stage {
-  const factory _Stage(
-      {required final int id, required final List<Wave> waves}) = _$StageImpl;
-  const _Stage._() : super._();
+abstract class _StageOption extends StageOption {
+  const factory _StageOption(
+      {required final int id,
+      required final List<WaveOption> waves}) = _$StageOptionImpl;
+  const _StageOption._() : super._();
 
   @override
   int get id;
   @override
-  List<Wave> get waves;
+  List<WaveOption> get waves;
 }

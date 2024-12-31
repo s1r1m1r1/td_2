@@ -68,10 +68,15 @@ class DraggableButton extends GameDecoration
   void listenPointerDown(PointerDownEvent event) {
     _timer.start();
     isVisible = true;
+    isDragging = true;
   }
 
   @override
   void listenPointerMove(PointerMoveEvent event) {
+    if (!_timer.isRunning()) {
+      _timer.start();
+      isDragging = true;
+    }
     position = position + event.delta.toVector2();
     GameController.event(GameEvent.movePointerGlobal(
         event.position.toVector2() - mother.marginVec2));
@@ -87,6 +92,7 @@ class DraggableButton extends GameDecoration
 
   void toDefaultPosition() {
     _timer.stop();
+    isDragging = false;
     position = startPosition;
   }
 
