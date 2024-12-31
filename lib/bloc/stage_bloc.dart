@@ -55,14 +55,35 @@ class StageBloc extends Bloc<StageEvent, StageState> {
       const result = Stage(id: 0, waves: [
         Wave(
           id: 0,
-          count: 10,
+          count: 5,
           enemyType: EnemyType.goblin,
-          unitInterval: Duration(milliseconds: 200),
+          unitInterval: Duration(milliseconds: 1000),
           nextWave: Duration(seconds: 10),
         ),
         Wave(
           id: 1,
-          count: 10,
+          count: 7,
+          enemyType: EnemyType.goblin,
+          unitInterval: Duration(milliseconds: 1000),
+          nextWave: Duration.zero,
+        ),
+        Wave(
+          id: 1,
+          count: 2,
+          enemyType: EnemyType.goblin,
+          unitInterval: Duration(milliseconds: 1000),
+          nextWave: Duration.zero,
+        ),
+        Wave(
+          id: 1,
+          count: 8,
+          enemyType: EnemyType.goblin,
+          unitInterval: Duration(milliseconds: 1000),
+          nextWave: Duration.zero,
+        ),
+        Wave(
+          id: 1,
+          count: 5,
           enemyType: EnemyType.goblin,
           unitInterval: Duration(milliseconds: 1000),
           nextWave: Duration.zero,
