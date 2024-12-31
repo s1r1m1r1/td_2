@@ -1,10 +1,10 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 mixin MotherPointerListener on GameComponent {
   bool enableDrag = true;
+  bool isDragging = false;
 
   void listenPointerDown(PointerDownEvent event) {}
 
@@ -51,11 +51,12 @@ mixin MotherPointerMixin on GameComponent {
   bool handlerPointerDown(PointerDownEvent event) {
     for (var i in _listener) {
       if (!i.enableDrag) continue;
-      final isCover = _isPointerCover(event, i);
-      if (isCover) {
-        i.listenPointerDown(event);
-        return true;
+      if (!i.isDragging) {
+        final isCover = _isPointerCover(event, i);
+        if (!isCover) continue;
       }
+      i.listenPointerDown(event);
+      return true;
     }
     return false;
   }
@@ -64,11 +65,12 @@ mixin MotherPointerMixin on GameComponent {
   bool handlerPointerUp(PointerUpEvent event) {
     for (var i in _listener) {
       if (!i.enableDrag) continue;
-      final isCover = _isPointerCover(event, i);
-      if (isCover) {
-        i.listenPointerUp(event);
-        return true;
+      if (!i.isDragging) {
+        final isCover = _isPointerCover(event, i);
+        if (!isCover) continue;
       }
+      i.listenPointerUp(event);
+      return true;
     }
     return false;
   }
@@ -77,11 +79,12 @@ mixin MotherPointerMixin on GameComponent {
   bool handlerPointerMove(PointerMoveEvent event) {
     for (var i in _listener) {
       if (!i.enableDrag) continue;
-      final isCover = _isPointerCover(event, i);
-      if (isCover) {
-        i.listenPointerMove(event);
-        return true;
+      if (!i.isDragging) {
+        final isCover = _isPointerCover(event, i);
+        if (!isCover) continue;
       }
+      i.listenPointerMove(event);
+      return true;
     }
     return false;
   }
