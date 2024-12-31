@@ -567,22 +567,22 @@ abstract class CreateStageGameEvent extends GameEvent {
 
 /// @nodoc
 
-class _$MoveDragButtonGameEventImpl extends MoveDragButtonGameEvent {
-  const _$MoveDragButtonGameEventImpl(this.position) : super._();
+class _$MovePointerGlobalGameEventImpl extends MovePointerGlobalGameEvent {
+  const _$MovePointerGlobalGameEventImpl(this.position) : super._();
 
   @override
   final Vector2 position;
 
   @override
   String toString() {
-    return 'GameEvent.moveDragButton(position: $position)';
+    return 'GameEvent.movePointerGlobal(position: $position)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MoveDragButtonGameEventImpl &&
+            other is _$MovePointerGlobalGameEventImpl &&
             (identical(other.position, position) ||
                 other.position == position));
   }
@@ -591,32 +591,32 @@ class _$MoveDragButtonGameEventImpl extends MoveDragButtonGameEvent {
   int get hashCode => Object.hash(runtimeType, position);
 }
 
-abstract class MoveDragButtonGameEvent extends GameEvent {
-  const factory MoveDragButtonGameEvent(final Vector2 position) =
-      _$MoveDragButtonGameEventImpl;
-  const MoveDragButtonGameEvent._() : super._();
+abstract class MovePointerGlobalGameEvent extends GameEvent {
+  const factory MovePointerGlobalGameEvent(final Vector2 position) =
+      _$MovePointerGlobalGameEventImpl;
+  const MovePointerGlobalGameEvent._() : super._();
 
   Vector2 get position;
 }
 
 /// @nodoc
 
-class _$FinishDragButtonGameEventImpl extends FinishDragButtonGameEvent {
-  const _$FinishDragButtonGameEventImpl(this.position) : super._();
+class _$FinishPointerGlobalGameEventImpl extends FinishPointerGlobalGameEvent {
+  const _$FinishPointerGlobalGameEventImpl(this.position) : super._();
 
   @override
   final Vector2 position;
 
   @override
   String toString() {
-    return 'GameEvent.finishDragButton(position: $position)';
+    return 'GameEvent.finishPointerGlobal(position: $position)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FinishDragButtonGameEventImpl &&
+            other is _$FinishPointerGlobalGameEventImpl &&
             (identical(other.position, position) ||
                 other.position == position));
   }
@@ -625,10 +625,10 @@ class _$FinishDragButtonGameEventImpl extends FinishDragButtonGameEvent {
   int get hashCode => Object.hash(runtimeType, position);
 }
 
-abstract class FinishDragButtonGameEvent extends GameEvent {
-  const factory FinishDragButtonGameEvent(final Vector2 position) =
-      _$FinishDragButtonGameEventImpl;
-  const FinishDragButtonGameEvent._() : super._();
+abstract class FinishPointerGlobalGameEvent extends GameEvent {
+  const factory FinishPointerGlobalGameEvent(final Vector2 position) =
+      _$FinishPointerGlobalGameEventImpl;
+  const FinishPointerGlobalGameEvent._() : super._();
 
   Vector2 get position;
 }

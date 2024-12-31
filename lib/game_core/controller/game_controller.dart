@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart' hide TileComponent;
-import 'package:td_2/bloc/stage_bloc.dart';
 import 'package:td_2/bloc/stage_stats_bloc.dart';
 import 'package:td_2/bloc/stage_treasury_bloc.dart';
 import 'package:td_2/game_core/controller/controller_process.dart';
@@ -18,8 +17,7 @@ class GameController extends GameComponent {
     required this.stage,
     required this.stageStatsBloc,
     required this.stageTreasuryBloc,
-  }); 
-  
+  });
 
   late final game = gameRef;
   StartGateTileComponent? _start;
@@ -46,6 +44,7 @@ class GameController extends GameComponent {
   @override
   Future<void> onLoad() async {
     // astarController.test();
+    _instructQ.clear();
     event(const GameEvent.createStage());
     event(const GameEvent.enemySpawn());
     gameRef.camera

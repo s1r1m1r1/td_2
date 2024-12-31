@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 
 mixin MotherPointerListener on GameComponent {
   bool enableDrag = true;
@@ -27,6 +28,13 @@ mixin MotherPointerMixin on GameComponent {
     _listener.remove(listener);
   }
 
+  void setMargin(EdgeInsetsDirectional value) {
+    _margin = value;
+  }
+
+  EdgeInsetsDirectional _margin = EdgeInsetsDirectional.zero;
+  Vector2 get marginVec2 => Vector2(_margin.start, _margin.top);
+
   @override
   void remove(Component component) {
     _listener.clear();
@@ -34,7 +42,7 @@ mixin MotherPointerMixin on GameComponent {
   }
 
   bool _isPointerCover(PointerEvent event, GameComponent c) {
-    final screenPos = c.absolutePosition;
+    final screenPos = c.absolutePosition + marginVec2;
     final rect = Rect.fromLTWH(screenPos.x, screenPos.y, c.size.x, c.size.y);
     return rect.contains(event.position);
   }

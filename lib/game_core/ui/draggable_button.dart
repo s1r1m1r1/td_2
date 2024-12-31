@@ -50,7 +50,7 @@ class DraggableButton extends GameDecoration
   late final _timer = Timer(1.0, onTick: toDefaultPosition);
   late final Vector2 startPosition;
 
-  final MotherPointerMixin  mother; 
+  final MotherPointerMixin mother;
 
   @override
   Future<void> onLoad() async {
@@ -73,14 +73,16 @@ class DraggableButton extends GameDecoration
   @override
   void listenPointerMove(PointerMoveEvent event) {
     position = position + event.delta.toVector2();
+    GameController.event(GameEvent.movePointerGlobal(
+        event.position.toVector2() - mother.marginVec2));
     _timer.reset();
   }
 
   @override
   void listenPointerUp(PointerUpEvent event) {
     toDefaultPosition();
-    final localPos = gameRef.camera.globalToLocal(event.position.toVector2());
-    GameController.event(GameEvent.finishDragButton(localPos));
+    GameController.event(GameEvent.finishPointerGlobal(
+        event.position.toVector2() - mother.marginVec2));
   }
 
   void toDefaultPosition() {
