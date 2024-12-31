@@ -7,6 +7,7 @@ import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_event.dart';
 import 'package:td_2/game_core/tile/tile_component.dart';
 
+import '../../domain/stage.dart';
 import '../mixin/clash.dart';
 import '../mixin/radar.dart';
 import '../unit/enemy/goblin.dart';
@@ -14,12 +15,11 @@ import '../unit/enemy/goblin.dart';
 
 class GameController extends GameComponent {
   GameController({
-    required this.stageBloc,
+    required this.stage,
     required this.stageStatsBloc,
     required this.stageTreasuryBloc,
-  }) {
-    stageBloc.add(const StageEvent.read());
-  }
+  }); 
+  
 
   late final game = gameRef;
   StartGateTileComponent? _start;
@@ -34,7 +34,7 @@ class GameController extends GameComponent {
     return _end!;
   }
 
-  final StageBloc stageBloc;
+  final Stage stage;
   final StageStatsBloc stageStatsBloc;
   final StageTreasuryBloc stageTreasuryBloc;
 

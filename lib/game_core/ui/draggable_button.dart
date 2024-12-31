@@ -39,6 +39,7 @@ class DraggableButton extends GameDecoration
   DraggableButton({
     required super.position,
     required Vector2 size,
+    required this.mother,
   }) : super.withSprite(
           sprite: CommonSpriteSheet.barrelSprite,
           size: size / 2,
@@ -49,18 +50,17 @@ class DraggableButton extends GameDecoration
   late final _timer = Timer(1.0, onTick: toDefaultPosition);
   late final Vector2 startPosition;
 
-  MotherPointerMixin? get motherPointer =>
-      gameRef.query<MotherPointerMixin>().firstOrNull;
+  final MotherPointerMixin  mother; 
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    motherPointer?.addListener(this); // XPointerListener
+    mother.addListener(this); // XPointerListener
   }
 
   @override
   void onRemove() {
-    motherPointer?.removeListener(this); // XPointerListener
+    mother.removeListener(this); // XPointerListener
     super.onRemove();
   }
 
