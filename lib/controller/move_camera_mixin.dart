@@ -1,27 +1,37 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 
-mixin MoveCameraMixin on GameComponent {
+import '../unit/mixin/mother_pointer_mixin.dart';
+
+class MoveCameraController extends GameComponent with MotherPointerMixin {
   Vector2 _startPoint = Vector2.zero();
   Vector2 _startCameraPosition = Vector2.zero();
   bool _onlyMouse = false;
   MouseButton _mouseButton = MouseButton.left;
 
-  bool _moveCameraEnable = true;
-
-  void switchMoveCamera(bool enabled) {
-    _moveCameraEnable = enabled;
-  }
-
   @override
   bool handlerPointerDown(PointerDownEvent event) {
+    debugPrint('MoveCameraController Down 1');
+    final booL = super.handlerPointerDown(event);
+    debugPrint('MoveCameraController Down booL $booL');
+    if (booL) {
+      debugPrint('MoveCameraController Down booL $booL return true ');
+      return booL;
+    }
     _startPoint = event.position.toVector2();
     _startCameraPosition = gameRef.camera.position;
-    return super.handlerPointerDown(event);
+    return booL;
   }
 
   @override
   bool handlerPointerMove(PointerMoveEvent event) {
+    // check children if they have drag don't move camera
+    final booL = super.handlerPointerMove(event);
+    if (booL) {
+      return false;
+    }
+
     double distance = _startPoint.distanceTo(event.position.toVector2());
     if (distance > 1) {
       if (_acceptGesture(event, _mouseButton)) {
@@ -35,10 +45,11 @@ mixin MoveCameraMixin on GameComponent {
             py / zoom,
           ),
         );
+        return false;
       }
     }
 
-    return super.handlerPointerMove(event);
+    return false;
   }
 
   bool _acceptGesture(PointerEvent event, MouseButton button) {
@@ -55,8 +66,8 @@ mixin MoveCameraMixin on GameComponent {
   }
 
   @override
-  bool hasGesture() => _moveCameraEnable;
+  bool hasGesture() => true;
 
   @override
-  bool get isVisible => _moveCameraEnable;
+  bool get isVisible => true;
 }
