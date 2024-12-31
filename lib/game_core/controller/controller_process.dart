@@ -97,24 +97,20 @@ abstract class GameInstruction {
         }
       case EnemySpawnGameEvent():
         debugPrint('SPAWn  EVETnt');
-        int? count;
-        if (controller.stageBloc.state case $SuccessStageState(:final result)) {
-          count = result.waves.length;
-        }
-        if (count == null) break;
+        int count = controller.stage.waves.length;
+
         controller.addAll([
           WaveSpawnController(
-              interval:  const Duration(seconds: 10).inSeconds.toDouble(), index: 0, max: count)
+              interval: const Duration(seconds: 10).inSeconds.toDouble(),
+              index: 0,
+              max: count)
         ]);
 
         _log.info('EnemySpawnGameEvent');
       case NextWaveGameEvent():
         debugPrint('NEXT WAVE EVETnt');
-        Wave? wave;
-        if (controller.stageBloc.state case $SuccessStageState(:final result)) {
-          wave = result.waves[event.index];
-        }
-        if (wave == null) break;
+        Wave wave = controller.stage.waves[event.index];
+
         controller.add(EnemySpawnController(
             type: wave.enemyType,
             count: wave.count,

@@ -9,12 +9,12 @@ import 'package:td_2/game_core/controller/game_event.dart';
 
 final _log = Logger(TimerProcess.loggerName);
 
-mixin TimerProcess on GameComponent {
+abstract class TimerProcess extends Component {
   static const loggerName = 'TimerController';
   void process(double dt);
 }
 
-class EnemySpawnController extends GameComponent with TimerProcess {
+class EnemySpawnController extends TimerProcess {
   EnemySpawnController({
     required this.type,
     required this.count,
@@ -33,7 +33,7 @@ class EnemySpawnController extends GameComponent with TimerProcess {
   final double interval;
   late bool _shouldFirstRun;
   int count;
-  Timer? _timer;
+  late final Timer _timer;
 
   @override
   void process(double dt) {
@@ -41,7 +41,7 @@ class EnemySpawnController extends GameComponent with TimerProcess {
       _shouldFirstRun = false;
       onTick();
     }
-    _timer?.update(dt);
+    _timer.update(dt);
   }
 
   void onTick() {
@@ -55,7 +55,7 @@ class EnemySpawnController extends GameComponent with TimerProcess {
   }
 }
 
-class WaveSpawnController extends GameComponent with TimerProcess {
+class WaveSpawnController extends  TimerProcess {
   WaveSpawnController({
     // in seconds
     required this.interval,
@@ -74,7 +74,7 @@ class WaveSpawnController extends GameComponent with TimerProcess {
   int index;
   final int max;
   bool _shouldFirstRun = false;
-  Timer? _timer;
+  late final Timer _timer;
 
   @override
   void process(double dt) {
@@ -82,7 +82,7 @@ class WaveSpawnController extends GameComponent with TimerProcess {
       _shouldFirstRun = false;
       onTick();
     }
-    _timer?.update(dt);
+    _timer.update(dt);
   }
 
   void onTick() {
