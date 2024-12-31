@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'map_option.dart';
 import 'wave_option.dart';
 part 'stage_option.freezed.dart';
 
@@ -10,5 +11,6 @@ class StageOption with _$StageOption {
   const factory StageOption({
     required int id,
     required List<WaveOption> waves,
+    required LayerOption layer,
   }) = _StageOption;
 }

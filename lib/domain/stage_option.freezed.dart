@@ -18,13 +18,16 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$StageOption {
   int get id => throw _privateConstructorUsedError;
   List<WaveOption> get waves => throw _privateConstructorUsedError;
+  LayerOption get layer => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 
 class _$StageOptionImpl extends _StageOption {
   const _$StageOptionImpl(
-      {required this.id, required final List<WaveOption> waves})
+      {required this.id,
+      required final List<WaveOption> waves,
+      required this.layer})
       : _waves = waves,
         super._();
 
@@ -39,8 +42,11 @@ class _$StageOptionImpl extends _StageOption {
   }
 
   @override
+  final LayerOption layer;
+
+  @override
   String toString() {
-    return 'StageOption(id: $id, waves: $waves)';
+    return 'StageOption(id: $id, waves: $waves, layer: $layer)';
   }
 
   @override
@@ -49,22 +55,26 @@ class _$StageOptionImpl extends _StageOption {
         (other.runtimeType == runtimeType &&
             other is _$StageOptionImpl &&
             (identical(other.id, id) || other.id == id) &&
-            const DeepCollectionEquality().equals(other._waves, _waves));
+            const DeepCollectionEquality().equals(other._waves, _waves) &&
+            (identical(other.layer, layer) || other.layer == layer));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, const DeepCollectionEquality().hash(_waves));
+  int get hashCode => Object.hash(
+      runtimeType, id, const DeepCollectionEquality().hash(_waves), layer);
 }
 
 abstract class _StageOption extends StageOption {
   const factory _StageOption(
       {required final int id,
-      required final List<WaveOption> waves}) = _$StageOptionImpl;
+      required final List<WaveOption> waves,
+      required final LayerOption layer}) = _$StageOptionImpl;
   const _StageOption._() : super._();
 
   @override
   int get id;
   @override
   List<WaveOption> get waves;
+  @override
+  LayerOption get layer;
 }

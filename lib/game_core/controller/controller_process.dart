@@ -5,6 +5,7 @@ import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/bloc/stage_bloc.dart';
+import 'package:td_2/domain/enums/tile_type.dart';
 import 'package:td_2/domain/wave_option.dart';
 import 'package:td_2/game_core/controller/astar_controller.dart';
 import 'package:td_2/game_core/controller/timer_process.dart';
@@ -23,68 +24,41 @@ abstract class GameInstruction {
 
   static FutureOr<void> process(
       GameEvent event, GameController controller) async {
-    var continueEvent = event;
+    // var continueEvent = event;
     switch (event) {
-      // Todo , with setting level
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
         controller.game.add(TileFXController());
-        astarController.init(10, 10);
-        final grounds = <Tile>[];
-        List.generate(10, (y) {
-          return List.generate(10, (x) {
-            final TileComponent tile = switch ((x, y)) {
-              _ when x == 1 && y == 0 => StartGateTileComponent(
-                  size: Vector2.all(StageMap.tileSize),
-                  position: StageMap.toRelative(x, y),
-                  gridPos: Point(x, y),
-                ),
-              _ when x == 6 && y == 9 => EndGateTileComponent(
-                  size: Vector2.all(StageMap.tileSize),
-                  position: StageMap.toRelative(x, y),
-                  gridPos: Point(x, y)),
-              _ when x.isEven || y.isOdd => RoadTileComponent(
-                  position: StageMap.toRelative(x, y),
-                  size: Vector2.all(StageMap.tileSize),
-                  gridPos: Point(x, y)),
-              _ => FoundationTileComponent(
-                  position: StageMap.toRelative(x, y),
-                  size: Vector2.all(StageMap.tileSize),
-                  gridPos: Point(x, y)),
-            };
-            grounds.add(
-              Tile(
-                sprite: TileSprite(path: StageMap.floor_1),
-                x: x.toDouble(),
-                y: y.toDouble(),
-                width: StageMap.tileSize,
-                height: StageMap.tileSize,
-              ),
-            );
-            // final unit = switch ((x, y)) {
-            //   (int x, int y) when x > 1 && x < 9 && y > 1 && y < 9 =>
-            //     Goblin(tile.position),
-            //   _ => null
-            // };
-
-            controller.game.add(tile);
-            final towerType = switch ((x, y)) {
-              (3, 6) || (5, 5) => TowerType.missile,
-              _ => null
-            };
-            if (towerType != null && tile is FoundationTileComponent) {
-              tile.setTower(towerType);
-            }
-
-            // if (unit != null) {
-            //   game.add(unit);
-            // }
-          });
-        });
-        _log.warning('add Layer ${grounds.length}');
-      // controller.game.map.refreshMap();
-      // addLayer(Layer(id: 1, tiles: grounds));
-
+        astarController.init(
+            controller.stage.layer.width, controller.stage.layer.height);
+        for (final tileOption in controller.stage.layer.tiles) {
+          switch (tileOption.type) {
+            case TileType.start:
+              controller.game.add(StartGateTileComponent(
+                size: Vector2.all(StageMap.tileSize),
+                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                gridPos: Point(tileOption.x, tileOption.y),
+              ));
+            case TileType.end:
+              controller.game.add(EndGateTileComponent(
+                size: Vector2.all(StageMap.tileSize),
+                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                gridPos: Point(tileOption.x, tileOption.y),
+              ));
+            case TileType.road:
+              controller.game.add(RoadTileComponent(
+                size: Vector2.all(StageMap.tileSize),
+                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                gridPos: Point(tileOption.x, tileOption.y),
+              ));
+            case TileType.foundation:
+              controller.game.add(FoundationTileComponent(
+                size: Vector2.all(StageMap.tileSize),
+                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                gridPos: Point(tileOption.x, tileOption.y),
+              ));
+          }
+        }
       case EnemyGetDamagedGameEvent():
         _log.info('EnemyGetDamagedGameEvent');
       case SpawnOneGameEvent():
@@ -109,7 +83,6 @@ abstract class GameInstruction {
 
         _log.info('EnemySpawnGameEvent');
       case NextWaveGameEvent():
-        debugPrint('NEXT WAVE EVETnt');
         if (event.index > (controller.stage.waves.length - 1)) break;
         final wave = controller.stage.waves[event.index];
 
