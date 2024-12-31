@@ -10,10 +10,9 @@ import 'package:td_2/tile/tile_component.dart';
 import '../unit/base/goblin.dart';
 import '../unit/mixin/clash.dart';
 import '../unit/mixin/radar.dart';
-import 'move_camera_mixin.dart';
+// import 'move_camera_mixin.dart';
 
-class GameController extends GameComponent
-    with MoveCameraMixin, EnemySpawnMixin {
+class GameController extends GameComponent with EnemySpawnMixin {
   GameController({
     required this.stageBloc,
     required this.stageStatsBloc,

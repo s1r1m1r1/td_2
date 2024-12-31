@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:td_2/bloc/stage_bloc.dart';
 import 'package:td_2/controller/astar_mixin.dart';
 import 'package:td_2/controller/game_controller.dart';
+import 'package:td_2/controller/move_camera_mixin.dart';
 import 'package:td_2/domain/enums/enemy_type.dart';
 import 'package:td_2/tile/file_fx_controller.dart';
 import '../unit/base/goblin.dart';
@@ -145,9 +146,6 @@ abstract class GameInstruction {
       // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
-      case StartDragButtonGameEvent():
-        _log.info('EnemyKilledGameEvent');
-        controller.switchMoveCamera(false);
       case MoveDragButtonGameEvent():
         _log.info('MoveDragButtonGameEvent');
         final grids = controller.gameRef.query<TileComponent>();
@@ -172,7 +170,7 @@ abstract class GameInstruction {
           fx?.setNotAllowedFX(pos: item.position, size: item.size);
         }
       case FinishDragButtonGameEvent():
-        controller.switchMoveCamera(true);
+        // controller.game.query<MoveCameraController>().firstOrNull?.switchMoveCamera(true);
         debugPrint('FinishDragButtonGameEvent: pos ${event.position}');
         final fx = controller.gameRef.query<TileFXController>().firstOrNull;
         fx?.removeFX();

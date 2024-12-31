@@ -20,9 +20,9 @@ void watchRecords(LogRecord rec) {
     // AstarController.loggerName,
     // Radar.loggerName,
     // Clash.loggerName,
-    EnemySpawnMixin.loggerName,
+    // EnemySpawnMixin.loggerName,
     // Goblin.loggerName,
-    GameInstruction.loggerName,
+    // GameInstruction.loggerName,
     // TileFXController.loggerName,
   ];
   if (!names.contains(rec.loggerName)) return;
