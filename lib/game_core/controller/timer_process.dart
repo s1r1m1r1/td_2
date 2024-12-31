@@ -18,52 +18,84 @@ class EnemySpawnController extends GameComponent with TimerProcess {
   EnemySpawnController({
     required this.type,
     required this.count,
+    bool shouldFirstRun = true,
+    // in seconds
     required this.interval,
-  });
+  }) {
+    _shouldFirstRun = shouldFirstRun;
+    _timer = Timer(
+      interval,
+      repeat: true,
+      onTick: onTick,
+    );
+  }
   final EnemyType type;
-  final int interval;
+  final double interval;
+  late bool _shouldFirstRun;
   int count;
+  Timer? _timer;
 
   @override
   void process(double dt) {
-    if (checkInterval('check next unit', interval, dt)) {
-      _log.info("waveInterval checked");
-      debugPrint(' UNITS remained $count');
-      if (count < 1) {
-        removeFromParent();
-        return;
-      }
-      count -= 1;
-      GameController.event(GameEvent.spawnOne(type));
+    if (_shouldFirstRun) {
+      _shouldFirstRun = false;
+      onTick();
     }
+    _timer?.update(dt);
+  }
+
+  void onTick() {
+    debugPrint(' UNITS remained $count');
+    if (count < 1) {
+      removeFromParent();
+      return;
+    }
+    count -= 1;
+    GameController.event(GameEvent.spawnOne(type));
   }
 }
 
 class WaveSpawnController extends GameComponent with TimerProcess {
   WaveSpawnController({
+    // in seconds
     required this.interval,
     required this.index,
     required this.max,
-  });
-  final int interval;
+    bool shouldFirstRun = true,
+  }) {
+    _shouldFirstRun = shouldFirstRun;
+    _timer = Timer(
+      interval,
+      repeat: true,
+      onTick: onTick,
+    );
+  }
+  final double interval;
   int index;
   final int max;
+  bool _shouldFirstRun = false;
+  Timer? _timer;
 
   @override
   void process(double dt) {
-    if (checkInterval('check next wave', interval, dt)) {
-      _log.info("waveInterval checked");
-      debugPrint('WAVE $index');
-      if (index <= max) {
-
-      debugPrint('WAVE LESS $index $max');
-        GameController.event(GameEvent.nextWave(index));
-        index += 1;
-        return;
-      }
-
-      debugPrint('WAVE REMOVE');
-      removeFromParent();
+    if (_shouldFirstRun) {
+      _shouldFirstRun = false;
+      onTick();
     }
+    _timer?.update(dt);
+  }
+
+  void onTick() {
+    _log.info("waveInterval checked");
+    debugPrint('WAVE $index');
+    if (index <= max) {
+      debugPrint('WAVE LESS $index $max');
+      GameController.event(GameEvent.nextWave(index));
+      index += 1;
+      return;
+    }
+
+    debugPrint('WAVE REMOVE');
+    removeFromParent();
   }
 }

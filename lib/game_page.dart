@@ -9,7 +9,7 @@ import 'bloc/stage_bloc.dart';
 import 'bloc/stage_stats_bloc.dart';
 import 'game_core/tile/stage_map.dart';
 import 'game_core/controller/game_controller.dart';
-import 'game_core/interface/towers_interface.dart';
+import 'game_core/ui/towers_interface.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
