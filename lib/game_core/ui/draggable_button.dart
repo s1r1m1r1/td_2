@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:td_2/domain/weapon_option.dart';
 import 'package:td_2/game_core/controller/game_controller.dart';
 
 import '../decoration/chest.dart';
@@ -87,7 +88,7 @@ class DraggableButton extends GameDecoration
   void listenPointerUp(PointerUpEvent event) {
     toDefaultPosition();
     GameController.event(GameEvent.finishPointerGlobal(
-        event.position.toVector2() - mother.marginVec2));
+        event.position.toVector2() - mother.marginVec2, const WeaponId(0)));
   }
 
   void toDefaultPosition() {

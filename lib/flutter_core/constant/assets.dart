@@ -5,5 +5,6 @@ abstract class Assets {
 class _AssetImages {
   const _AssetImages();
 
-  final String weapon = 'assets/images/weapon/Cannon.png';
+  final String cannon = 'assets/images/weapon/Cannon.png';
+  final String missile = 'assets/images/weapon/Missile_Launcher.png';
 }

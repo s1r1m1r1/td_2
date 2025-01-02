@@ -53,7 +53,7 @@ class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
               bulletSpeed: 2,
               bulletDistance: 3,
               price: 100,
-              barImage:  AssetImage(Assets.images.weapon),
+              barImage:  AssetImage(Assets.images.cannon),
             ),
             WeaponOption.missile(
               id: WeaponId(0),
@@ -61,7 +61,7 @@ class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
               bulletSpeed: 2,
               bulletDistance: 3,
               price: 100,
-              barImage: AssetImage(Assets.images.weapon),
+              barImage: AssetImage(Assets.images.missile),
             )
           ],
         ),

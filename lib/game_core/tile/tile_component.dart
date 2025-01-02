@@ -78,11 +78,7 @@ class FoundationTileComponent extends TileComponent {
   });
 
   void setTower(RotationTower tower) {
-    // final component = switch (type) {
-    //   TowerType.missile => MissileTower(position: position),
-    //   TowerType.rocket => RocketTower(position: position),
-    // };
-    super.setChild(tower..position = position);
+    super.setChild(tower);
   }
 
   void removeTower() {

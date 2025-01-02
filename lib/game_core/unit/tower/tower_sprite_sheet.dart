@@ -1,8 +1,11 @@
 import 'package:bonfire/bonfire.dart';
 
 class TowerSpriteSheet {
-  static Future<SpriteAnimation> gunSprite() {
+  static Future<SpriteAnimation> cannonSprite() {
     return Sprite.load('weapon/Cannon.png').toAnimation();
+  }
+  static Future<SpriteAnimation> missileSprite() {
+    return Sprite.load('weapon/Missile_Launcher.png').toAnimation();
   }
 
   static Future<SpriteAnimation> gun2Sprite() {

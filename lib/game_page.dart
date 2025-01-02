@@ -1,4 +1,3 @@
-
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:td_2/game_core/controller/move_camera_controller.dart';
 import 'bloc/stage_bloc.dart';
 import 'bloc/stage_stats_bloc.dart';
 import 'bloc/weapon_bar_bloc.dart';
+import 'domain/weapon_option.dart';
 import 'game_core/tile/stage_map.dart';
 import 'game_core/controller/game_controller.dart';
 import 'game_core/ui/towers_interface.dart';
@@ -156,8 +156,10 @@ class LoadedGameView extends StatelessWidget {
               double dx = details.offset.dx + 50 + 0;
               double dy = details.offset.dy - 50.0;
               final center = Offset(dx, dy);
+              final weaponId = details.data;
+              if (weaponId is! WeaponId) return;
               GameController.event(
-                  GameEvent.finishPointerGlobal(center.toVector2()));
+                  GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
             },
             builder: (_, __, ___) => const SizedBox.expand(),
           ),
@@ -170,9 +172,9 @@ class LoadedGameView extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              ...weaponBarState.result.map((i) => Draggable<int>(
+              ...weaponBarState.result.map((i) => Draggable<WeaponId>(
                     // Data is the value this Draggable stores.
-                    data: 10,
+                    data: i.id,
                     feedback: SizedBox.square(
                       dimension: 50,
                       child: Image(
@@ -184,6 +186,7 @@ class LoadedGameView extends StatelessWidget {
                       dimension: 100,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
+                        // Image with stroke effect
                         child: Image(
                           image: i.barImage,
                           fit: BoxFit.fitHeight,
@@ -195,8 +198,6 @@ class LoadedGameView extends StatelessWidget {
                                 child: child);
                             // stroke
                             const s = 4.0;
-                            // const width = 98 - (s * 2);
-                            // const height = 98 - (s * 2);
                             return Stack(
                               fit: StackFit.expand,
                               children: [

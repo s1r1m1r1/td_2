@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/enums/enemy_type.dart';
+import '../../domain/weapon_option.dart';
 import '../unit/enemy/enemy_id.dart';
 import '../unit/enemy/goblin.dart';
 import '../unit/tower/towers.dart';
@@ -39,10 +40,6 @@ sealed class GameEvent with _$GameEvent {
   const factory GameEvent.createStage() = CreateStageGameEvent;
   const factory GameEvent.movePointerGlobal(Vector2 position) =
       MovePointerGlobalGameEvent;
-  const factory GameEvent.finishPointerGlobal(Vector2 position) =
+  const factory GameEvent.finishPointerGlobal(Vector2 position, WeaponId id) =
       FinishPointerGlobalGameEvent;
-  // const factory GameEvent.moveDragButton(Vector2 position) =
-      // MoveDragButtonGameEvent;
-  // const factory GameEvent.finishDragButton(Vector2 position) =
-      // FinishDragButtonGameEvent;
 }
