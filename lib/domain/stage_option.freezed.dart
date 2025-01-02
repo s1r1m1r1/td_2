@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$StageOption {
   int get id => throw _privateConstructorUsedError;
-  List<WaveOption> get waves => throw _privateConstructorUsedError;
+  List<WaveOption> get waves =>
+      throw _privateConstructorUsedError; // extract as other
   LayerOption get layer => throw _privateConstructorUsedError;
 }
 
@@ -41,6 +42,7 @@ class _$StageOptionImpl extends _StageOption {
     return EqualUnmodifiableListView(_waves);
   }
 
+// extract as other
   @override
   final LayerOption layer;
 
@@ -75,6 +77,6 @@ abstract class _StageOption extends StageOption {
   int get id;
   @override
   List<WaveOption> get waves;
-  @override
+  @override // extract as other
   LayerOption get layer;
 }

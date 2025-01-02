@@ -1,6 +1,7 @@
 import 'package:bonfire/bonfire.dart' hide TileComponent;
 import 'package:td_2/bloc/stage_stats_bloc.dart';
 import 'package:td_2/bloc/stage_treasury_bloc.dart';
+import 'package:td_2/domain/weapon_option.dart';
 import 'package:td_2/game_core/controller/controller_process.dart';
 import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_event.dart';
@@ -15,6 +16,7 @@ import '../unit/enemy/goblin.dart';
 class GameController extends GameComponent {
   GameController({
     required this.stage,
+    required this.weapons,
     required this.stageStatsBloc,
     required this.stageTreasuryBloc,
   });
@@ -33,6 +35,7 @@ class GameController extends GameComponent {
   }
 
   final StageOption stage;
+  final List<WeaponOption> weapons;
   final StageStatsBloc stageStatsBloc;
   final StageTreasuryBloc stageTreasuryBloc;
 

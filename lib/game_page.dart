@@ -1,3 +1,4 @@
+
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:td_2/game_core/controller/move_camera_controller.dart';
 
 import 'bloc/stage_bloc.dart';
 import 'bloc/stage_stats_bloc.dart';
+import 'bloc/weapon_bar_bloc.dart';
 import 'game_core/tile/stage_map.dart';
 import 'game_core/controller/game_controller.dart';
 import 'game_core/ui/towers_interface.dart';
@@ -30,6 +32,10 @@ class GamePage extends StatelessWidget {
         BlocProvider(
           create: (_) => GetIt.I.get<StageBloc>()..add(const StageEvent.read()),
         ),
+        BlocProvider(
+          create: (_) =>
+              GetIt.I.get<WeaponBarBloc>()..add(const WeaponBarEvent.read()),
+        ),
       ],
       child: const GameView(),
     );
@@ -43,123 +49,201 @@ class GameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final posNtf = ValueNotifier(Offset.zero);
     return Scaffold(
-      body: BlocBuilder<StageBloc, StageState>(
-        builder: (context, state) {
-          switch (state) {
-            case $InitStageState():
-            case $ProcessingStageState():
-              return const Center(
-                child: Text('loading...'),
+      body: BlocBuilder<WeaponBarBloc, WeaponBarState>(
+        builder: (context, weaponBarState) {
+          switch (weaponBarState) {
+            case $InitWeaponBarState():
+            case $ProcessingWeaponBarState():
+              return _loading('loading weapon bar ...');
+            case $SuccessWeaponBarState():
+              return BlocBuilder<StageBloc, StageState>(
+                builder: (context, stageState) {
+                  switch (stageState) {
+                    case $InitStageState():
+                    case $ProcessingStageState():
+                      return _loading('loading stage ...');
+                    case $SuccessStageState():
+                      return LoadedGameView(
+                        stageState: stageState,
+                        weaponBarState: weaponBarState,
+                      );
+                  }
+                },
               );
-            case $SuccessStageState():
-              const margin = EdgeInsetsDirectional.only(top: 100);
-              final moveCamera = MoveCameraController()..setMargin(margin);
-              return Stack(
-                children: [
-                  Padding(
-                    padding: margin,
-                    child: BonfireWidget(
-                      playerControllers: [
-                        Keyboard(
-                          config: KeyboardConfig(
-                            acceptedKeys: [
-                              LogicalKeyboardKey.space,
-                            ],
-                          ),
-                        )
-                      ],
-                      components: [
-                        // ...StageMap.enemies(),
-                        // ...StageMap.decorations(),
-
-                        moveCamera,
-                        GameController(
-                          stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
-                          stageTreasuryBloc: GetIt.I.get<StageTreasuryBloc>(),
-                          stage: state.result,
-                        ),
-                      ],
-                      cameraConfig: CameraConfig(
-                        zoom: getZoomFromMaxVisibleTile(
-                            context, StageMap.tileSize, 20),
-                      ),
-                      interface: TowersInterface(moveCamera),
-                      map: WorldMap([
-                        Layer(id: 0, tiles: [
-                          ...state.result.layer.tiles.map((i) => Tile(
-                              x: i.x.toDouble(),
-                              y: i.y.toDouble(),
-                              width: StageMap.tileSize,
-                              height: StageMap.tileSize,
-                              sprite: TileSprite(path: i.assetPath)))
-                        ])
-                      ]),
-                      backgroundColor: Colors.blueGrey[900]!,
-                      lightingColorGame: Colors.black.withOpacity(0.75),
-                    ),
-                  ),
-                  Padding(
-                    padding: margin,
-                    child: DragTarget(onMove: (details) {
-                      double dx = details.offset.dx + 50 + 0;
-                      double dy = details.offset.dy - 50.0;
-
-                      final center = Offset(dx, dy);
-                      GameController.event(
-                          GameEvent.movePointerGlobal(center.toVector2()));
-                    }, onAcceptWithDetails: (details) {
-                      double dx = details.offset.dx + 50 + 0;
-                      double dy = details.offset.dy - 50.0;
-
-                      final center = Offset(dx, dy);
-                      GameController.event(
-                          GameEvent.finishPointerGlobal(center.toVector2()));
-                    }, builder: (context, candidateData, rejectedData) {
-                      return const SizedBox.expand();
-                    }),
-                  ),
-                  Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      height: margin.top,
-                      child: Row(
-                        children: [
-                          Draggable<int>(
-                            // Data is the value this Draggable stores.
-                            data: 10,
-                            feedback: Container(
-                              color: Colors.deepOrange.withAlpha(50),
-                              height: 100,
-                              width: 100,
-                              child: const Icon(Icons.directions_run),
-                            ),
-                            childWhenDragging: Container(
-                              height: 100.0,
-                              width: 100.0,
-                              color: Colors.pinkAccent,
-                              child: const Center(
-                                child: Text('Child When Dragging'),
-                              ),
-                            ),
-                            child: Container(
-                              height: 100.0,
-                              width: 100.0,
-                              color: Colors.lightGreenAccent,
-                              child: const Center(
-                                child: Text('Draggable'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                ],
-              );
+              ;
           }
         },
       ),
+    );
+  }
+
+  Widget _loading(String message) {
+    return Center(
+      child: Text(message),
+    );
+  }
+}
+
+class LoadedGameView extends StatelessWidget {
+  const LoadedGameView({
+    super.key,
+    required this.stageState,
+    required this.weaponBarState,
+  });
+  final $SuccessStageState stageState;
+  final $SuccessWeaponBarState weaponBarState;
+
+  @override
+  Widget build(BuildContext context) {
+    const margin = EdgeInsetsDirectional.only(top: 100);
+    final moveCamera = MoveCameraController()..setMargin(margin);
+    return Stack(
+      children: [
+        Padding(
+          padding: margin,
+          child: BonfireWidget(
+            playerControllers: [
+              Keyboard(
+                config: KeyboardConfig(
+                  acceptedKeys: [
+                    LogicalKeyboardKey.space,
+                  ],
+                ),
+              )
+            ],
+            components: [
+              // ...StageMap.enemies(),
+              // ...StageMap.decorations(),
+
+              moveCamera,
+              GameController(
+                  stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
+                  stageTreasuryBloc: GetIt.I.get<StageTreasuryBloc>(),
+                  stage: stageState.result,
+                  weapons: weaponBarState.result),
+            ],
+            cameraConfig: CameraConfig(
+              zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),
+            ),
+            interface: TowersInterface(moveCamera),
+            map: WorldMap([
+              Layer(id: 0, tiles: [
+                ...stageState.result.layer.tiles.map((i) => Tile(
+                    x: i.x.toDouble(),
+                    y: i.y.toDouble(),
+                    width: StageMap.tileSize,
+                    height: StageMap.tileSize,
+                    sprite: TileSprite(path: i.assetPath)))
+              ])
+            ]),
+            backgroundColor: Colors.blueGrey[900]!,
+            lightingColorGame: Colors.black.withOpacity(0.75),
+          ),
+        ),
+        Padding(
+          padding: margin,
+          child: DragTarget(
+            onMove: (details) {
+              double dx = details.offset.dx + 50 + 0;
+              double dy = details.offset.dy - 50.0;
+
+              final center = Offset(dx, dy);
+              GameController.event(
+                  GameEvent.movePointerGlobal(center.toVector2()));
+            },
+            onAcceptWithDetails: (details) {
+              double dx = details.offset.dx + 50 + 0;
+              double dy = details.offset.dy - 50.0;
+              final center = Offset(dx, dy);
+              GameController.event(
+                  GameEvent.finishPointerGlobal(center.toVector2()));
+            },
+            builder: (_, __, ___) => const SizedBox.expand(),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 0,
+          height: margin.top,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              ...weaponBarState.result.map((i) => Draggable<int>(
+                    // Data is the value this Draggable stores.
+                    data: 10,
+                    feedback: SizedBox.square(
+                      dimension: 50,
+                      child: Image(
+                        image: i.barImage,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    childWhenDragging: SizedBox.square(
+                      dimension: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Image(
+                          image: i.barImage,
+                          fit: BoxFit.fitHeight,
+                          frameBuilder:
+                              (context, child, frame, wasSynchronouslyLoaded) {
+                            final colored = ColorFiltered(
+                                colorFilter: const ColorFilter.mode(
+                                    Colors.green, BlendMode.srcIn),
+                                child: child);
+                            // stroke
+                            const s = 4.0;
+                            // const width = 98 - (s * 2);
+                            // const height = 98 - (s * 2);
+                            return Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                ...List.generate(8, (i) {
+                                  final padding = switch (i) {
+                                    0 => const EdgeInsets.fromLTRB(s, s, 0, 0),
+                                    1 => const EdgeInsets.fromLTRB(0, s, s, 0),
+                                    2 => const EdgeInsets.fromLTRB(0, 0, s, s),
+                                    3 => const EdgeInsets.fromLTRB(s, 0, 0, s),
+                                    4 => const EdgeInsets.fromLTRB(s, 0, 0, 0),
+                                    5 => const EdgeInsets.fromLTRB(0, s, 0, 0),
+                                    6 => const EdgeInsets.fromLTRB(0, 0, s, 0),
+                                    7 => const EdgeInsets.fromLTRB(0, 0, 0, s),
+                                    _ => EdgeInsets.zero
+                                  };
+                                  return Padding(
+                                    padding: padding,
+                                    child: colored,
+                                  );
+                                }),
+                                Padding(
+                                  padding: const EdgeInsets.all(s),
+                                  child: SizedBox(child: child),
+                                ),
+                              ],
+                            );
+                          },
+                          // color: Colors.grey,
+                          // colorBlendMode: BlendMode.saturation,
+                        ),
+                      ),
+                    ),
+                    child: SizedBox.square(
+                      dimension: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
+                        child: Image(
+                          image: i.barImage,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

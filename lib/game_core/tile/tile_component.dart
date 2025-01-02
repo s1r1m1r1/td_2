@@ -25,7 +25,6 @@ class StartGateTileComponent extends TileComponent {
 
   @override
   Future<void> onLoad() async {
-    _log.info("ON LOAD");
     await super.onLoad();
     startGate = RectangleComponent(
         priority: Priority.overAll,
@@ -43,7 +42,7 @@ class StartGateTileComponent extends TileComponent {
   }
 }
 
-class EndGateTileComponent extends TileComponent  {
+class EndGateTileComponent extends TileComponent {
   EndGateTileComponent({
     required super.size,
     required super.position,
@@ -71,8 +70,6 @@ class EndGateTileComponent extends TileComponent  {
   }
 }
 
-
-
 class FoundationTileComponent extends TileComponent {
   FoundationTileComponent({
     required super.size,
@@ -80,12 +77,12 @@ class FoundationTileComponent extends TileComponent {
     required super.gridPos,
   });
 
-  void setTower(TowerType type) {
-    final component = switch (type) {
-      TowerType.missile => MissileTower(position: position),
-      TowerType.rocket => RocketTower(position: position),
-    };
-    super.setChild(component);
+  void setTower(RotationTower tower) {
+    // final component = switch (type) {
+    //   TowerType.missile => MissileTower(position: position),
+    //   TowerType.rocket => RocketTower(position: position),
+    // };
+    super.setChild(tower..position = position);
   }
 
   void removeTower() {
@@ -105,11 +102,11 @@ class RoadTileComponent extends TileComponent {
   @override
   Future<void> onLoad() {
     add(RectangleComponent(
-      size: size,
-      paint: Paint()..color = Colors.white24,priority: Priority.overAll));
+        size: size,
+        paint: Paint()..color = Colors.white24,
+        priority: Priority.overAll));
     return super.onLoad();
   }
-  
 }
 
 sealed class TileComponent extends GameComponent {

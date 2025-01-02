@@ -2,11 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart' hide TileComponent;
-import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/bloc/stage_bloc.dart';
 import 'package:td_2/domain/enums/tile_type.dart';
-import 'package:td_2/domain/wave_option.dart';
 import 'package:td_2/game_core/controller/astar_controller.dart';
 import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_controller.dart';
@@ -14,6 +11,7 @@ import 'package:td_2/domain/enums/enemy_type.dart';
 import 'package:td_2/game_core/tile/file_fx_controller.dart';
 import '../tile/stage_map.dart';
 import '../unit/enemy/goblin.dart';
+import '../unit/tower/towers.dart';
 import 'game_event.dart';
 import '../tile/tile_component.dart';
 
@@ -71,7 +69,6 @@ abstract class GameInstruction {
             GameController.event(GameEvent.enemyGo(goblin));
         }
       case EnemySpawnGameEvent():
-        debugPrint('SPAWn  EVETnt');
         int count = controller.stage.waves.length;
 
         controller.addAll([
@@ -81,7 +78,6 @@ abstract class GameInstruction {
               max: count)
         ]);
 
-        _log.info('EnemySpawnGameEvent');
       case NextWaveGameEvent():
         if (event.index > (controller.stage.waves.length - 1)) break;
         final wave = controller.stage.waves[event.index];
@@ -175,7 +171,7 @@ abstract class GameInstruction {
           break;
         }
         // debugPrint('SetDraggableGameEvent: SET ${event.position}');
-        item.setTower(TowerType.missile);
+        item.setTower(MissileTower(position: Vec2.zero));
     }
   }
 }

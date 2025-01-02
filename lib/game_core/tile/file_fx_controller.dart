@@ -5,10 +5,10 @@ import 'package:flutter/material.dart' show Colors;
 import 'package:logging/logging.dart';
 import 'package:td_2/game_core/other/priority.dart';
 
+  final _log = Logger(TileFXController.loggerName);
 class TileFXController extends GameComponent {
   TileFXController();
   static const loggerName = 'TileFXController';
-  final _log = Logger(loggerName);
   PositionComponent? effect;
 
   void removeFX() {
