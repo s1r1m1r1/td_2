@@ -47,8 +47,8 @@ class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
       emitter(
         WeaponBarState.success(
           [
-            WeaponOption.missile(
-              id: WeaponId(0),
+            WeaponOption.cannon(
+              id: const WeaponId(0),
               radarDistance: 2,
               bulletSpeed: 2,
               bulletDistance: 3,
@@ -56,7 +56,7 @@ class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
               barImage:  AssetImage(Assets.images.cannon),
             ),
             WeaponOption.missile(
-              id: WeaponId(0),
+              id: const WeaponId(1),
               radarDistance: 2,
               bulletSpeed: 2,
               bulletDistance: 3,

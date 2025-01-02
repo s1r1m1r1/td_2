@@ -1,12 +1,12 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
-import '../unit/enemy/goblin.dart';
-
-typedef RadarScanCallback = void Function(GameComponent c);
+typedef RadarScanCallback = void Function(RadarTarget component);
 
 enum RadarMode { findBest, findFirst, disable }
 
+mixin RadarTarget on PositionComponent {}
 mixin Radar on GameComponent {
   static const loggerName = 'Radar';
   static final _log = Logger(loggerName);
@@ -17,7 +17,8 @@ mixin Radar on GameComponent {
   double distScan = 1000;
   late double _bestDistance = distScan;
 
-  RadarScanCallback? radarScanAlert;
+  // RadarScanCallback? radarScanAlert;
+  void onRadar(RadarTarget component); 
 
   set radarOn(bool i) {
     _radarOn = i;
@@ -25,12 +26,11 @@ mixin Radar on GameComponent {
 
   bool get radarOn => _radarOn;
 
-  void radarScan(Iterable<Goblin> targets) {
+  void radarScan(Iterable<RadarTarget> targets) {
     _findBestTarget(targets.toList());
   }
 
-  void _findBestTarget(List<Goblin> targets) {
-    if (radarScanAlert == null) return;
+  void _findBestTarget(List<RadarTarget> targets) {
     if (radarOn) {
       _bestTarget = null;
       _bestDistance = distScan;
@@ -38,9 +38,9 @@ mixin Radar on GameComponent {
     }
   }
 
-  Goblin? _bestTarget;
+  RadarTarget? _bestTarget;
 
-  void _checkDistance(List<Goblin> targets) {
+  void _checkDistance(List<RadarTarget> targets) {
     if (targets.isEmpty) return;
     bool stop = false;
     final centerRadar = position + (size / 2);
@@ -75,12 +75,12 @@ mixin Radar on GameComponent {
     }
     if (_bestTarget != null) {
       _log.info('radarScanAlert');
-      radarScanAlert?.call(_bestTarget!);
+      onRadar(_bestTarget!);
       _bestTarget = null;
     }
   }
 
-  bool collision(Vector2 center, double dist, Goblin target) {
+  bool collision(Vector2 center, double dist, RadarTarget target) {
     final Vector2 targetPosition = target.position;
     final double targetCollisionSize = target.size.x + target.size.y;
     double collisionRange = targetCollisionSize + dist;

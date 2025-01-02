@@ -4,6 +4,8 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
+import 'package:td_2/game_core/mixin/clash.dart';
+import 'package:td_2/game_core/mixin/radar.dart';
 
 import '../../mixin/movable.dart';
 import '../../other/priority.dart';
@@ -15,7 +17,7 @@ import 'enemy_unit.dart';
 
 final _log = Logger(Goblin.loggerName);
 
-class Goblin extends ScannableEnemy with UseLifeBar, Movable {
+class Goblin extends ScannableEnemy with UseLifeBar, Movable, ClashTarget, RadarTarget {
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;
@@ -49,12 +51,13 @@ class Goblin extends ScannableEnemy with UseLifeBar, Movable {
     super.removeLife(life);
   }
 
-  void onClash(dynamic d) {
-    _log.info('onClash i: ${d.runtimeType} ');
+  @override
+  void onClash(dynamic value) {
+    debugPrint('onClash i: ${value.runtimeType} ');
     if (isDead) return;
-    if (d is double) {
-      _log.info('onClash ok');
-      _removeLife(d);
+    if (value is double) {
+      debugPrint('onClash ok');
+      _removeLife(value);
     }
   }
 

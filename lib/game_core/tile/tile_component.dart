@@ -30,7 +30,7 @@ class StartGateTileComponent extends TileComponent {
         priority: Priority.overAll,
         position: position,
         size: size,
-        paint: Paint()..color = Colors.purple,
+        paint: Paint()..color = Colors.purple.withAlpha(100),
         children: [TextComponent(position: Vec2.zero, text: "Start")]);
     gameRef.add(startGate!);
   }
@@ -58,7 +58,7 @@ class EndGateTileComponent extends TileComponent {
         priority: Priority.overAll,
         position: position,
         size: size,
-        paint: Paint()..color = Colors.purple,
+        paint: Paint()..color = Colors.purple.withAlpha(100),
         children: [TextComponent(position: Vec2.zero, text: "END")]);
     gameRef.add(endGate!);
   }
