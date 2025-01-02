@@ -19,7 +19,6 @@ class EnemySpawnController extends TimerProcess {
     required this.type,
     required this.count,
     bool shouldFirstRun = true,
-    // in seconds
     required this.interval,
   }) {
     _shouldFirstRun = shouldFirstRun;
@@ -30,6 +29,7 @@ class EnemySpawnController extends TimerProcess {
     );
   }
   final EnemyType type;
+  ///  per second
   final double interval;
   late bool _shouldFirstRun;
   int count;
@@ -55,9 +55,8 @@ class EnemySpawnController extends TimerProcess {
   }
 }
 
-class WaveSpawnController extends  TimerProcess {
+class WaveSpawnController extends TimerProcess {
   WaveSpawnController({
-    // in seconds
     required this.interval,
     required this.index,
     required this.max,
@@ -70,6 +69,7 @@ class WaveSpawnController extends  TimerProcess {
       onTick: onTick,
     );
   }
+  ///  per second
   final double interval;
   int index;
   final int max;
@@ -86,8 +86,8 @@ class WaveSpawnController extends  TimerProcess {
   }
 
   void onTick() {
-    _log.info("waveInterval checked");
-    debugPrint('WAVE $index');
+    // _log.info("waveInterval checked");
+    // debugPrint('WAVE $index');
     if (index <= max) {
       debugPrint('WAVE LESS $index $max');
       GameController.event(GameEvent.nextWave(index));
@@ -95,7 +95,7 @@ class WaveSpawnController extends  TimerProcess {
       return;
     }
 
-    debugPrint('WAVE REMOVE');
+    // debugPrint('WAVE REMOVE');
     removeFromParent();
   }
 }

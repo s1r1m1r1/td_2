@@ -13,8 +13,7 @@ class TowersInterface extends GameInterface {
   void onMount() async {
     final size = gameRef.size;
     final y = size.y - 64.0;
-    debugPrint('game SziZE $size');
-    await add(DraggableButtonArena(Vector2(100, 20)));
+    debugPrint('game SiZE $size');
     await add(DraggableButton(
         position: Vector2(200, y),
         size: Vector2.all(StageMap.tileSize * 2),

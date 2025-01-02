@@ -11,6 +11,7 @@ class StageOption with _$StageOption {
   const factory StageOption({
     required int id,
     required List<WaveOption> waves,
+    // extract as other
     required LayerOption layer,
   }) = _StageOption;
 }
