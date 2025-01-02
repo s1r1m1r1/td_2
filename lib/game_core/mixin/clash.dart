@@ -1,83 +1,62 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-import '../unit/enemy/goblin.dart';
-
-typedef ClashCallback = void Function();
+final _log = Logger(Clash.loggerName);
 
 enum ClashMode {
   bestOne,
   clashAll,
-  explosion,
 }
 
-mixin Clash<T> on PositionComponent {
+mixin ClashTarget on PositionComponent {
+  // abstract
+  onClash(dynamic value);
+}
+
+mixin Clash on PositionComponent {
   static const loggerName = 'Clash';
-  static final _log = Logger(loggerName);
-  T? effect;
-  double explosionScan = 0.0;
-  final mode = ClashMode.bestOne;
+  dynamic effect;
+  ClashMode mode = ClashMode.bestOne;
+  // abstract
+  void clashAlert();
+  bool _clashActive = true;
+  void disableClash() {
+    _clashActive = false;
+  }
 
-  ClashCallback? clashAlert;
-
-  void radarScan(Iterable<Goblin> targets) {
+  void radarScan(Iterable<ClashTarget> targets) {
+    if (!_clashActive) return;
     if (targets.isEmpty) return;
-    if (clashAlert == null) return;
+    // if (clashAlert == null) return;
     final t = targets.toList();
     switch (mode) {
       case ClashMode.bestOne:
         _onBestOne(t);
       case ClashMode.clashAll:
         _onClashAll(t);
-      case ClashMode.explosion:
-        _onClashWithExplosion(t);
     }
   }
 
-  void _onBestOne(List<Goblin> targets) {
+  void _onBestOne(List<ClashTarget> targets) {
     final best = _getBestClash(targets);
     if (best == null) return;
     best.onClash(effect);
-    clashAlert?.call();
+    clashAlert();
   }
 
-  void _onClashAll(List<Goblin> targets) {
+  void _onClashAll(List<ClashTarget> targets) {
     final founded = _onScan(targets);
     if (founded.isEmpty) return;
     for (var i in founded) {
-      debugPrint(' clash ScanAlert ef: $effect ${i.position}');
-      if (!i.isDead) i.onClash(effect);
+      i.onClash(effect);
     }
-    clashAlert?.call();
+
+    clashAlert.call();
   }
 
-  void _onClashWithExplosion(List<Goblin> targets) {
-    final iz = _isClash(targets);
-    if (!iz) return;
-    final founded = _onScan(targets, explosionScan);
-    if (founded.isEmpty) return;
-    for (var i in founded) {
-      debugPrint(' clash ScanAlert ef: $effect ${i.position}');
-      if (!i.isDead) i.onClash(effect);
-    }
-    clashAlert?.call();
-  }
-
-  bool _isClash(List<Goblin> targets) {
-    for (var i = 0; i < targets.length; i++) {
-      final target = targets[i];
-      final pos = target.position;
-      final double distance = position.distanceTo(pos);
-      final tDist = target.position.distanceTo(target.position + target.size);
-      if (distance <= tDist) return true;
-    }
-    return false;
-  }
-
-  Goblin? _getBestClash(List<Goblin> targets) {
+  ClashTarget? _getBestClash(List<ClashTarget> targets) {
     double? bestDistance;
-    Goblin? bestTarget;
+    ClashTarget? bestTarget;
     for (var i = 0; i < targets.length; i++) {
       final target = targets[i];
       final centerPos = target.position + (target.size / 2);
@@ -92,8 +71,8 @@ mixin Clash<T> on PositionComponent {
     return bestTarget;
   }
 
-  List<Goblin> _onScan(List<Goblin> targets, [double? maxDistance]) {
-    final explosions = <Goblin>[];
+  List<ClashTarget> _onScan(List<ClashTarget> targets, [double? maxDistance]) {
+    final explosions = <ClashTarget>[];
     for (var i = 0; i < targets.length; i++) {
       final target = targets[i];
       maxDistance ??= target.position.distanceTo(target.position + target.size);

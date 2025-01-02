@@ -22,6 +22,26 @@ class MissileTower extends RotationTower {
           baseAnim: TowerSpriteSheet.tower(),
           scan: StageMap.tileSize * 2,
           bulletDistance: StageMap.tileSize * 3,
+          explosion: Vector2.all(StageMap.tileSize * 4),
+          fireInterval: 2.0,
+          rotateSpeed: 1.5,
+          bulletBuilder: ({
+            required effect,
+            required maxDistance,
+            required position,
+            required size,
+            required speed,
+            required target,
+            explosion,
+          }) =>
+              MissileDetail(
+                  position: position,
+                  size: size,
+                  speed: speed,
+                  effect: effect,
+                  target: target,
+                  maxDistance: maxDistance,
+                  explosion: explosion!),
         );
 
   @override
@@ -36,18 +56,42 @@ class CannonTower extends RotationTower {
           baseAnim: TowerSpriteSheet.tower(),
           scan: StageMap.tileSize * 2,
           bulletDistance: StageMap.tileSize * 3,
+          fireInterval: 0.2,
+          rotateSpeed: 4.0,
+          bulletBuilder: ({
+            required effect,
+            required maxDistance,
+            required position,
+            required size,
+            required speed,
+            required target,
+            explosion,
+          }) =>
+              BulletMGDetail(
+                  position: position,
+                  size: size,
+                  speed: speed,
+                  effect: effect,
+                  target: target,
+                  maxDistance: maxDistance),
+
+          // bulletBuilder: (dynamic effect,double maxDistance,Vector2 position,Vector2 size,double speed,Vector2 target) => BulletMGDetail(position: position, size: size, speed: speed, effect: effect, target: target, maxDistance: maxDistance);,
         );
   @override
   int get priority => Priority.tileTower;
 }
 
-abstract class RotationTower extends ITowerComponent with Radar, Lighting {
+class RotationTower extends ITowerComponent with Radar, Lighting {
   RotationTower({
     required super.position,
     required Future<SpriteAnimation> baseAnim,
     required Future<SpriteAnimation> turretAnim,
     required double scan,
     required double bulletDistance,
+    this.explosion,
+    required this.bulletBuilder,
+    required this.fireInterval,
+    required this.rotateSpeed,
   }) : super(
           size: Vector2.all(StageMap.tileSize * 0.9),
         ) {
@@ -76,19 +120,21 @@ abstract class RotationTower extends ITowerComponent with Radar, Lighting {
       turretDetail,
     ]);
     radarOn = true;
-    radarScanAlert = onScan;
   }
+  final BulletBuilder bulletBuilder;
   late BaseDetail baseDetail;
   late TurretDetail turretDetail;
+  final Vector2? explosion;
 
-  void onScan(GameComponent c) {
-    fire(c.position + (c.size / 2));
+  @override
+  void onRadar(RadarTarget component) {
+    fire(component.position + (component.size / 2));
   }
 
   late double _bulletDistance;
   double currentRadAngle = -1.55;
-  double rotateSpeed = 2.0; /* radians per second */
-  double fireInterval = 0.2;
+  final double rotateSpeed; /* radians per second */
+  final double fireInterval;
   Vector2? _targetEnemy;
 
   void fire(Vector2 target) {
@@ -106,15 +152,15 @@ abstract class RotationTower extends ITowerComponent with Radar, Lighting {
   }
 
   void fireBullet(Vector2 target) {
-    final bullet = BulletMGDetail(
-      position: _bulletPosition(),
-      size: Vector2.all(8),
-    )
-      // ..anchor = Anchor.center
-      ..angle = 2.0
-      ..effect = 10.0
-      ..speed = 200;
-    bullet.moveToByDistance(to: target, distance: _bulletDistance);
+    final bullet = bulletBuilder(
+        position: _bulletPosition(),
+        effect: 25,
+        maxDistance: _bulletDistance,
+        size: Vector2.all(8),
+        speed: 100,
+        target: target,
+        explosion: explosion);
+
     gameRef.add(bullet);
   }
 
