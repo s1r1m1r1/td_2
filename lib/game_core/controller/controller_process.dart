@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart' hide TileComponent;
+import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/domain/enums/tile_type.dart';
+import 'package:td_2/domain/weapon_option.dart';
 import 'package:td_2/game_core/controller/astar_controller.dart';
 import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_controller.dart';
@@ -167,11 +169,18 @@ abstract class GameInstruction {
         }
         if (item == null) break;
         if (item.hasTower) {
-          item.removeTower();
           break;
         }
+        final towerOption =
+            controller.weapons.firstWhere((w) => w.id == event.id, orElse: () {
+          return controller.weapons.first;
+        });
+        final tower = switch(towerOption){
+          $CannonWeaponOption() => CannonTower(position: item.position),
+          $MissileWeaponOption() => MissileTower(position: item.position),
+        };
         // debugPrint('SetDraggableGameEvent: SET ${event.position}');
-        item.setTower(MissileTower(position: Vec2.zero));
+        item.setTower(tower);
     }
   }
 }

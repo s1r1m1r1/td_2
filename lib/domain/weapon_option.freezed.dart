@@ -26,8 +26,8 @@ mixin _$WeaponOption {
 
 /// @nodoc
 
-class _$$RocketWeaponOptionImpl extends $RocketWeaponOption {
-  const _$$RocketWeaponOptionImpl(
+class _$$CannonWeaponOptionImpl extends $CannonWeaponOption {
+  const _$$CannonWeaponOptionImpl(
       {required this.id,
       required this.radarDistance,
       required this.bulletSpeed,
@@ -52,14 +52,14 @@ class _$$RocketWeaponOptionImpl extends $RocketWeaponOption {
 
   @override
   String toString() {
-    return 'WeaponOption.rocket(id: $id, radarDistance: $radarDistance, bulletSpeed: $bulletSpeed, bulletDistance: $bulletDistance, price: $price, barImage: $barImage)';
+    return 'WeaponOption.cannon(id: $id, radarDistance: $radarDistance, bulletSpeed: $bulletSpeed, bulletDistance: $bulletDistance, price: $price, barImage: $barImage)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$$RocketWeaponOptionImpl &&
+            other is _$$CannonWeaponOptionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.radarDistance, radarDistance) ||
                 other.radarDistance == radarDistance) &&
@@ -77,17 +77,17 @@ class _$$RocketWeaponOptionImpl extends $RocketWeaponOption {
       bulletDistance, price, barImage);
 }
 
-abstract class $RocketWeaponOption extends WeaponOption
+abstract class $CannonWeaponOption extends WeaponOption
     implements IWeaponOption {
-  const factory $RocketWeaponOption(
+  const factory $CannonWeaponOption(
           {required final WeaponId id,
           required final double radarDistance,
           required final double bulletSpeed,
           required final double bulletDistance,
           required final double price,
           required final ImageProvider<Object> barImage}) =
-      _$$RocketWeaponOptionImpl;
-  const $RocketWeaponOption._() : super._();
+      _$$CannonWeaponOptionImpl;
+  const $CannonWeaponOption._() : super._();
 
   @override
   WeaponId get id;
@@ -180,4 +180,42 @@ abstract class $MissileWeaponOption extends WeaponOption
   double get price;
   @override
   ImageProvider<Object> get barImage;
+}
+
+/// @nodoc
+mixin _$WeaponId {
+  int get value => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+
+class _$WeaponIdImpl extends _WeaponId {
+  const _$WeaponIdImpl(this.value) : super._();
+
+  @override
+  final int value;
+
+  @override
+  String toString() {
+    return 'WeaponId(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WeaponIdImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+}
+
+abstract class _WeaponId extends WeaponId {
+  const factory _WeaponId(final int value) = _$WeaponIdImpl;
+  const _WeaponId._() : super._();
+
+  @override
+  int get value;
 }

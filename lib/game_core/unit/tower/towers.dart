@@ -18,7 +18,7 @@ class MissileTower extends RotationTower {
   MissileTower({
     required super.position,
   }) : super(
-          turretAnim: TowerSpriteSheet.gunSprite(),
+          turretAnim: TowerSpriteSheet.missileSprite(),
           baseAnim: TowerSpriteSheet.tower(),
           scan: StageMap.tileSize * 2,
           bulletDistance: StageMap.tileSize * 3,
@@ -28,11 +28,11 @@ class MissileTower extends RotationTower {
   int get priority => Priority.tileTower;
 }
 
-class RocketTower extends RotationTower {
-  RocketTower({
+class CannonTower extends RotationTower {
+  CannonTower({
     required super.position,
   }) : super(
-          turretAnim: TowerSpriteSheet.gunSprite(),
+          turretAnim: TowerSpriteSheet.cannonSprite(),
           baseAnim: TowerSpriteSheet.tower(),
           scan: StageMap.tileSize * 2,
           bulletDistance: StageMap.tileSize * 3,

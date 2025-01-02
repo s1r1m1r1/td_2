@@ -602,14 +602,16 @@ abstract class MovePointerGlobalGameEvent extends GameEvent {
 /// @nodoc
 
 class _$FinishPointerGlobalGameEventImpl extends FinishPointerGlobalGameEvent {
-  const _$FinishPointerGlobalGameEventImpl(this.position) : super._();
+  const _$FinishPointerGlobalGameEventImpl(this.position, this.id) : super._();
 
   @override
   final Vector2 position;
+  @override
+  final WeaponId id;
 
   @override
   String toString() {
-    return 'GameEvent.finishPointerGlobal(position: $position)';
+    return 'GameEvent.finishPointerGlobal(position: $position, id: $id)';
   }
 
   @override
@@ -618,17 +620,20 @@ class _$FinishPointerGlobalGameEventImpl extends FinishPointerGlobalGameEvent {
         (other.runtimeType == runtimeType &&
             other is _$FinishPointerGlobalGameEventImpl &&
             (identical(other.position, position) ||
-                other.position == position));
+                other.position == position) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, position);
+  int get hashCode => Object.hash(runtimeType, position, id);
 }
 
 abstract class FinishPointerGlobalGameEvent extends GameEvent {
-  const factory FinishPointerGlobalGameEvent(final Vector2 position) =
+  const factory FinishPointerGlobalGameEvent(
+          final Vector2 position, final WeaponId id) =
       _$FinishPointerGlobalGameEventImpl;
   const FinishPointerGlobalGameEvent._() : super._();
 
   Vector2 get position;
+  WeaponId get id;
 }
