@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../mixin/clash.dart';
 import '../../other/priority.dart';
 
-class Explosion extends GameComponent with Clash {
-  Explosion({
+class ExplosionComponent extends GameComponent with Clash {
+  ExplosionComponent({
     required Vector2 position,
     required Vector2 size,
   }) {
@@ -26,7 +26,6 @@ class Explosion extends GameComponent with Clash {
       anchor: Anchor.center,
       size: size,
     )..add(RemoveEffect(delay: 1)));
-
     return super.onLoad();
   }
 

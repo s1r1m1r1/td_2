@@ -10,7 +10,7 @@ import '../../other/priority.dart';
 import '../../tile/stage_map.dart';
 import 'i_tower.dart';
 import 'base_detail.dart';
-import 'bullet_detail.dart';
+import '../bullet/bullet_component.dart';
 import 'tower_sprite_sheet.dart';
 import 'turret_detail.dart';
 
@@ -25,23 +25,10 @@ class MissileTower extends RotationTower {
           explosion: Vector2.all(StageMap.tileSize * 4),
           fireInterval: 2.0,
           rotateSpeed: 1.5,
-          bulletBuilder: ({
-            required effect,
-            required maxDistance,
-            required position,
-            required size,
-            required speed,
-            required target,
-            explosion,
-          }) =>
-              MissileDetail(
-                  position: position,
-                  size: size,
-                  speed: speed,
-                  effect: effect,
-                  target: target,
-                  maxDistance: maxDistance,
-                  explosion: explosion!),
+          bulletBuilder: (position, config) => MissileComponent(
+            position: position,
+            config: config,
+          ),
         );
 
   @override
@@ -58,24 +45,12 @@ class CannonTower extends RotationTower {
           bulletDistance: StageMap.tileSize * 3,
           fireInterval: 0.2,
           rotateSpeed: 4.0,
-          bulletBuilder: ({
-            required effect,
-            required maxDistance,
-            required position,
-            required size,
-            required speed,
-            required target,
-            explosion,
-          }) =>
-              BulletMGDetail(
-                  position: position,
-                  size: size,
-                  speed: speed,
-                  effect: effect,
-                  target: target,
-                  maxDistance: maxDistance),
+          bulletBuilder: (position, config) => BulletMGComponent(
+            position: position,
+            config: config,
+          ),
 
-          // bulletBuilder: (dynamic effect,double maxDistance,Vector2 position,Vector2 size,double speed,Vector2 target) => BulletMGDetail(position: position, size: size, speed: speed, effect: effect, target: target, maxDistance: maxDistance);,
+          // bulletBuilder: (dynamic effect,double maxDistance,Vector2 position,Vector2 size,double speed,Vector2 target) => BulletMGComponent(position: position, size: size, speed: speed, effect: effect, target: target, maxDistance: maxDistance);,
         );
   @override
   int get priority => Priority.tileTower;
@@ -153,13 +128,14 @@ class RotationTower extends ITowerComponent with Radar, Lighting {
 
   void fireBullet(Vector2 target) {
     final bullet = bulletBuilder(
-        position: _bulletPosition(),
-        effect: 25,
-        maxDistance: _bulletDistance,
-        size: Vector2.all(8),
-        speed: 100,
-        target: target,
-        explosion: explosion);
+        _bulletPosition(),
+        BulletComponentConfig(
+            size: Vector2.all(8),
+            speed: 100,
+            effect: 25,
+            maxDistance: _bulletDistance,
+            target: target,
+            explosion: explosion));
 
     gameRef.add(bullet);
   }
