@@ -1,11 +1,12 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
 final _log = Logger(Clash.loggerName);
 
 enum ClashMode {
   bestOne,
-  clashAll,
+  collision,
 }
 
 mixin ClashTarget on PositionComponent {
@@ -15,8 +16,8 @@ mixin ClashTarget on PositionComponent {
 
 mixin Clash on PositionComponent {
   static const loggerName = 'Clash';
-  dynamic effect;
-  ClashMode mode = ClashMode.bestOne;
+  dynamic get effect;
+  ClashMode get mode;
   // abstract
   void clashAlert();
   bool _clashActive = true;
@@ -32,7 +33,7 @@ mixin Clash on PositionComponent {
     switch (mode) {
       case ClashMode.bestOne:
         _onBestOne(t);
-      case ClashMode.clashAll:
+      case ClashMode.collision:
         _onClashAll(t);
     }
   }
@@ -45,8 +46,9 @@ mixin Clash on PositionComponent {
   }
 
   void _onClashAll(List<ClashTarget> targets) {
-    final founded = _onScan(targets);
+    final founded = _onCollision(targets);
     if (founded.isEmpty) return;
+    debugPrint('-- FOUNDED ${founded.length}');
     for (var i in founded) {
       i.onClash(effect);
     }
@@ -71,16 +73,17 @@ mixin Clash on PositionComponent {
     return bestTarget;
   }
 
-  List<ClashTarget> _onScan(List<ClashTarget> targets, [double? maxDistance]) {
-    final explosions = <ClashTarget>[];
+  List<ClashTarget> _onCollision(List<ClashTarget> targets) {
+    final collisions = <ClashTarget>[];
+    final rect = toRect();
     for (var i = 0; i < targets.length; i++) {
       final target = targets[i];
-      maxDistance ??= target.position.distanceTo(target.position + target.size);
-      final pos = target.position;
-      final double distance = position.distanceTo(pos);
-      if (!(distance <= maxDistance)) continue;
-      explosions.add(target);
+      final contains = rect.overlapComponent(target);
+      if (!contains) continue;
+      collisions.add(target);
     }
-    return explosions;
+    return collisions;
   }
+
+ 
 }
