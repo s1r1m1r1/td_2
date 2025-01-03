@@ -1,5 +1,4 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
 typedef RadarScanCallback = void Function(RadarTarget component);
@@ -13,8 +12,7 @@ mixin Radar on GameComponent {
   bool _radarOn = true;
   RadarMode mode = RadarMode.findBest;
 
-  double damage = 0;
-  double distScan = 1000;
+  double get distScan;
   late double _bestDistance = distScan;
 
   // RadarScanCallback? radarScanAlert;
