@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:bonfire/bonfire.dart';
 import 'package:td_2/game_core/other/math_ext.dart';
 
-mixin Movable on GameComponent {
+mixin MixinMovable on PositionComponent {
   double speed = 0;
   Function? onMoveFinish;
   bool _finish = true;

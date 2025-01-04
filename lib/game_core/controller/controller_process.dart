@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bonfire/bonfire.dart' hide TileComponent;
-import 'package:get_it/get_it.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:td_2/domain/enums/tile_type.dart';
 import 'package:td_2/domain/weapon_option.dart';
@@ -130,7 +130,6 @@ abstract class GameInstruction {
         _log.info('EnemyMissedGameEvent');
       case EnemyKilledGameEvent():
         _log.info('EnemyKilledGameEvent ${event.mineValue}');
-      // _log.info('EnemyKilledGameEvent');
       case EnemyNextWaveGameEvent():
         _log.info('EnemyKilledGameEvent');
       case MovePointerGlobalGameEvent():
@@ -175,12 +174,16 @@ abstract class GameInstruction {
             controller.weapons.firstWhere((w) => w.id == event.id, orElse: () {
           return controller.weapons.first;
         });
-        final tower = switch(towerOption){
+        final tower = switch (towerOption) {
           $CannonWeaponOption() => CannonTower(position: item.position),
           $MissileWeaponOption() => MissileTower(position: item.position),
         };
         // debugPrint('SetDraggableGameEvent: SET ${event.position}');
         item.setTower(tower);
+      case LabGameEvent():
+        debugPrint('LabGameEvent');
+        controller.game.addAll(
+            List.generate(1, (i) => Goblin(Vector2.all(100 + i.toDouble()))));
     }
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:td_2/game_core/unit/bullet/explosion_component.dart';
 
 import '../../mixin/clash.dart';
-import '../../mixin/movable.dart';
+import '../../mixin/mixin_movable.dart';
 import '../../tile/stage_map.dart';
 import '../tower/tower_sprite_sheet.dart';
 
@@ -16,6 +16,9 @@ class MissileComponent extends BulletComponent {
     required super.position,
     required super.config,
   }) : super(anim: TowerSpriteSheet.missile());
+
+  @override
+  ClashMode get mode => ClashMode.collision;
 }
 
 class BulletMGComponent extends BulletComponent {
@@ -23,6 +26,9 @@ class BulletMGComponent extends BulletComponent {
     required super.position,
     required super.config,
   }) : super(anim: TowerSpriteSheet.bulletMG());
+
+  @override
+  ClashMode get mode => ClashMode.bestOne;
 }
 
 // class Bullet1Component extends _BulletComponent {
@@ -59,7 +65,7 @@ class BulletComponentConfig {
 }
 
 abstract class BulletComponent extends GameComponent
-    with Movable, CanNotSeen, Clash, UseAssetsLoader, UseSpriteAnimation {
+    with MixinMovable, CanNotSeen, MixinClash, UseAssetsLoader, UseSpriteAnimation {
   SpriteAnimation? _anim;
 
   BulletComponent({
@@ -73,11 +79,10 @@ abstract class BulletComponent extends GameComponent
     // this.explosion,
   }) {
     this.position = position;
-    this.size = config.size;
-    this.speed = config.speed;
+    size = config.size;
+    speed = config.speed;
     // this.angle = angle;
     loader?.add(AssetToLoad(anim, (i) => _anim = i));
-    this.effect = config.effect;
     // setupLighting(
     //   LightingConfig(
     //     radius: width * 8.0,
@@ -91,6 +96,9 @@ abstract class BulletComponent extends GameComponent
   // final double maxDistance;
 
   @override
+  late final effect = config.effect;
+
+  @override
   Future<void> onLoad() async {
     await super.onLoad();
     super.moveToByDistance(to: config.target, distance: config.maxDistance);
@@ -102,7 +110,11 @@ abstract class BulletComponent extends GameComponent
   @override
   void clashAlert() {
     if (config.explosion != null) {
-      gameRef.add(ExplosionComponent(position: position, size: config.explosion!));
+      gameRef.add(ExplosionComponent(
+        position: position,
+        size: config.explosion!,
+        anchor: Anchor.center,
+      ));
     }
     // bulletExplosion(position);
     removeFromParent();

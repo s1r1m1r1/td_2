@@ -29,6 +29,7 @@ sealed class GameEvent with _$GameEvent {
   const factory GameEvent.enemyKilled({required int mineValue}) =
       EnemyKilledGameEvent;
   const factory GameEvent.enemyNextWave() = EnemyNextWaveGameEvent;
+  const factory GameEvent.lab(dynamic value) = LabGameEvent;
   //
 
   const factory GameEvent.enemyGetDamaged(EnemyId id) =

@@ -1,24 +1,22 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
-typedef RadarScanCallback = void Function(RadarTarget component);
+typedef RadarScanCallback = void Function(MixinRadarTarget component);
 
 enum RadarMode { findBest, findFirst, disable }
 
-mixin RadarTarget on PositionComponent {}
-mixin Radar on GameComponent {
+mixin MixinRadarTarget on PositionComponent {}
+mixin MixinRadar on GameComponent {
   static const loggerName = 'Radar';
   static final _log = Logger(loggerName);
   bool _radarOn = true;
   RadarMode mode = RadarMode.findBest;
 
-  double damage = 0;
-  double distScan = 1000;
+  double get distScan;
   late double _bestDistance = distScan;
 
   // RadarScanCallback? radarScanAlert;
-  void onRadar(RadarTarget component); 
+  void onRadar(MixinRadarTarget component); 
 
   set radarOn(bool i) {
     _radarOn = i;
@@ -26,11 +24,11 @@ mixin Radar on GameComponent {
 
   bool get radarOn => _radarOn;
 
-  void radarScan(Iterable<RadarTarget> targets) {
+  void radarScan(Iterable<MixinRadarTarget> targets) {
     _findBestTarget(targets.toList());
   }
 
-  void _findBestTarget(List<RadarTarget> targets) {
+  void _findBestTarget(List<MixinRadarTarget> targets) {
     if (radarOn) {
       _bestTarget = null;
       _bestDistance = distScan;
@@ -38,9 +36,9 @@ mixin Radar on GameComponent {
     }
   }
 
-  RadarTarget? _bestTarget;
+  MixinRadarTarget? _bestTarget;
 
-  void _checkDistance(List<RadarTarget> targets) {
+  void _checkDistance(List<MixinRadarTarget> targets) {
     if (targets.isEmpty) return;
     bool stop = false;
     final centerRadar = position + (size / 2);
@@ -80,7 +78,7 @@ mixin Radar on GameComponent {
     }
   }
 
-  bool collision(Vector2 center, double dist, RadarTarget target) {
+  bool collision(Vector2 center, double dist, MixinRadarTarget target) {
     final Vector2 targetPosition = target.position;
     final double targetCollisionSize = target.size.x + target.size.y;
     double collisionRange = targetCollisionSize + dist;

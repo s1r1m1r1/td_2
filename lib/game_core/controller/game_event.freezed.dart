@@ -385,6 +385,39 @@ abstract class EnemyNextWaveGameEvent extends GameEvent {
 
 /// @nodoc
 
+class _$LabGameEventImpl extends LabGameEvent {
+  const _$LabGameEventImpl(this.value) : super._();
+
+  @override
+  final dynamic value;
+
+  @override
+  String toString() {
+    return 'GameEvent.lab(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LabGameEventImpl &&
+            const DeepCollectionEquality().equals(other.value, value));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(value));
+}
+
+abstract class LabGameEvent extends GameEvent {
+  const factory LabGameEvent(final dynamic value) = _$LabGameEventImpl;
+  const LabGameEvent._() : super._();
+
+  dynamic get value;
+}
+
+/// @nodoc
+
 class _$EnemyGetDamagedGameEventImpl extends EnemyGetDamagedGameEvent {
   const _$EnemyGetDamagedGameEventImpl(this.id) : super._();
 
