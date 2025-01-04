@@ -141,6 +141,7 @@ class LoadedGameView extends StatelessWidget {
             lightingColorGame: Colors.black.withOpacity(0.75),
           ),
         ),
+       
         Padding(
           padding: margin,
           child: DragTarget(
@@ -179,7 +180,7 @@ class LoadedGameView extends StatelessWidget {
                       dimension: 50,
                       child: Image(
                         image: i.barImage,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                     childWhenDragging: SizedBox.square(
@@ -194,10 +195,10 @@ class LoadedGameView extends StatelessWidget {
                               (context, child, frame, wasSynchronouslyLoaded) {
                             final colored = ColorFiltered(
                                 colorFilter: const ColorFilter.mode(
-                                    Colors.green, BlendMode.srcIn),
+                                    Colors.purple, BlendMode.srcIn),
                                 child: child);
                             // stroke
-                            const s = 4.0;
+                            const s = 2.0;
                             return Stack(
                               fit: StackFit.expand,
                               children: [
@@ -213,6 +214,7 @@ class LoadedGameView extends StatelessWidget {
                                     7 => const EdgeInsets.fromLTRB(0, 0, 0, s),
                                     _ => EdgeInsets.zero
                                   };
+                                  debugPrint('repaint Stack item');
                                   return Padding(
                                     padding: padding,
                                     child: colored,

@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:td_2/game_core/mixin/clash.dart';
 import 'package:td_2/game_core/mixin/radar.dart';
 
-import '../../mixin/movable.dart';
+import '../../mixin/mixin_movable.dart';
 import '../../other/priority.dart';
 import '../../tile/stage_map.dart';
 import '../../decoration/common_sprite_sheet.dart';
@@ -17,13 +17,19 @@ import 'enemy_unit.dart';
 
 final _log = Logger(Goblin.loggerName);
 
-class Goblin extends ScannableEnemy with UseLifeBar, Movable, ClashTarget, RadarTarget {
+class Goblin extends ScannableEnemy
+    with
+        UseLifeBar,
+        MixinMovable,
+        MixinClashTarget,
+        MixinRadarTarget,
+        Lighting {
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;
   Goblin(Vector2 position)
       : super(
-          animation: EnemySpriteSheet.simpleDirectionAnimation,
+          futureAnim: EnemySpriteSheet.runLeft,
           position: position,
           size: Vector2.all(StageMap.tileSize * 0.8),
           speed: StageMap.tileSize,
@@ -34,6 +40,21 @@ class Goblin extends ScannableEnemy with UseLifeBar, Movable, ClashTarget, Radar
       borderWidth: 2,
     );
     id = EnemyId.newId();
+    setupLighting(
+        LightingConfig(radius: 100.0, color: Colors.yellow.withAlpha(10)));
+  }
+  @override
+  Future<void> onLoad() {
+    // gameRef.addAll([
+    // ...List.generate(
+    //     50,
+    //     (i) => CircleComponent(
+    //           paint: Paint()..color = Colors.red,
+    //           position: position,
+    //           radius: size.x,
+    //         ))
+    // ]);
+    return super.onLoad();
   }
 
   @override
@@ -100,19 +121,5 @@ class Goblin extends ScannableEnemy with UseLifeBar, Movable, ClashTarget, Radar
   }
 
   @override
-  Future<void> onLoad() {
-    add(
-      RectangleHitbox(
-        size: Vector2(
-          StageMap.tileSize * 0.4,
-          StageMap.tileSize * 0.4,
-        ),
-        position: Vector2(
-          StageMap.tileSize * 0.2,
-          StageMap.tileSize * 0.2,
-        ),
-      ),
-    );
-    return super.onLoad();
-  }
+  double health = 100;
 }

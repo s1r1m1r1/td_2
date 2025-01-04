@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../mixin/clash.dart';
 import '../../other/priority.dart';
 
-class ExplosionComponent extends GameComponent with Clash {
+class ExplosionComponent extends GameComponent with MixinClash {
   ExplosionComponent({
     required Vector2 position,
     required Vector2 size,
@@ -15,7 +15,7 @@ class ExplosionComponent extends GameComponent with Clash {
     this.anchor = anchor;
   }
   @override
-  get effect => 50;
+  final effect = 50;
 
   @override
   final mode = ClashMode.collision;

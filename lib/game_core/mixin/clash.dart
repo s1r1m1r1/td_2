@@ -2,22 +2,22 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
-final _log = Logger(Clash.loggerName);
+final _log = Logger(MixinClash.loggerName);
 
 enum ClashMode {
   bestOne,
   collision,
 }
 
-mixin ClashTarget on PositionComponent {
+mixin MixinClashTarget on PositionComponent {
   // abstract
   onClash(dynamic value);
 }
 
-mixin Clash on PositionComponent {
+mixin MixinClash on PositionComponent {
   static const loggerName = 'Clash';
-  dynamic get effect;
-  ClashMode get mode;
+  abstract final dynamic effect;
+  abstract final ClashMode mode;
   // abstract
   void clashAlert();
   bool _clashActive = true;
@@ -25,7 +25,7 @@ mixin Clash on PositionComponent {
     _clashActive = false;
   }
 
-  void radarScan(Iterable<ClashTarget> targets) {
+  void radarScan(Iterable<MixinClashTarget> targets) {
     if (!_clashActive) return;
     if (targets.isEmpty) return;
     // if (clashAlert == null) return;
@@ -38,14 +38,14 @@ mixin Clash on PositionComponent {
     }
   }
 
-  void _onBestOne(List<ClashTarget> targets) {
+  void _onBestOne(List<MixinClashTarget> targets) {
     final best = _getBestClash(targets);
     if (best == null) return;
     best.onClash(effect);
     clashAlert();
   }
 
-  void _onClashAll(List<ClashTarget> targets) {
+  void _onClashAll(List<MixinClashTarget> targets) {
     final founded = _onCollision(targets);
     if (founded.isEmpty) return;
     debugPrint('-- FOUNDED ${founded.length}');
@@ -56,9 +56,9 @@ mixin Clash on PositionComponent {
     clashAlert.call();
   }
 
-  ClashTarget? _getBestClash(List<ClashTarget> targets) {
+  MixinClashTarget? _getBestClash(List<MixinClashTarget> targets) {
     double? bestDistance;
-    ClashTarget? bestTarget;
+    MixinClashTarget? bestTarget;
     for (var i = 0; i < targets.length; i++) {
       final target = targets[i];
       final centerPos = target.position + (target.size / 2);
@@ -73,8 +73,8 @@ mixin Clash on PositionComponent {
     return bestTarget;
   }
 
-  List<ClashTarget> _onCollision(List<ClashTarget> targets) {
-    final collisions = <ClashTarget>[];
+  List<MixinClashTarget> _onCollision(List<MixinClashTarget> targets) {
+    final collisions = <MixinClashTarget>[];
     final rect = toRect();
     for (var i = 0; i < targets.length; i++) {
       final target = targets[i];
@@ -84,6 +84,4 @@ mixin Clash on PositionComponent {
     }
     return collisions;
   }
-
- 
 }

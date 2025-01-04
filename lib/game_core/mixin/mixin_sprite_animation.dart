@@ -1,60 +1,10 @@
 import 'dart:async';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/util/sprite_animation_render.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-import '../../mixin/mixin_future_loader.dart';
-import '../../mixin/mixin_sprite_animation.dart';
-
-class ScannableEnemy extends ScannableUnit
-    with MixinSpriteAnimation, MixinFutureLoader {
-  ScannableEnemy({
-    required super.position,
-    required super.size,
-    required Future<SpriteAnimation> futureAnim,
-    super.life = 100,
-    super.speed,
-    Direction initDirection = Direction.right,
-    super.receivesAttackFrom,
-  }) {
-    // final img = Images();
-    loader?.add(FutureToLoad(futureAnim, setAnimation));
-    lastDirectionHorizontal =
-        initDirection == Direction.left ? Direction.left : Direction.right;
-    showAnimationStroke(Colors.green, 16.0);
-  }
-
-  // @override
-  bool isActive = true;
-}
-
-class ScannableUnit extends Unit with Attackable {
-  ScannableUnit({
-    required super.position,
-    required super.size,
-    double life = 10,
-    super.speed,
-    AcceptableAttackOriginEnum receivesAttackFrom =
-        AcceptableAttackOriginEnum.PLAYER_AND_ALLY,
-  }) {
-    this.receivesAttackFrom = receivesAttackFrom;
-    initialLife(life);
-  }
-}
-
-class Unit extends GameComponent with Movement {
-  Unit({
-    required Vector2 position,
-    required Vector2 size,
-    double? speed,
-  }) {
-    this.speed = speed ?? this.speed;
-    this.position = position;
-    this.size = size;
-  }
-}
-
-mixin UseSpriteAnimation2 on GameComponent {
+mixin MixinSpriteAnimation on GameComponent {
   Paint? _strockePaint;
   double _strokeWidth = 0;
   Vector2 _strokeSize = Vector2.zero();

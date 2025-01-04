@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:td_2/game_core/unit/bullet/explosion_component.dart';
 
 import '../../mixin/clash.dart';
-import '../../mixin/movable.dart';
+import '../../mixin/mixin_movable.dart';
 import '../../tile/stage_map.dart';
 import '../tower/tower_sprite_sheet.dart';
 
@@ -65,7 +65,7 @@ class BulletComponentConfig {
 }
 
 abstract class BulletComponent extends GameComponent
-    with Movable, CanNotSeen, Clash, UseAssetsLoader, UseSpriteAnimation {
+    with MixinMovable, CanNotSeen, MixinClash, UseAssetsLoader, UseSpriteAnimation {
   SpriteAnimation? _anim;
 
   BulletComponent({
@@ -96,7 +96,7 @@ abstract class BulletComponent extends GameComponent
   // final double maxDistance;
 
   @override
-  get effect => config.effect;
+  late final effect = config.effect;
 
   @override
   Future<void> onLoad() async {

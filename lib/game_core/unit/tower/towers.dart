@@ -56,7 +56,7 @@ class CannonTower extends RotationTower {
   int get priority => Priority.tileTower;
 }
 
-class RotationTower extends ITowerComponent with Radar, Lighting {
+class RotationTower extends ITowerComponent with MixinRadar, Lighting {
   RotationTower({
     required super.position,
     required Future<SpriteAnimation> baseAnim,
@@ -103,7 +103,7 @@ class RotationTower extends ITowerComponent with Radar, Lighting {
   final Vector2? explosion;
 
   @override
-  void onRadar(RadarTarget component) {
+  void onRadar(MixinRadarTarget component) {
     fire(component.position + (component.size / 2));
   }
 
