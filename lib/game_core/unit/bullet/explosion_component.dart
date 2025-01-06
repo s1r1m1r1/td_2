@@ -1,7 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:td_2/game_core/mixin/clash/mixin_clash_config.dart';
 
-import '../../mixin/clash.dart';
+import '../../mixin/clash/mixin_clash.dart';
 import '../../other/priority.dart';
 
 class ExplosionComponent extends GameComponent with MixinClash {
@@ -14,11 +15,9 @@ class ExplosionComponent extends GameComponent with MixinClash {
     this.size = size;
     this.anchor = anchor;
   }
-  @override
-  final effect = 50;
 
   @override
-  final mode = ClashMode.collision;
+  MixinClashConfig clashConfig = const MixinClashConfig(mode: ClashMode.collision, effect: 50);
 
   @override
   Future<void> onLoad() {

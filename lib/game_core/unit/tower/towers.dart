@@ -3,9 +3,11 @@ import 'dart:math' as math;
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
+import 'package:td_2/game_core/mixin/radar/mixin_radar_config.dart';
 import 'package:td_2/game_core/other/math_ext.dart';
 
-import '../../mixin/radar.dart';
+import '../../mixin/radar/mixin_radar.dart';
+import '../../mixin/radar/mixin_radar_target.dart';
 import '../../other/priority.dart';
 import '../../tile/stage_map.dart';
 import 'i_tower.dart';
@@ -56,7 +58,7 @@ class CannonTower extends RotationTower {
   int get priority => Priority.tileTower;
 }
 
-class RotationTower extends ITowerComponent with MixinRadar, Lighting {
+class RotationTower extends ITowerComponent with MixinRadar {
   RotationTower({
     required super.position,
     required Future<SpriteAnimation> baseAnim,
@@ -72,13 +74,7 @@ class RotationTower extends ITowerComponent with MixinRadar, Lighting {
         ) {
     // distScan = scan + (size.x / 2);
     _bulletDistance = bulletDistance + (size.x / 2);
-    lightingEnabled = true;
-    setupLighting(
-      LightingConfig(
-        radius: size.x * 2,
-        color: Colors.yellow.withOpacity(.3),
-      ),
-    );
+
     baseDetail = BaseDetail(
       position: size / 2,
       size: size,
@@ -89,7 +85,7 @@ class RotationTower extends ITowerComponent with MixinRadar, Lighting {
       size: size,
       sprite: turretAnim,
     );
-
+    // initRadar(RadarMode.disable);
     addAll([
       baseDetail,
       turretDetail,
@@ -101,6 +97,8 @@ class RotationTower extends ITowerComponent with MixinRadar, Lighting {
   late BaseDetail baseDetail;
   late TurretDetail turretDetail;
   final Vector2? explosion;
+
+// init
 
   @override
   void onRadar(MixinRadarTarget component) {
@@ -154,7 +152,7 @@ class RotationTower extends ITowerComponent with MixinRadar, Lighting {
   @override
   Future<void> onLoad() async {
     add(CircleComponent(
-        radius: distScan,
+        radius: radarConfig.distScan,
         position: size / 2,
         anchor: Anchor.center,
         paint: Paint()
@@ -184,8 +182,9 @@ class RotationTower extends ITowerComponent with MixinRadar, Lighting {
     localPosition += size / 2;
     return positionOf(localPosition);
   }
-  
-  @override
-  double get distScan => scan + (size.x / 2);
 
+  @override
+  late MixinRadarConfig radarConfig = MixinRadarConfig(
+    distScan: (scan + size.x / 2),
+  );
 }

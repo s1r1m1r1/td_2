@@ -1,37 +1,39 @@
-import 'package:bonfire/bonfire.dart';
+// import 'package:bonfire/bonfire.dart';
+import 'package:flame/components.dart';
 import 'package:logging/logging.dart';
+
+import 'mixin_radar_config.dart';
+import 'mixin_radar_target.dart';
+
+final _log = Logger(MixinRadar.loggerName);
 
 typedef RadarScanCallback = void Function(MixinRadarTarget component);
 
-enum RadarMode { findBest, findFirst, disable }
+typedef RadarInit = void Function(RadarMode value);
 
-mixin MixinRadarTarget on PositionComponent {}
-mixin MixinRadar on GameComponent {
+mixin MixinRadar on PositionComponent {
   static const loggerName = 'Radar';
-  static final _log = Logger(loggerName);
-  bool _radarOn = true;
-  RadarMode mode = RadarMode.findBest;
-
-  double get distScan;
-  late double _bestDistance = distScan;
+  abstract MixinRadarConfig radarConfig;
+  RadarMode get _radarMode => radarConfig.radarMode;
+  bool get _radarOn => radarConfig.radarOn;
+  double get _distScan => radarConfig.distScan;
+  late double _bestDistance = _distScan;
 
   // RadarScanCallback? radarScanAlert;
-  void onRadar(MixinRadarTarget component); 
+  void onRadar(MixinRadarTarget component);
 
   set radarOn(bool i) {
-    _radarOn = i;
+    radarConfig = radarConfig.copyWith(radarOn: i);
   }
 
-  bool get radarOn => _radarOn;
-
-  void radarScan(Iterable<MixinRadarTarget> targets) {
-    _findBestTarget(targets.toList());
+  void radarScan(List<MixinRadarTarget> targets) {
+    _findBestTarget(targets);
   }
 
   void _findBestTarget(List<MixinRadarTarget> targets) {
-    if (radarOn) {
+    if (_radarOn) {
       _bestTarget = null;
-      _bestDistance = distScan;
+      _bestDistance = _distScan;
       _checkDistance(targets);
     }
   }
@@ -54,8 +56,8 @@ mixin MixinRadar on GameComponent {
       // debugPrint('collisionRange : $collisionRange');
       // debugPrint('distance : $distance');
       // debugPrint('bestDistance : $_bestDistance');
-      if (distance <= distScan) {
-        switch (mode) {
+      if (distance <= _distScan) {
+        switch (_radarMode) {
           case RadarMode.findBest:
             if (!(distance < _bestDistance)) continue;
             _log.info('findBest $i');
@@ -76,16 +78,5 @@ mixin MixinRadar on GameComponent {
       onRadar(_bestTarget!);
       _bestTarget = null;
     }
-  }
-
-  bool collision(Vector2 center, double dist, MixinRadarTarget target) {
-    final Vector2 targetPosition = target.position;
-    final double targetCollisionSize = target.size.x + target.size.y;
-    double collisionRange = targetCollisionSize + dist;
-    final double distance = position.distanceTo(targetPosition);
-    if (distance < collisionRange) {
-      return true;
-    }
-    return false;
   }
 }

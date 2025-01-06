@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:flame/components.dart';
 
-import 'package:bonfire/bonfire.dart';
 
 mixin MixinFutureLoader<T> on Component {
   /// Used to load assets in [onLoad]

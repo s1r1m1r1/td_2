@@ -1,12 +1,12 @@
 import 'dart:ui';
 
-import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flame/components.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/game_core/other/priority.dart';
+import '../other/priority.dart';
 
-  final _log = Logger(TileFXController.loggerName);
-class TileFXController extends GameComponent {
+final _log = Logger(TileFXController.loggerName);
+
+class TileFXController extends PositionComponent {
   TileFXController();
   static const loggerName = 'TileFXController';
   PositionComponent? effect;
@@ -24,7 +24,8 @@ class TileFXController extends GameComponent {
         position: pos,
         priority: Priority.overAll,
         size: size,
-        paint: Paint()..color = Colors.red.withAlpha(100));
+        paint: Paint()
+          ..color = const Color.fromARGB(255, 182, 41, 31).withAlpha(100));
     parent?.add(effect!);
   }
 
@@ -37,7 +38,8 @@ class TileFXController extends GameComponent {
         priority: Priority.overAll,
         position: pos,
         size: size,
-        paint: Paint()..color = Colors.green.withAlpha(100));
+        paint: Paint()
+          ..color = const Color.fromARGB(255, 63, 218, 68).withAlpha(100));
     parent?.add(effect!);
   }
 

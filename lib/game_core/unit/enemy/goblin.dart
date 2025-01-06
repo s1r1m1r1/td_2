@@ -4,26 +4,31 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/game_core/mixin/clash.dart';
-import 'package:td_2/game_core/mixin/radar.dart';
 
+import '../../decoration/common_sprite_sheet.dart';
+import '../../mixin/clash/mixin_clash_target.dart';
 import '../../mixin/mixin_movable.dart';
+import '../../mixin/radar/mixin_radar_target.dart';
+import '../../mixin/unit/mixin_fx_damage.dart';
 import '../../other/priority.dart';
 import '../../tile/stage_map.dart';
-import '../../decoration/common_sprite_sheet.dart';
 import 'enemy_id.dart';
 import 'enemy_sprite_sheet.dart';
 import 'enemy_unit.dart';
+import 'health.dart';
+import 'life_bar.dart';
 
 final _log = Logger(Goblin.loggerName);
 
-class Goblin extends ScannableEnemy
+final class Goblin extends ScannableEnemy
     with
-        UseLifeBar,
-        MixinMovable,
         MixinClashTarget,
         MixinRadarTarget,
-        Lighting {
+        MixinHealth,
+        MixinMovable,
+        UseHealthBar,
+        MixinFxDamage,
+        BonfireHasGameRef {
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;
@@ -32,17 +37,18 @@ class Goblin extends ScannableEnemy
           futureAnim: EnemySpriteSheet.runLeft,
           position: position,
           size: Vector2.all(StageMap.tileSize * 0.8),
-          speed: StageMap.tileSize,
-          life: 100,
         ) {
-    setupLifeBar(
-      borderRadius: BorderRadius.circular(2),
-      borderWidth: 2,
-    );
+    speed = StageMap.tileSize;
     id = EnemyId.newId();
-    setupLighting(
-        LightingConfig(radius: 100.0, color: Colors.yellow.withAlpha(10)));
   }
+
+  @override
+  void onMount() {
+    super.setHealth(123);
+    super.setupHealthBar();
+    super.onMount();
+  }
+
   @override
   Future<void> onLoad() {
     // gameRef.addAll([
@@ -62,14 +68,15 @@ class Goblin extends ScannableEnemy
 
   void _removeLife(double life) {
     _log.info('remove life');
-    showDamage(
+    add(fxDamage(
       life,
       config: TextStyle(
         fontSize: width / 2,
         color: Colors.white,
       ),
-    );
-    super.removeLife(life);
+    ));
+    subtractHealth(life);
+    if (isDead) onDie();
   }
 
   @override
@@ -88,9 +95,7 @@ class Goblin extends ScannableEnemy
     super.update(dt);
   }
 
-  @override
   void onDie() {
-    super.onDie();
     gameRef.add(
       AnimatedGameObject(
         animation: CommonSpriteSheet.smokeExplosion,
@@ -119,7 +124,4 @@ class Goblin extends ScannableEnemy
           from: from, to: to, onFinish: pathNextMove, fixedAngle: 0.0);
     }
   }
-
-  @override
-  double health = 100;
 }

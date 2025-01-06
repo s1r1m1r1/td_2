@@ -1,23 +1,18 @@
-import 'package:bonfire/bonfire.dart';
+import 'package:bonfire/bonfire.dart' show RectExt;
+import 'package:flame/components.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
+import "mixin_clash_config.dart";
+import 'mixin_clash_target.dart';
+
 final _log = Logger(MixinClash.loggerName);
-
-enum ClashMode {
-  bestOne,
-  collision,
-}
-
-mixin MixinClashTarget on PositionComponent {
-  // abstract
-  onClash(dynamic value);
-}
 
 mixin MixinClash on PositionComponent {
   static const loggerName = 'Clash';
-  abstract final dynamic effect;
-  abstract final ClashMode mode;
+  dynamic get effect => clashConfig.effect;
+  ClashMode get _mode => clashConfig.mode;
+  abstract MixinClashConfig clashConfig;
   // abstract
   void clashAlert();
   bool _clashActive = true;
@@ -25,12 +20,12 @@ mixin MixinClash on PositionComponent {
     _clashActive = false;
   }
 
-  void radarScan(Iterable<MixinClashTarget> targets) {
+  void clashScan(List<MixinClashTarget> targets) {
     if (!_clashActive) return;
     if (targets.isEmpty) return;
     // if (clashAlert == null) return;
     final t = targets.toList();
-    switch (mode) {
+    switch (_mode) {
       case ClashMode.bestOne:
         _onBestOne(t);
       case ClashMode.collision:

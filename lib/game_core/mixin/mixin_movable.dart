@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:bonfire/bonfire.dart';
-import 'package:td_2/game_core/other/math_ext.dart';
+import 'package:flame/components.dart';
+import '../other/math_ext.dart';
 
 mixin MixinMovable on PositionComponent {
   double speed = 0;
