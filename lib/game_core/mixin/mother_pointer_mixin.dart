@@ -1,8 +1,9 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:bonfire/mixins/pointer_detector.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-mixin MotherPointerListener on GameComponent {
+mixin MotherPointerListener on PositionComponent, PointerDetectorHandler {
   bool enableDrag = true;
   bool isDragging = false;
 
@@ -17,7 +18,7 @@ mixin MotherPointerListener on GameComponent {
   void listenPointerHover(PointerHoverEvent event) {}
 }
 
-mixin MotherPointerMixin on GameComponent {
+mixin MotherPointerMixin on Component, PointerDetectorHandler {
   final _listener = <MotherPointerListener>[];
 
   void addListener(MotherPointerListener listener) {
@@ -41,7 +42,7 @@ mixin MotherPointerMixin on GameComponent {
     super.remove(component);
   }
 
-  bool _isPointerCover(PointerEvent event, GameComponent c) {
+  bool _isPointerCover(PointerEvent event, PositionComponent c) {
     final screenPos = c.absolutePosition + marginVec2;
     final rect = Rect.fromLTWH(screenPos.x, screenPos.y, c.size.x, c.size.y);
     return rect.contains(event.position);
@@ -49,7 +50,7 @@ mixin MotherPointerMixin on GameComponent {
 
   @override
   bool handlerPointerDown(PointerDownEvent event) {
-    for (var i in _listener) {
+    for (final i in _listener) {
       if (!i.enableDrag) continue;
       if (!i.isDragging) {
         final isCover = _isPointerCover(event, i);
@@ -77,7 +78,7 @@ mixin MotherPointerMixin on GameComponent {
 
   @override
   bool handlerPointerMove(PointerMoveEvent event) {
-    for (var i in _listener) {
+    for (final i in _listener) {
       if (!i.enableDrag) continue;
       if (!i.isDragging) {
         final isCover = _isPointerCover(event, i);
@@ -91,7 +92,7 @@ mixin MotherPointerMixin on GameComponent {
 
   @override
   bool handlerPointerCancel(PointerCancelEvent event) {
-    for (var i in _listener) {
+    for (final i in _listener) {
       if (!i.enableDrag) continue;
       final isCover = _isPointerCover(event, i);
       if (isCover) {
@@ -104,7 +105,7 @@ mixin MotherPointerMixin on GameComponent {
 
   @override
   bool handlerPointerHover(PointerHoverEvent event) {
-    for (var i in _listener) {
+    for (final i in _listener) {
       if (!i.enableDrag) continue;
       final isCover = _isPointerCover(event, i);
       if (isCover) {

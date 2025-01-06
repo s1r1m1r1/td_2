@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'enemy_id.freezed.dart';
+
 @Freezed(
     map: FreezedMapOptions.none, when: FreezedWhenOptions.none, copyWith: false)
 class EnemyId with _$EnemyId {
@@ -8,18 +9,8 @@ class EnemyId with _$EnemyId {
 
 // ----- generating new id ---------------
   static int _last = 0;
-  static newId() {
+  factory EnemyId.newId() {
     _last += 1;
     return EnemyId(_last);
   }
 }
-
-// class EnemyId {
-//   EnemyId(this.id);
-//   final int id;
-//   static int _last = 0;
-//   static newId() {
-//     _last += 1;
-//     return EnemyId(_last);
-//   }
-// }

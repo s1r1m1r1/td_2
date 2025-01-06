@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:td_2/domain/enums/enemy_type.dart';
-import 'package:td_2/domain/enums/tile_type.dart';
-import 'package:td_2/domain/map_option.dart';
-import 'package:td_2/domain/wave_option.dart';
-import 'package:td_2/game_core/tile/stage_map.dart';
 
+import '../domain/enums/enemy_type.dart';
+import '../domain/enums/tile_type.dart';
+import '../domain/map_option.dart';
 import '../domain/stage_option.dart';
+import '../domain/wave_option.dart';
+import '../game_core/tile/stage_map.dart';
 
 part 'stage_bloc.freezed.dart';
 

@@ -1,10 +1,10 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
-import 'package:td_2/domain/weapon_option.dart';
-import 'package:td_2/game_core/controller/game_controller.dart';
+import '../../domain/weapon_option.dart';
+import '../controller/game_controller.dart';
 
-import '../decoration/chest.dart';
 import '../controller/game_event.dart';
+import '../decoration/chest.dart';
 import '../decoration/common_sprite_sheet.dart';
 import '../mixin/mother_pointer_mixin.dart';
 
