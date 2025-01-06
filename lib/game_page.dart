@@ -138,10 +138,8 @@ class LoadedGameView extends StatelessWidget {
               ])
             ]),
             backgroundColor: Colors.blueGrey[900]!,
-            lightingColorGame: Colors.black.withOpacity(0.75),
           ),
         ),
-       
         Padding(
           padding: margin,
           child: DragTarget(

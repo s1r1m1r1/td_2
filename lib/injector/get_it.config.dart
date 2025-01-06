@@ -27,9 +27,9 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.lazySingleton<_i417.StageBloc>(() => _i417.StageBloc());
-    gh.lazySingleton<_i558.StageTreasuryBloc>(() => _i558.StageTreasuryBloc());
-    gh.lazySingleton<_i1039.StageStatsBloc>(() => _i1039.StageStatsBloc());
     gh.lazySingleton<_i810.WeaponBarBloc>(() => _i810.WeaponBarBloc());
+    gh.lazySingleton<_i1039.StageStatsBloc>(() => _i1039.StageStatsBloc());
+    gh.lazySingleton<_i558.StageTreasuryBloc>(() => _i558.StageTreasuryBloc());
     return this;
   }
 }

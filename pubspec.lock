@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: a_star_algorithm
-      sha256: c9a92079331f8229f572718ed12c25b0e3adf3570318becfa689f5554e6ffd30
+      sha256: efc131ca9a3eaceebe09fa67b9a7235d6e0a6e23ff0de4c009c60d506f791349
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.2"
+    version: "0.4.1"
   analyzer:
     dependency: transitive
     description:
@@ -70,10 +70,10 @@ packages:
     dependency: "direct main"
     description:
       name: bonfire
-      sha256: "6bc27a32c84408ea0606825c308ad4a147e7327a732cee8775b676de9c0c58a3"
+      sha256: "5d42b699cea49b13739a1a75f77bb3e1f147fa50fddbaf233401a1fb67981a01"
       url: "https://pub.dev"
     source: hosted
-    version: "3.12.3"
+    version: "3.13.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -150,10 +150,10 @@ packages:
     dependency: transitive
     description:
       name: characters
-      sha256: "04a925763edad70e8443c99234dc3328f442e811f1d8fd1a72f1c8ad0f69a605"
+      sha256: f71061c654a3380576a52b451dd5532377954cf9dbd272a78fc8479606670803
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.4.0"
   checked_yaml:
     dependency: transitive
     description:
@@ -174,10 +174,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
+      sha256: "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.19.1"
   convert:
     dependency: transitive
     description:
@@ -235,13 +235,13 @@ packages:
     source: hosted
     version: "1.1.1"
   flame:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flame
-      sha256: "79133dc46a3ff870950f41d0dc1598414e7bd7ae2c29bd9f0a9de208d9a70cb7"
+      sha256: "0bd0d5bfaf270e4c1624f8d966ca42951479d1b59371058898bdd6ce41bce27a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.23.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -255,14 +255,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.6"
-  flutter_colorpicker:
-    dependency: "direct main"
-    description:
-      name: flutter_colorpicker
-      sha256: "969de5f6f9e2a570ac660fb7b501551451ea2a1ab9e2097e89475f60e07816ea"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -308,14 +300,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.0.3"
-  gif_view:
-    dependency: "direct main"
-    description:
-      name: gif_view
-      sha256: "6e803e6ed892a6a0ff6671554550780a56d053cc1f06504086794001b3cd000e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.4"
   glob:
     dependency: transitive
     description:
@@ -440,10 +424,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: bdb68674043280c3428e9ec998512fb681678676b3c54e773629ffe74419f8c7
+      sha256: e3641ec5d63ebf0d9b41bd43201a66e3fc79a65db5f61fc181f04cd27aab950c
       url: "https://pub.dev"
     source: hosted
-    version: "1.15.0"
+    version: "1.16.0"
   mime:
     dependency: transitive
     description:
@@ -472,10 +456,10 @@ packages:
     dependency: transitive
     description:
       name: ordered_set
-      sha256: "1bfaaaee0419e43ecc9eaebd410eb4bd5039657b72011de75ff3e2915c9aac60"
+      sha256: fc861bb51fc863cd3e0718e21768af9586e0d5022b91a0fd4437636456cdb7d0
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.3"
+    version: "6.1.1"
   package_config:
     dependency: transitive
     description:
@@ -576,7 +560,7 @@ packages:
     dependency: transitive
     description: flutter
     source: sdk
-    version: "0.0.99"
+    version: "0.0.0"
   source_gen:
     dependency: transitive
     description:
@@ -834,5 +818,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.7.0-0 <4.0.0"
   flutter: ">=3.24.0"

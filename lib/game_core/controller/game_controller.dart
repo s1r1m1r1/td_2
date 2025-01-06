@@ -5,12 +5,11 @@ import 'package:td_2/domain/weapon_option.dart';
 import 'package:td_2/game_core/controller/controller_process.dart';
 import 'package:td_2/game_core/controller/timer_process.dart';
 import 'package:td_2/game_core/controller/game_event.dart';
-import 'package:td_2/game_core/decoration/common_sprite_sheet.dart';
 import 'package:td_2/game_core/tile/tile_component.dart';
 
 import '../../domain/stage_option.dart';
-import '../mixin/clash.dart';
-import '../mixin/radar.dart';
+import '../mixin/clash/mixin_clash.dart';
+import '../mixin/radar/mixin_radar.dart';
 import '../unit/enemy/goblin.dart';
 // import 'move_camera_mixin.dart';
 
@@ -54,7 +53,7 @@ class GameController extends GameComponent {
     );
 
     event(const GameEvent.createStage());
-    // event(const GameEvent.enemySpawn());
+    event(const GameEvent.enemySpawn());
     gameRef.camera
       ..moveTo(Vector2.all(200))
       ..moveOnlyMapArea = true;
@@ -87,14 +86,14 @@ class GameController extends GameComponent {
 
   void _processRadarScan() {
     final radars = game.query<MixinRadar>();
-    final scans = game.query<Goblin>();
+    final scans = game.query<Goblin>().toList();
 
     for (final r in radars) {
       r.radarScan(scans);
     }
     final clashes = gameRef.query<MixinClash>();
     for (final c in clashes) {
-      c.radarScan(scans);
+      c.clashScan(scans);
     }
   }
 }

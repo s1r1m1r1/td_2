@@ -1,20 +1,37 @@
-import 'package:bonfire/bonfire.dart';
+import 'package:flutter/foundation.dart';
 
-mixin MixinHealth on Component {
-  abstract double health;
+mixin MixinHealth {
+  double _health = 1;
+  double _maxHealth = 1;
+  double get health => _health;
+  double get maxHealth => _maxHealth;
   bool _alive = true;
 
+  @mustCallSuper
+  void setHealth(double value) {
+    _health = value;
+    _maxHealth = value;
+  }
+
+  @mustCallSuper
   void subtractHealth(double value) {
-    if (value > health) {
-      health = 0;
+    if (value > _health) {
+      _health = 0;
     } else {
-      health -= value;
+      _health -= value;
     }
     _verifyLimits();
   }
 
+  @mustCallSuper
+  void addHealth(double value) {
+    _health += value;
+    if (_health > _maxHealth) _maxHealth = _health;
+    _verifyLimits();
+  }
+
   void _verifyLimits() {
-    if (health > 0) return;
+    if (_health > 0) return;
     _alive = false;
   }
 

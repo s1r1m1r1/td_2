@@ -3,12 +3,13 @@ import 'dart:async';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:td_2/game_core/mixin/mixin_future_loader.dart';
+import 'package:td_2/game_core/unit/enemy/enemy_unit.dart';
 
-import 'package:td_2/game_core/unit/bullet/explosion_component.dart';
-
-import '../../mixin/clash.dart';
+import '../../mixin/clash/mixin_clash.dart';
+import '../../mixin/clash/mixin_clash_config.dart';
 import '../../mixin/mixin_movable.dart';
-import '../../tile/stage_map.dart';
+import '../../mixin/mixin_sprite_animation.dart';
 import '../tower/tower_sprite_sheet.dart';
 
 class MissileComponent extends BulletComponent {
@@ -18,7 +19,8 @@ class MissileComponent extends BulletComponent {
   }) : super(anim: TowerSpriteSheet.missile());
 
   @override
-  ClashMode get mode => ClashMode.collision;
+  late MixinClashConfig clashConfig =
+      MixinClashConfig(mode: ClashMode.collision, effect: config.effect);
 }
 
 class BulletMGComponent extends BulletComponent {
@@ -28,7 +30,8 @@ class BulletMGComponent extends BulletComponent {
   }) : super(anim: TowerSpriteSheet.bulletMG());
 
   @override
-  ClashMode get mode => ClashMode.bestOne;
+  late MixinClashConfig clashConfig =
+      MixinClashConfig(mode: ClashMode.collision, effect: config.effect);
 }
 
 // class Bullet1Component extends _BulletComponent {
@@ -64,8 +67,8 @@ class BulletComponentConfig {
   });
 }
 
-abstract class BulletComponent extends GameComponent
-    with MixinMovable, CanNotSeen, MixinClash, UseAssetsLoader, UseSpriteAnimation {
+abstract class BulletComponent extends PositionComponent
+    with MixinMovable, MixinClash, MixinFutureLoader, MixinSpriteAnimation {
   SpriteAnimation? _anim;
 
   BulletComponent({
@@ -82,7 +85,7 @@ abstract class BulletComponent extends GameComponent
     size = config.size;
     speed = config.speed;
     // this.angle = angle;
-    loader?.add(AssetToLoad(anim, (i) => _anim = i));
+    loader?.add(FutureToLoad(anim, (i) => _anim = i));
     // setupLighting(
     //   LightingConfig(
     //     radius: width * 8.0,
@@ -99,10 +102,18 @@ abstract class BulletComponent extends GameComponent
   late final effect = config.effect;
 
   @override
+  int get priority => 10000;
+
+  @override
   Future<void> onLoad() async {
     await super.onLoad();
     super.moveToByDistance(to: config.target, distance: config.maxDistance);
-    setAnimation(_anim, size: size, autoPlay: true);
+    add(RectangleComponent(
+        size: size,
+        paint: Paint()
+          ..color = const Color.fromARGB(255, 59, 64, 226)
+          ..blendMode = BlendMode.srcIn));
+    // setAnimation(_anim, size: size, autoPlay: true);
     // distExplosion = 300;
     onMoveFinish = outOfRange;
   }
@@ -110,13 +121,12 @@ abstract class BulletComponent extends GameComponent
   @override
   void clashAlert() {
     if (config.explosion != null) {
-      gameRef.add(ExplosionComponent(
-        position: position,
-        size: config.explosion!,
-        anchor: Anchor.center,
-      ));
+      // gameRef.add(ExplosionComponent(
+      //   position: position,
+      //   size: config.explosion!,
+      //   anchor: Anchor.center,
+      // ));
     }
-    // bulletExplosion(position);
     removeFromParent();
   }
 
@@ -128,19 +138,5 @@ abstract class BulletComponent extends GameComponent
 
   void outOfRange() {
     removeFromParent();
-  }
-
-  void bulletExplosion(Vector2 pos) {
-    gameRef.add(
-      RectangleComponent(
-        priority: 1000,
-        position: pos,
-        paint: Paint()..color = Colors.green.withAlpha(100),
-        anchor: Anchor.center,
-        size: Vector2.all(StageMap.tileSize),
-      )..add(
-          RemoveEffect(delay: 2),
-        ),
-    );
   }
 }
