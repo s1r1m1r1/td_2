@@ -64,11 +64,10 @@ class AstarController {
         _barriers[x][y] = Barrier.pass;
       }
     }
-    _barriers;
   }
 
   void addAllBarrier(List<Point<int>> barriers) {
-    for (var b in barriers) {
+    for (final b in barriers) {
       _barriers[b.x][b.y] = Barrier.block;
     }
   }

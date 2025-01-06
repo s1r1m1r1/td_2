@@ -3,9 +3,9 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
-import 'package:td_2/domain/enums/enemy_type.dart';
-import 'package:td_2/game_core/controller/game_controller.dart';
-import 'package:td_2/game_core/controller/game_event.dart';
+import '../../domain/enums/enemy_type.dart';
+import 'game_controller.dart';
+import 'game_event.dart';
 
 final _log = Logger(TimerProcess.loggerName);
 

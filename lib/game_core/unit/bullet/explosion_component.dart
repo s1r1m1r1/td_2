@@ -1,8 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
-import 'package:td_2/game_core/mixin/clash/mixin_clash_config.dart';
 
 import '../../mixin/clash/mixin_clash.dart';
+import '../../mixin/clash/mixin_clash_config.dart';
 import '../../other/priority.dart';
 
 class ExplosionComponent extends GameComponent with MixinClash {

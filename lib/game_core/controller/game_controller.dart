@@ -1,17 +1,16 @@
 import 'package:bonfire/bonfire.dart' hide TileComponent;
-import 'package:td_2/bloc/stage_stats_bloc.dart';
-import 'package:td_2/bloc/stage_treasury_bloc.dart';
-import 'package:td_2/domain/weapon_option.dart';
-import 'package:td_2/game_core/controller/controller_process.dart';
-import 'package:td_2/game_core/controller/timer_process.dart';
-import 'package:td_2/game_core/controller/game_event.dart';
-import 'package:td_2/game_core/tile/tile_component.dart';
 
+import '../../bloc/stage_stats_bloc.dart';
+import '../../bloc/stage_treasury_bloc.dart';
 import '../../domain/stage_option.dart';
+import '../../domain/weapon_option.dart';
 import '../mixin/clash/mixin_clash.dart';
 import '../mixin/radar/mixin_radar.dart';
+import '../tile/tile_component.dart';
 import '../unit/enemy/goblin.dart';
-// import 'move_camera_mixin.dart';
+import 'controller_process.dart';
+import 'game_event.dart';
+import 'timer_process.dart';
 
 class GameController extends GameComponent {
   GameController({

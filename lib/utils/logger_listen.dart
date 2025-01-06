@@ -2,13 +2,13 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/game_core/controller/astar_controller.dart';
-import 'package:td_2/game_core/controller/controller_process.dart';
-import 'package:td_2/game_core/tile/file_fx_controller.dart';
-import 'package:td_2/utils/logger.dart';
 
+import '../game_core/controller/astar_controller.dart';
+import '../game_core/controller/controller_process.dart';
 import '../game_core/controller/timer_process.dart';
+import '../game_core/tile/file_fx_controller.dart';
 import '../game_core/tile/tile_component.dart';
+import 'logger.dart';
 
 void watchRecords(LogRecord rec) {
   // ---- filter --------

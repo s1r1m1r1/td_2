@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:td_2/bloc/stage_treasury_bloc.dart';
-import 'package:td_2/game_core/controller/game_event.dart';
-import 'package:td_2/game_core/controller/move_camera_controller.dart';
 
 import 'bloc/stage_bloc.dart';
 import 'bloc/stage_stats_bloc.dart';
+import 'bloc/stage_treasury_bloc.dart';
 import 'bloc/weapon_bar_bloc.dart';
 import 'domain/weapon_option.dart';
-import 'game_core/tile/stage_map.dart';
 import 'game_core/controller/game_controller.dart';
+import 'game_core/controller/game_event.dart';
+import 'game_core/controller/move_camera_controller.dart';
+import 'game_core/tile/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
 
 class GamePage extends StatelessWidget {
@@ -71,7 +71,7 @@ class GameView extends StatelessWidget {
                   }
                 },
               );
-              ;
+              
           }
         },
       ),
@@ -144,16 +144,16 @@ class LoadedGameView extends StatelessWidget {
           padding: margin,
           child: DragTarget(
             onMove: (details) {
-              double dx = details.offset.dx + 50 + 0;
-              double dy = details.offset.dy - 50.0;
+              final double dx = details.offset.dx + 50 + 0;
+              final double dy = details.offset.dy - 50.0;
 
               final center = Offset(dx, dy);
               GameController.event(
                   GameEvent.movePointerGlobal(center.toVector2()));
             },
             onAcceptWithDetails: (details) {
-              double dx = details.offset.dx + 50 + 0;
-              double dy = details.offset.dy - 50.0;
+              final double dx = details.offset.dx + 50 + 0;
+              final double dy = details.offset.dy - 50.0;
               final center = Offset(dx, dy);
               final weaponId = details.data;
               if (weaponId is! WeaponId) return;
