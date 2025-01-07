@@ -12,7 +12,7 @@ import '../other/priority.dart';
 import '../tile/file_fx_controller.dart';
 import '../tile/stage_map.dart';
 import '../tile/tile_component.dart';
-import '../unit/enemy/goblin.dart';
+import '../unit/enemy/enemy.dart';
 import '../unit/tower/towers.dart';
 import 'astar_controller.dart';
 import 'game_controller.dart';
@@ -75,7 +75,7 @@ abstract class GameInstruction {
           case EnemyType.goblin:
           case EnemyType.goblin2:
             if (controller.startGate == null) break;
-            final goblin = Goblin(controller.startGate!.position);
+            final goblin = Enemy(controller.startGate!.position);
             controller.game.world.add(goblin);
             GameController.event(GameEvent.enemyGo(goblin));
         }
