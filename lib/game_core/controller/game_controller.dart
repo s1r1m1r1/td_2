@@ -4,6 +4,7 @@ import '../../bloc/stage_stats_bloc.dart';
 import '../../bloc/stage_treasury_bloc.dart';
 import '../../domain/stage_option.dart';
 import '../../domain/weapon_option.dart';
+import '../../game_dev.dart';
 import '../mixin/clash/mixin_clash.dart';
 import '../mixin/radar/mixin_radar.dart';
 import '../tile/tile_component.dart';
@@ -12,7 +13,7 @@ import 'controller_process.dart';
 import 'game_event.dart';
 import 'timer_process.dart';
 
-class GameController extends GameComponent {
+class GameController extends Component with HasGameReference<BonfireGameDev>{
   GameController({
     required this.stage,
     required this.weapons,
@@ -20,11 +21,10 @@ class GameController extends GameComponent {
     required this.stageTreasuryBloc,
   });
 
-  late final game = gameRef;
   StartGateTileComponent? _start;
-  StartGateTileComponent get startGate {
-    _start ??= game.query<StartGateTileComponent>().first;
-    return _start!;
+  StartGateTileComponent? get startGate {
+    _start =  game.query<StartGateTileComponent>().firstOrNull;
+    return _start;
   }
 
   EndGateTileComponent? _end;
@@ -53,7 +53,7 @@ class GameController extends GameComponent {
 
     event(const GameEvent.createStage());
     event(const GameEvent.enemySpawn());
-    gameRef.camera
+    game.camera
       ..moveTo(Vector2.all(200))
       ..moveOnlyMapArea = true;
     return super.onMount();
@@ -90,7 +90,7 @@ class GameController extends GameComponent {
     for (final r in radars) {
       r.radarScan(scans);
     }
-    final clashes = gameRef.query<MixinClash>();
+    final clashes = game.query<MixinClash>();
     for (final c in clashes) {
       c.clashScan(scans);
     }

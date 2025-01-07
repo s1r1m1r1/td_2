@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:logging/logging.dart';
+import '../../game_dev.dart';
 import '../other/priority.dart';
 
 import '../unit/tower/towers.dart';
@@ -106,7 +107,7 @@ class RoadTileComponent extends TileComponent {
 }
 
 sealed class TileComponent extends PositionComponent
-    with HasGameReference<BonfireGame> {
+    with HasGameReference<BonfireGameDev> {
   static const loggerName = "TileComponent";
   TileComponent({
     required Vector2 size,

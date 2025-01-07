@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'game_page.dart';
 import 'injector/get_it.config.dart';
 import 'utils/logger.dart';
 import 'utils/logger_listen.dart';
-import 'game_page.dart';
 
 FutureOr<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

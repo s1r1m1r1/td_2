@@ -3,7 +3,7 @@ import 'package:bonfire/mixins/pointer_detector.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-mixin MotherPointerListener on PositionComponent, PointerDetectorHandler {
+mixin MotherPointerListener on PositionComponent  {
   bool enableDrag = true;
   bool isDragging = false;
 

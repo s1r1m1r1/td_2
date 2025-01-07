@@ -4,6 +4,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
 
+import '../../../game_dev.dart';
 import '../../mixin/radar/mixin_radar.dart';
 import '../../mixin/radar/mixin_radar_config.dart';
 import '../../mixin/radar/mixin_radar_target.dart';
@@ -59,7 +60,7 @@ class CannonTower extends RotationTower {
 }
 
 class RotationTower extends ITowerComponent
-    with MixinRadar, HasGameReference<BonfireGame> {
+    with MixinRadar, HasGameReference<BonfireGameDev> {
   RotationTower({
     required super.position,
     required Future<SpriteAnimation> baseAnim,

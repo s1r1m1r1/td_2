@@ -66,7 +66,8 @@ abstract class GameInstruction {
         switch (event.type) {
           case EnemyType.goblin:
           case EnemyType.goblin2:
-            final goblin = Goblin(controller.startGate.position);
+            if (controller.startGate == null) break;
+            final goblin = Goblin(controller.startGate!.position);
             controller.game.add(goblin);
             GameController.event(GameEvent.enemyGo(goblin));
         }
@@ -134,7 +135,7 @@ abstract class GameInstruction {
         _log.info('EnemyKilledGameEvent');
       case MovePointerGlobalGameEvent():
         final localPos = controller.game.camera.globalToLocal(event.position);
-        final grids = controller.gameRef.query<TileComponent>();
+        final grids = controller.game.query<TileComponent>();
         TileComponent? item;
         // firstWhere
         for (final i in grids) {
@@ -143,7 +144,7 @@ abstract class GameInstruction {
           item = i;
           break;
         }
-        final fx = controller.gameRef.query<TileFXController>().firstOrNull;
+        final fx = controller.game.query<TileFXController>().firstOrNull;
         if (item == null) {
           fx?.removeFX();
           break;
@@ -155,9 +156,9 @@ abstract class GameInstruction {
         }
       case FinishPointerGlobalGameEvent():
         final localPos = controller.game.camera.globalToLocal(event.position);
-        final fx = controller.gameRef.query<TileFXController>().firstOrNull;
+        final fx = controller.game.query<TileFXController>().firstOrNull;
         fx?.removeFX();
-        final grids = controller.gameRef.query<FoundationTileComponent>();
+        final grids = controller.game.query<FoundationTileComponent>();
         FoundationTileComponent? item;
         // firstWhere
         for (final i in grids) {

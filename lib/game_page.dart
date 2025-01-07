@@ -1,7 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/map/base/layer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -15,6 +14,7 @@ import 'game_core/controller/game_event.dart';
 import 'game_core/controller/move_camera_controller.dart';
 import 'game_core/tile/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
+import 'game_widget_dev.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -71,7 +71,6 @@ class GameView extends StatelessWidget {
                   }
                 },
               );
-              
           }
         },
       ),
@@ -102,20 +101,9 @@ class LoadedGameView extends StatelessWidget {
       children: [
         Padding(
           padding: margin,
-          child: BonfireWidget(
-            playerControllers: [
-              Keyboard(
-                config: KeyboardConfig(
-                  acceptedKeys: [
-                    LogicalKeyboardKey.space,
-                  ],
-                ),
-              )
-            ],
-            components: [
-              // ...StageMap.enemies(),
-              // ...StageMap.decorations(),
-
+          child: BonfireWidgetDev(
+            hudComponents: [
+              TowersInterface(moveCamera),
               moveCamera,
               GameController(
                   stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
@@ -123,20 +111,22 @@ class LoadedGameView extends StatelessWidget {
                   stage: stageState.result,
                   weapons: weaponBarState.result),
             ],
+            components: [
+
+              // WorldMap([
+              //   Layer(id: 0, tiles: [
+              //     ...stageState.result.layer.tiles.map((i) => Tile(
+              //         x: i.x.toDouble(),
+              //         y: i.y.toDouble(),
+              //         width: StageMap.tileSize,
+              //         height: StageMap.tileSize,
+              //         sprite: TileSprite(path: i.assetPath)))
+              //   ])
+              // ]),
+            ],
             cameraConfig: CameraConfig(
               zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),
             ),
-            interface: TowersInterface(moveCamera),
-            map: WorldMap([
-              Layer(id: 0, tiles: [
-                ...stageState.result.layer.tiles.map((i) => Tile(
-                    x: i.x.toDouble(),
-                    y: i.y.toDouble(),
-                    width: StageMap.tileSize,
-                    height: StageMap.tileSize,
-                    sprite: TileSprite(path: i.assetPath)))
-              ])
-            ]),
             backgroundColor: Colors.blueGrey[900]!,
           ),
         ),
