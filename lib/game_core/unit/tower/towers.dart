@@ -58,7 +58,8 @@ class CannonTower extends RotationTower {
   int get priority => Priority.tileTower;
 }
 
-class RotationTower extends ITowerComponent with MixinRadar {
+class RotationTower extends ITowerComponent
+    with MixinRadar, HasGameReference<BonfireGame> {
   RotationTower({
     required super.position,
     required Future<SpriteAnimation> baseAnim,
@@ -136,7 +137,7 @@ class RotationTower extends ITowerComponent with MixinRadar {
             target: target,
             explosion: explosion));
 
-    gameRef.add(bullet);
+    game.add(bullet);
   }
 
   void coolDown(double period, void Function() onTick) {

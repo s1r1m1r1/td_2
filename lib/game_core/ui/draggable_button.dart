@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import '../../domain/weapon_option.dart';
@@ -6,9 +8,10 @@ import '../controller/game_controller.dart';
 import '../controller/game_event.dart';
 import '../decoration/chest.dart';
 import '../decoration/common_sprite_sheet.dart';
+import '../mixin/mixin_movable.dart';
 import '../mixin/mother_pointer_mixin.dart';
 
-class DraggableButtonArena extends GameComponent with HasVisibility {
+class DraggableButtonArena extends PositionComponent with HasVisibility {
   DraggableButtonArena(Vector2 position) {
     this.position = position;
     _textConfig = TextPaint(
@@ -22,7 +25,7 @@ class DraggableButtonArena extends GameComponent with HasVisibility {
   get textSize => _textConfig.getLineMetrics(text).size;
 
   @override
-  Future<void> onLoad() {
+  FutureOr<void> onLoad() {
     staticImage = Chest(position);
     staticText = TextComponent(
       text: text,
@@ -36,7 +39,7 @@ class DraggableButtonArena extends GameComponent with HasVisibility {
 }
 
 class DraggableButton extends GameDecoration
-    with Movement, MotherPointerListener, HasVisibility {
+    with MixinMovable, MotherPointerListener, HasVisibility {
   DraggableButton({
     required super.position,
     required Vector2 size,

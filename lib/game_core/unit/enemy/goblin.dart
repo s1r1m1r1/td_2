@@ -28,7 +28,7 @@ final class Goblin extends ScannableEnemy
         MixinMovable,
         UseHealthBar,
         MixinFxDamage,
-        BonfireHasGameRef {
+        HasGameReference<BonfireGame> {
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;
@@ -96,7 +96,7 @@ final class Goblin extends ScannableEnemy
   }
 
   void onDie() {
-    gameRef.add(
+    game.add(
       AnimatedGameObject(
         animation: CommonSpriteSheet.smokeExplosion,
         position: position,
