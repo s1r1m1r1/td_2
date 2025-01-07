@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 
+import '../../../game_dev.dart';
 import '../../decoration/common_sprite_sheet.dart';
 import '../../mixin/clash/mixin_clash_target.dart';
 import '../../mixin/mixin_movable.dart';
@@ -28,7 +29,7 @@ final class Goblin extends ScannableEnemy
         MixinMovable,
         UseHealthBar,
         MixinFxDamage,
-        HasGameReference<BonfireGame> {
+        HasGameReference<GameDev> {
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;

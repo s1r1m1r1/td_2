@@ -11,7 +11,6 @@ class ScannableEnemy extends PositionComponent
     required super.position,
     required super.size,
     required Future<SpriteAnimation> futureAnim,
-    Direction initDirection = Direction.right,
   }) {
     // final img = Images();
     loader?.add(FutureToLoad(futureAnim, setAnimation));

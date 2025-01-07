@@ -1,7 +1,5 @@
-import 'package:bonfire/bonfire.dart';
-import 'package:bonfire/map/base/layer.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -10,11 +8,15 @@ import 'bloc/stage_stats_bloc.dart';
 import 'bloc/stage_treasury_bloc.dart';
 import 'bloc/weapon_bar_bloc.dart';
 import 'domain/weapon_option.dart';
+import 'game_core/camera/game_camera_config.dart';
+import 'game_core/camera/move_camera_controller.dart';
 import 'game_core/controller/game_controller.dart';
 import 'game_core/controller/game_event.dart';
-import 'game_core/controller/move_camera_controller.dart';
+import 'game_core/other/offset_ext.dart';
+import 'game_core/other/screen_util.dart';
 import 'game_core/tile/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
+import 'game_widget_dev.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -37,7 +39,7 @@ class GamePage extends StatelessWidget {
               GetIt.I.get<WeaponBarBloc>()..add(const WeaponBarEvent.read()),
         ),
       ],
-      child: const GameView(),
+      child: const Center(child: GameView()),
     );
   }
 }
@@ -71,7 +73,6 @@ class GameView extends StatelessWidget {
                   }
                 },
               );
-              
           }
         },
       ),
@@ -102,20 +103,9 @@ class LoadedGameView extends StatelessWidget {
       children: [
         Padding(
           padding: margin,
-          child: BonfireWidget(
-            playerControllers: [
-              Keyboard(
-                config: KeyboardConfig(
-                  acceptedKeys: [
-                    LogicalKeyboardKey.space,
-                  ],
-                ),
-              )
-            ],
-            components: [
-              // ...StageMap.enemies(),
-              // ...StageMap.decorations(),
-
+          child: GameWidgetDev(
+            hudComponents: [
+              TowersInterface(moveCamera),
               moveCamera,
               GameController(
                   stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
@@ -123,20 +113,13 @@ class LoadedGameView extends StatelessWidget {
                   stage: stageState.result,
                   weapons: weaponBarState.result),
             ],
-            cameraConfig: CameraConfig(
-              zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),
+            components: [
+              World(),
+            ],
+            cameraConfig: GameCameraConfig(
+              zoom: ScreenUtil.getZoomFromMaxVisibleTile(
+                  context, StageMap.tileSize, 20),
             ),
-            interface: TowersInterface(moveCamera),
-            map: WorldMap([
-              Layer(id: 0, tiles: [
-                ...stageState.result.layer.tiles.map((i) => Tile(
-                    x: i.x.toDouble(),
-                    y: i.y.toDouble(),
-                    width: StageMap.tileSize,
-                    height: StageMap.tileSize,
-                    sprite: TileSprite(path: i.assetPath)))
-              ])
-            ]),
             backgroundColor: Colors.blueGrey[900]!,
           ),
         ),

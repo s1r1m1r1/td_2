@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:logging/logging.dart';
+import '../../game_dev.dart';
 import '../other/priority.dart';
 
 import '../unit/tower/towers.dart';
@@ -13,10 +14,10 @@ import 'x_tile.dart';
 
 enum TowerType { missile, rocket }
 
-final _log = Logger(TileComponent.loggerName);
+final _log = Logger(FloorComponent.loggerName);
 
-class StartGateTileComponent extends TileComponent {
-  StartGateTileComponent({
+class StartGateFloorComponent extends FloorComponent {
+  StartGateFloorComponent({
     required super.size,
     required super.position,
     required super.gridPos,
@@ -42,8 +43,8 @@ class StartGateTileComponent extends TileComponent {
   }
 }
 
-class EndGateTileComponent extends TileComponent {
-  EndGateTileComponent({
+class EndGateFloorComponent extends FloorComponent {
+  EndGateFloorComponent({
     required super.size,
     required super.position,
     required super.gridPos,
@@ -70,8 +71,8 @@ class EndGateTileComponent extends TileComponent {
   }
 }
 
-class FoundationTileComponent extends TileComponent {
-  FoundationTileComponent({
+class FoundationFloorComponent extends FloorComponent {
+  FoundationFloorComponent({
     required super.size,
     required super.position,
     required super.gridPos,
@@ -88,8 +89,8 @@ class FoundationTileComponent extends TileComponent {
   bool get hasTower => super.hasChild;
 }
 
-class RoadTileComponent extends TileComponent {
-  RoadTileComponent({
+class RoadFloorComponent extends FloorComponent {
+  RoadFloorComponent({
     required super.size,
     required super.position,
     required super.gridPos,
@@ -105,10 +106,10 @@ class RoadTileComponent extends TileComponent {
   }
 }
 
-sealed class TileComponent extends PositionComponent
-    with HasGameReference<BonfireGame> {
-  static const loggerName = "TileComponent";
-  TileComponent({
+sealed class FloorComponent extends PositionComponent
+    with HasGameReference<GameDev> {
+  static const loggerName = "FloorComponent";
+  FloorComponent({
     required Vector2 size,
     required Vector2 position,
     required this.gridPos,
