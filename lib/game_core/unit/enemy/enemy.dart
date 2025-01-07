@@ -19,9 +19,9 @@ import 'mixin_health.dart';
 import 'mixin_health_bar.dart';
 import 'unit_sprite_animation.dart';
 
-final _log = Logger(Goblin.loggerName);
+final _log = Logger(Enemy.loggerName);
 
-final class Goblin extends UnitSpriteAnimation
+final class Enemy extends UnitSpriteAnimation
     with
         MixinClashTarget,
         MixinRadarTarget,
@@ -33,7 +33,7 @@ final class Goblin extends UnitSpriteAnimation
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;
-  Goblin(Vector2 position)
+  Enemy(Vector2 position)
       : super(
           futureAnim: EnemySpriteSheet.runLeft,
           position: position,

@@ -9,7 +9,7 @@ import '../../game_dev.dart';
 import '../mixin/clash/mixin_clash.dart';
 import '../mixin/radar/mixin_radar.dart';
 import '../tile/tile_component.dart';
-import '../unit/enemy/goblin.dart';
+import '../unit/enemy/enemy.dart';
 import 'controller_process.dart';
 import 'game_event.dart';
 import 'timer_process.dart';
@@ -51,7 +51,7 @@ class GameController extends Component with HasGameReference<GameDev> {
     game.addAll([
       FpsTextComponent(position: Vector2(0, 100))
         ..add(
-          ChildCounterComponent<Goblin>(
+          ChildCounterComponent<Enemy>(
               target: game.world, position: Vector2(0, 40)),
         ),
       // TextGameComponent(text: text, position: position)
@@ -90,7 +90,7 @@ class GameController extends Component with HasGameReference<GameDev> {
 
   void _processRadarScan() {
     final radars = game.query<MixinRadar>();
-    final scans = game.query<Goblin>().toList();
+    final scans = game.query<Enemy>().toList();
 
     for (final r in radars) {
       r.radarScan(scans);

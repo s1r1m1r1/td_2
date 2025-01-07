@@ -546,7 +546,7 @@ class _$EnemyGoGameEventImpl extends EnemyGoGameEvent {
   const _$EnemyGoGameEventImpl(this.enemy) : super._();
 
   @override
-  final Goblin enemy;
+  final Enemy enemy;
 
   @override
   String toString() {
@@ -566,10 +566,10 @@ class _$EnemyGoGameEventImpl extends EnemyGoGameEvent {
 }
 
 abstract class EnemyGoGameEvent extends GameEvent {
-  const factory EnemyGoGameEvent(final Goblin enemy) = _$EnemyGoGameEventImpl;
+  const factory EnemyGoGameEvent(final Enemy enemy) = _$EnemyGoGameEventImpl;
   const EnemyGoGameEvent._() : super._();
 
-  Goblin get enemy;
+  Enemy get enemy;
 }
 
 /// @nodoc
