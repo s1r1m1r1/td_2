@@ -13,7 +13,6 @@ import '../../other/priority.dart';
 import '../../tile/stage_map.dart';
 import '../bullet/bullet_component.dart';
 import 'base_detail.dart';
-import 'i_tower.dart';
 import 'tower_sprite_sheet.dart';
 import 'turret_detail.dart';
 
@@ -59,7 +58,7 @@ class CannonTower extends RotationTower {
   int get priority => Priority.tileTower;
 }
 
-class RotationTower extends ITowerComponent
+class RotationTower extends PositionComponent
     with MixinRadar, HasGameReference<GameDev> {
   RotationTower({
     required super.position,

@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:ui' show Color, Paint;
 
-import 'package:bonfire/bonfire.dart';
-import 'package:flutter/material.dart';
+import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 
 import '../../mixin/clash/mixin_clash.dart';
 import '../../mixin/clash/mixin_clash_config.dart';
@@ -19,14 +20,16 @@ class ExplosionComponent extends PositionComponent with MixinClash {
   }
 
   @override
-  MixinClashConfig clashConfig = const MixinClashConfig(mode: ClashMode.collision, effect: 50);
+  MixinClashConfig clashConfig =
+      const MixinClashConfig(mode: ClashMode.collision, effect: 50);
 
   @override
   FutureOr<void> onLoad() {
     add(RectangleComponent(
       position: Vector2(0, 0),
       priority: 1000,
-      paint: Paint()..color = Colors.yellow.withAlpha(100),
+      paint: Paint()
+        ..color = const Color.fromARGB(255, 212, 199, 82).withAlpha(100),
       anchor: Anchor.topLeft,
       size: size,
     )..add(RemoveEffect(delay: 1)));

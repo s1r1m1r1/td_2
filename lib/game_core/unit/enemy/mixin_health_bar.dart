@@ -3,11 +3,11 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import 'health.dart';
+import 'mixin_health.dart';
 
 enum BarHealthAlignment { top, bottom, left, right }
 
-base mixin UseHealthBar on MixinHealth, PositionComponent {
+base mixin MixinHealthBar on MixinHealth, PositionComponent {
   BarHealthComponent? barComponent;
   Vector2? _barPosition;
   Vector2? _barSize;

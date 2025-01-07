@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
 import 'package:logging/logging.dart';
 
 import '../../domain/enums/enemy_type.dart';
@@ -77,7 +76,7 @@ abstract class GameInstruction {
           case EnemyType.goblin2:
             if (controller.startGate == null) break;
             final goblin = Goblin(controller.startGate!.position);
-            controller.game.add(goblin);
+            controller.game.world.add(goblin);
             GameController.event(GameEvent.enemyGo(goblin));
         }
       case EnemySpawnGameEvent():

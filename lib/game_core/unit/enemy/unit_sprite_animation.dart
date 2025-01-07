@@ -5,9 +5,9 @@ import '../../mixin/mixin_future_loader.dart';
 import '../../mixin/mixin_sprite_animation.dart';
 // import '../../mixin/mixin_sprite_animation.dart';
 
-class ScannableEnemy extends PositionComponent
+class UnitSpriteAnimation extends PositionComponent
     with MixinSpriteAnimation, MixinFutureLoader {
-  ScannableEnemy({
+  UnitSpriteAnimation({
     required super.position,
     required super.size,
     required Future<SpriteAnimation> futureAnim,
