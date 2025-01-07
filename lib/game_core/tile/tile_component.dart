@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:logging/logging.dart';
-import 'package:td_2/game_core/other/priority.dart';
+import '../other/priority.dart';
 
 import '../unit/tower/towers.dart';
 import 'stage_map.dart';
@@ -32,7 +32,7 @@ class StartGateTileComponent extends TileComponent {
         size: size,
         paint: Paint()..color = Colors.purple.withAlpha(100),
         children: [TextComponent(position: Vec2.zero, text: "Start")]);
-    gameRef.add(startGate!);
+    game.add(startGate!);
   }
 
   @override
@@ -60,7 +60,7 @@ class EndGateTileComponent extends TileComponent {
         size: size,
         paint: Paint()..color = Colors.purple.withAlpha(100),
         children: [TextComponent(position: Vec2.zero, text: "END")]);
-    gameRef.add(endGate!);
+    game.add(endGate!);
   }
 
   @override
@@ -105,7 +105,8 @@ class RoadTileComponent extends TileComponent {
   }
 }
 
-sealed class TileComponent extends GameComponent {
+sealed class TileComponent extends PositionComponent
+    with HasGameReference<BonfireGame> {
   static const loggerName = "TileComponent";
   TileComponent({
     required Vector2 size,
@@ -121,9 +122,9 @@ sealed class TileComponent extends GameComponent {
 
   final Point<int> gridPos;
 
-  GameComponent? decoration;
-  GameComponent? child;
-  GameComponent? drawing;
+  PositionComponent? decoration;
+  PositionComponent? child;
+  PositionComponent? drawing;
 
   bool isCover(Vector2 pos) {
     final rect = Rect.fromLTWH(position.x, position.y, size.x, size.y);
@@ -133,9 +134,9 @@ sealed class TileComponent extends GameComponent {
     return rect.contains(pos.toOffset());
   }
 
-  void setChild(GameComponent component) {
+  void setChild(PositionComponent component) {
     child = component;
-    gameRef.add(component);
+    game.add(component);
   }
 
   void removeChild() {
@@ -151,7 +152,7 @@ sealed class TileComponent extends GameComponent {
     decoration =
         XTile(position: position, size: Vector2.all(StageMap.tileSize * 0.8));
 
-    gameRef.add(decoration!);
+    game.add(decoration!);
     // gameRef.add(decoration2!);
   }
 

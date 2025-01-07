@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +7,7 @@ import '../../mixin/clash/mixin_clash.dart';
 import '../../mixin/clash/mixin_clash_config.dart';
 import '../../other/priority.dart';
 
-class ExplosionComponent extends GameComponent with MixinClash {
+class ExplosionComponent extends PositionComponent with MixinClash {
   ExplosionComponent({
     required Vector2 position,
     required Vector2 size,
@@ -20,7 +22,7 @@ class ExplosionComponent extends GameComponent with MixinClash {
   MixinClashConfig clashConfig = const MixinClashConfig(mode: ClashMode.collision, effect: 50);
 
   @override
-  Future<void> onLoad() {
+  FutureOr<void> onLoad() {
     add(RectangleComponent(
       position: Vector2(0, 0),
       priority: 1000,
