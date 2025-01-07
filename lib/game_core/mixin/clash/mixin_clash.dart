@@ -1,8 +1,8 @@
-import 'package:bonfire/bonfire.dart' show RectExt;
 import 'package:flame/components.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:logging/logging.dart';
 
+import '../../other/math_ext.dart';
 import "mixin_clash_config.dart";
 import 'mixin_clash_target.dart';
 

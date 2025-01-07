@@ -1,4 +1,5 @@
-import 'package:bonfire/bonfire.dart' hide FloorComponent;
+import 'package:flame/components.dart';
+import 'package:flame/debug.dart';
 
 import '../../bloc/stage_stats_bloc.dart';
 import '../../bloc/stage_treasury_bloc.dart';
@@ -47,9 +48,14 @@ class GameController extends Component with HasGameReference<GameDev> {
   Future<void> onLoad() async {
     // astarController.test();
     _instructQ.clear();
-    game.add(
-      FpsTextComponent(position: Vector2(0, 100)),
-    );
+    game.addAll([
+      FpsTextComponent(position: Vector2(0, 100))
+        ..add(
+          ChildCounterComponent<Goblin>(
+              target: game.world, position: Vector2(0, 40)),
+        ),
+      // TextGameComponent(text: text, position: position)
+    ]);
 
     event(const GameEvent.createStage());
     event(const GameEvent.enemySpawn());

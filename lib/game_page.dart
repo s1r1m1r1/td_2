@@ -123,111 +123,143 @@ class LoadedGameView extends StatelessWidget {
             backgroundColor: Colors.blueGrey[900]!,
           ),
         ),
-        Padding(
-          padding: margin,
-          child: DragTarget(
-            onMove: (details) {
-              final double dx = details.offset.dx + 50 + 0;
-              final double dy = details.offset.dy - 50.0;
-
-              final center = Offset(dx, dy);
-              GameController.event(
-                  GameEvent.movePointerGlobal(center.toVector2()));
-            },
-            onAcceptWithDetails: (details) {
-              final double dx = details.offset.dx + 50 + 0;
-              final double dy = details.offset.dy - 50.0;
-              final center = Offset(dx, dy);
-              final weaponId = details.data;
-              if (weaponId is! WeaponId) return;
-              GameController.event(
-                  GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
-            },
-            builder: (_, __, ___) => const SizedBox.expand(),
-          ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
+        const _DragTargetZone(margin: margin),
+        _PositionedWeaponBar(
           height: margin.top,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              ...weaponBarState.result.map((i) => Draggable<WeaponId>(
-                    // Data is the value this Draggable stores.
-                    data: i.id,
-                    feedback: SizedBox.square(
-                      dimension: 50,
-                      child: Image(
-                        image: i.barImage,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                    childWhenDragging: SizedBox.square(
-                      dimension: 100,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        // Image with stroke effect
-                        child: Image(
-                          image: i.barImage,
-                          fit: BoxFit.fitHeight,
-                          frameBuilder:
-                              (context, child, frame, wasSynchronouslyLoaded) {
-                            final colored = ColorFiltered(
-                                colorFilter: const ColorFilter.mode(
-                                    Colors.purple, BlendMode.srcIn),
-                                child: child);
-                            // stroke
-                            const s = 2.0;
-                            return Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                ...List.generate(8, (i) {
-                                  final padding = switch (i) {
-                                    0 => const EdgeInsets.fromLTRB(s, s, 0, 0),
-                                    1 => const EdgeInsets.fromLTRB(0, s, s, 0),
-                                    2 => const EdgeInsets.fromLTRB(0, 0, s, s),
-                                    3 => const EdgeInsets.fromLTRB(s, 0, 0, s),
-                                    4 => const EdgeInsets.fromLTRB(s, 0, 0, 0),
-                                    5 => const EdgeInsets.fromLTRB(0, s, 0, 0),
-                                    6 => const EdgeInsets.fromLTRB(0, 0, s, 0),
-                                    7 => const EdgeInsets.fromLTRB(0, 0, 0, s),
-                                    _ => EdgeInsets.zero
-                                  };
-                                  debugPrint('repaint Stack item');
-                                  return Padding(
-                                    padding: padding,
-                                    child: colored,
-                                  );
-                                }),
-                                Padding(
-                                  padding: const EdgeInsets.all(s),
-                                  child: SizedBox(child: child),
-                                ),
-                              ],
-                            );
-                          },
-                          // color: Colors.grey,
-                          // colorBlendMode: BlendMode.saturation,
-                        ),
-                      ),
-                    ),
-                    child: SizedBox.square(
-                      dimension: 100,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
-                        child: Image(
-                          image: i.barImage,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    ),
-                  )),
-            ],
-          ),
+          weaponBarState: weaponBarState,
         ),
       ],
+    );
+  }
+}
+
+class _DragTargetZone extends StatelessWidget {
+  const _DragTargetZone({
+    required this.margin,
+  });
+
+  final EdgeInsetsDirectional margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin,
+      child: DragTarget(
+        onMove: (details) {
+          final double dx = details.offset.dx + 50 + 0;
+          final double dy = details.offset.dy - 50.0;
+
+          final center = Offset(dx, dy);
+          GameController.event(GameEvent.movePointerGlobal(center.toVector2()));
+        },
+        onAcceptWithDetails: (details) {
+          final double dx = details.offset.dx + 50 + 0;
+          final double dy = details.offset.dy - 50.0;
+          final center = Offset(dx, dy);
+          final weaponId = details.data;
+          if (weaponId is! WeaponId) return;
+          GameController.event(
+              GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
+        },
+        builder: (_, __, ___) => const SizedBox.expand(),
+      ),
+    );
+  }
+}
+
+class _PositionedWeaponBar extends StatelessWidget {
+  const _PositionedWeaponBar({
+    required this.height,
+    required this.weaponBarState,
+  });
+
+  final double height;
+  final $SuccessWeaponBarState weaponBarState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: 0,
+      height: height,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          ...weaponBarState.result.map(
+            (i) => Draggable<WeaponId>(
+              // Data is the value this Draggable stores.
+              data: i.id,
+              feedback: SizedBox.square(
+                dimension: 50,
+                child: Image(
+                  image: i.barImage,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              childWhenDragging: SizedBox.square(
+                dimension: 100,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  // Image with stroke effect
+                  child: Image(
+                    image: i.barImage,
+                    fit: BoxFit.fitHeight,
+                    frameBuilder:
+                        (context, child, frame, wasSynchronouslyLoaded) {
+                      final colored = ColorFiltered(
+                          colorFilter: const ColorFilter.mode(
+                              Colors.purple, BlendMode.srcIn),
+                          child: child);
+                      // stroke
+                      const s = 2.0;
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          ...List.generate(8, (i) {
+                            final padding = switch (i) {
+                              0 => const EdgeInsets.fromLTRB(s, s, 0, 0),
+                              1 => const EdgeInsets.fromLTRB(0, s, s, 0),
+                              2 => const EdgeInsets.fromLTRB(0, 0, s, s),
+                              3 => const EdgeInsets.fromLTRB(s, 0, 0, s),
+                              4 => const EdgeInsets.fromLTRB(s, 0, 0, 0),
+                              5 => const EdgeInsets.fromLTRB(0, s, 0, 0),
+                              6 => const EdgeInsets.fromLTRB(0, 0, s, 0),
+                              7 => const EdgeInsets.fromLTRB(0, 0, 0, s),
+                              _ => EdgeInsets.zero
+                            };
+                            debugPrint('repaint Stack item');
+                            return Padding(
+                              padding: padding,
+                              child: colored,
+                            );
+                          }),
+                          Padding(
+                            padding: const EdgeInsets.all(s),
+                            child: SizedBox(child: child),
+                          ),
+                        ],
+                      );
+                    },
+                    // color: Colors.grey,
+                    // colorBlendMode: BlendMode.saturation,
+                  ),
+                ),
+              ),
+              child: SizedBox.square(
+                dimension: 100,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
+                  child: Image(
+                    image: i.barImage,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

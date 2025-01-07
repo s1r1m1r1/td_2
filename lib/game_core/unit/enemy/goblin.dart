@@ -15,19 +15,19 @@ import '../../other/priority.dart';
 import '../../tile/stage_map.dart';
 import 'enemy_id.dart';
 import 'enemy_sprite_sheet.dart';
-import 'enemy_unit.dart';
-import 'health.dart';
-import 'life_bar.dart';
+import 'mixin_health.dart';
+import 'mixin_health_bar.dart';
+import 'unit_sprite_animation.dart';
 
 final _log = Logger(Goblin.loggerName);
 
-final class Goblin extends ScannableEnemy
+final class Goblin extends UnitSpriteAnimation
     with
         MixinClashTarget,
         MixinRadarTarget,
         MixinHealth,
         MixinMovable,
-        UseHealthBar,
+        MixinHealthBar,
         MixinFxDamage,
         HasGameReference<GameDev> {
   static const loggerName = 'Goblin';
