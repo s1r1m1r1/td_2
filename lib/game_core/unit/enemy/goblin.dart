@@ -29,7 +29,7 @@ final class Goblin extends ScannableEnemy
         MixinMovable,
         UseHealthBar,
         MixinFxDamage,
-        HasGameReference<BonfireGameDev> {
+        HasGameReference<GameDev> {
   static const loggerName = 'Goblin';
   bool active = true;
   late final EnemyId id;

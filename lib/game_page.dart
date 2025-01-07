@@ -1,5 +1,4 @@
-import 'package:bonfire/bonfire.dart';
-import 'package:bonfire/map/base/layer.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -9,9 +8,12 @@ import 'bloc/stage_stats_bloc.dart';
 import 'bloc/stage_treasury_bloc.dart';
 import 'bloc/weapon_bar_bloc.dart';
 import 'domain/weapon_option.dart';
+import 'game_core/camera/game_camera_config.dart';
+import 'game_core/camera/move_camera_controller.dart';
 import 'game_core/controller/game_controller.dart';
 import 'game_core/controller/game_event.dart';
-import 'game_core/controller/move_camera_controller.dart';
+import 'game_core/other/offset_ext.dart';
+import 'game_core/other/screen_util.dart';
 import 'game_core/tile/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
 import 'game_widget_dev.dart';
@@ -37,7 +39,7 @@ class GamePage extends StatelessWidget {
               GetIt.I.get<WeaponBarBloc>()..add(const WeaponBarEvent.read()),
         ),
       ],
-      child: const GameView(),
+      child: const Center(child: GameView()),
     );
   }
 }
@@ -101,7 +103,7 @@ class LoadedGameView extends StatelessWidget {
       children: [
         Padding(
           padding: margin,
-          child: BonfireWidgetDev(
+          child: GameWidgetDev(
             hudComponents: [
               TowersInterface(moveCamera),
               moveCamera,
@@ -112,20 +114,11 @@ class LoadedGameView extends StatelessWidget {
                   weapons: weaponBarState.result),
             ],
             components: [
-
-              // WorldMap([
-              //   Layer(id: 0, tiles: [
-              //     ...stageState.result.layer.tiles.map((i) => Tile(
-              //         x: i.x.toDouble(),
-              //         y: i.y.toDouble(),
-              //         width: StageMap.tileSize,
-              //         height: StageMap.tileSize,
-              //         sprite: TileSprite(path: i.assetPath)))
-              //   ])
-              // ]),
+              World(),
             ],
-            cameraConfig: CameraConfig(
-              zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),
+            cameraConfig: GameCameraConfig(
+              zoom: ScreenUtil.getZoomFromMaxVisibleTile(
+                  context, StageMap.tileSize, 20),
             ),
             backgroundColor: Colors.blueGrey[900]!,
           ),

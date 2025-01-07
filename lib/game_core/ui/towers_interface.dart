@@ -5,7 +5,7 @@ import '../../game_dev.dart';
 import '../tile/stage_map.dart';
 import 'draggable_button.dart';
 
-class TowersInterface extends PositionComponent with HasGameReference<BonfireGameDev>{
+class TowersInterface extends PositionComponent with HasGameReference<GameDev>{
   TowersInterface(this.mother);
   final MotherPointerMixin mother;
   static const followerWidgetTestId = 'BUTTON';

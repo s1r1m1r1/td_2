@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'game_page.dart';
@@ -12,10 +13,10 @@ import 'utils/logger_listen.dart';
 
 FutureOr<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb) {
-    await Flame.device.setLandscape();
-    await Flame.device.fullScreen();
-  }
+  await Flame.device.setLandscape();
+  await Flame.device.fullScreen();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen(watchRecords);
   GetIt.I.init();

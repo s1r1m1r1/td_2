@@ -1,21 +1,11 @@
-import 'package:bonfire/bonfire.dart';
-import 'package:bonfire/collision/quad_tree/custom_has_quadtree_collision_detection.dart';
+// import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/mixins/pointer_detector.dart';
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
-/// CustomBaseGame created to use `Listener` to capture touch screen gestures.
-/// Apply zoom in canvas.
-/// Reorder components per time frame.
 abstract class BaseGameDev extends FlameGame
-    with
-        PointerDetector,
-        KeyboardEvents,
-        CustomHasQuadTreeCollisionDetection,
-        HasTimeScale {
+    with PointerDetector,  HasTimeScale {
   BaseGameDev({super.world, super.camera});
   bool enabledGestures = true;
   bool enabledKeyboard = true;
@@ -26,14 +16,6 @@ abstract class BaseGameDev extends FlameGame
     _gesturesComponents = [...world.children, ...camera.viewport.children]
         .whereType<PointerDetectorHandler>();
     super.updateTree(dt);
-  }
-
-  /// to get the components that contain gestures
-  Iterable<KeyboardEventListener> get _keyboardComponents {
-    return [
-      ...world.children.query<KeyboardEventListener>(),
-      ...camera.viewport.children.query<Keyboard>(),
-    ];
   }
 
   @override
@@ -108,22 +90,7 @@ abstract class BaseGameDev extends FlameGame
     }
   }
 
-  @override
-  KeyEventResult onKeyEvent(
-    KeyEvent event,
-    Set<LogicalKeyboardKey> keysPressed,
-  ) {
-    var result = KeyEventResult.ignored;
-    if (!enabledKeyboard) {
-      return result;
-    }
-    for (final listener in _keyboardComponents) {
-      if (listener.onKeyboard(event, keysPressed)) {
-        result = KeyEventResult.handled;
-      }
-    }
-    return result;
-  }
+    
 
   @override
   void onRemove() {

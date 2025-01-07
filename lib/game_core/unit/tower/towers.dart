@@ -60,7 +60,7 @@ class CannonTower extends RotationTower {
 }
 
 class RotationTower extends ITowerComponent
-    with MixinRadar, HasGameReference<BonfireGameDev> {
+    with MixinRadar, HasGameReference<GameDev> {
   RotationTower({
     required super.position,
     required Future<SpriteAnimation> baseAnim,

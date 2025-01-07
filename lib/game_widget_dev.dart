@@ -1,26 +1,25 @@
 import 'package:bonfire/background/game_background.dart';
 import 'package:bonfire/base/listener_game_widget.dart';
-import 'package:bonfire/camera/camera_config.dart';
 import 'package:bonfire/color_filter/game_color_filter.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
+import 'game_core/camera/game_camera_config.dart';
 import 'game_dev.dart';
 
-class BonfireWidgetDev extends StatefulWidget {
+class GameWidgetDev extends StatelessWidget {
   final bool debugMode;
   final Color? backgroundColor;
-  final ValueChanged<BonfireGameDev>? onReady;
-  final Map<String, OverlayWidgetBuilder<BonfireGameDev>>? overlayBuilderMap;
+  final ValueChanged<GameDev>? onReady;
+  final Map<String, OverlayWidgetBuilder<GameDev>>? overlayBuilderMap;
   final List<String>? initialActiveOverlays;
   final List<Component>? components;
   final List<Component>? hudComponents;
   final GameBackground? background;
-  final CameraConfig? cameraConfig;
+  final GameCameraConfig? cameraConfig;
   final GameColorFilter? colorFilter;
 
-  const BonfireWidgetDev({
-    // required this.map,
+  const GameWidgetDev({
     super.key,
     this.background,
     this.debugMode = false,
@@ -35,24 +34,19 @@ class BonfireWidgetDev extends StatefulWidget {
   });
 
   @override
-  BonfireWidgetState createState() => BonfireWidgetState();
-}
-
-class BonfireWidgetState extends State<BonfireWidgetDev> {
-  @override
   Widget build(BuildContext context) {
     return ListenerGameWidget(
-      game: BonfireGameDev(
-        components: widget.components,
-        hudComponents: widget.hudComponents,
-        background: widget.background,
-        backgroundColor: widget.backgroundColor,
-        debugMode: widget.debugMode,
-        cameraConfig: widget.cameraConfig,
-        onReady: widget.onReady,
+      game: GameDev(
+        components: components,
+        hudComponents: hudComponents,
+        background: background,
+        backgroundColor: backgroundColor,
+        debugMode: debugMode,
+        cameraConfig: cameraConfig,
+        onReady: onReady,
       ),
-      overlayBuilderMap: widget.overlayBuilderMap,
-      initialActiveOverlays: widget.initialActiveOverlays,
+      overlayBuilderMap: overlayBuilderMap,
+      initialActiveOverlays: initialActiveOverlays,
     );
   }
 }

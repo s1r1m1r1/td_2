@@ -1,4 +1,4 @@
-import 'package:bonfire/bonfire.dart' hide TileComponent;
+import 'package:bonfire/bonfire.dart' hide FloorComponent;
 
 import '../../bloc/stage_stats_bloc.dart';
 import '../../bloc/stage_treasury_bloc.dart';
@@ -13,7 +13,7 @@ import 'controller_process.dart';
 import 'game_event.dart';
 import 'timer_process.dart';
 
-class GameController extends Component with HasGameReference<BonfireGameDev>{
+class GameController extends Component with HasGameReference<GameDev> {
   GameController({
     required this.stage,
     required this.weapons,
@@ -21,15 +21,15 @@ class GameController extends Component with HasGameReference<BonfireGameDev>{
     required this.stageTreasuryBloc,
   });
 
-  StartGateTileComponent? _start;
-  StartGateTileComponent? get startGate {
-    _start =  game.query<StartGateTileComponent>().firstOrNull;
+  StartGateFloorComponent? _start;
+  StartGateFloorComponent? get startGate {
+    _start = game.query<StartGateFloorComponent>().firstOrNull;
     return _start;
   }
 
-  EndGateTileComponent? _end;
-  EndGateTileComponent get endGate {
-    _end ??= game.query<EndGateTileComponent>().first;
+  EndGateFloorComponent? _end;
+  EndGateFloorComponent get endGate {
+    _end ??= game.query<EndGateFloorComponent>().first;
     return _end!;
   }
 
@@ -53,9 +53,8 @@ class GameController extends Component with HasGameReference<BonfireGameDev>{
 
     event(const GameEvent.createStage());
     event(const GameEvent.enemySpawn());
-    game.camera
-      ..moveTo(Vector2.all(200))
-      ..moveOnlyMapArea = true;
+    game.camera.moveTo(Vector2.all(200));
+    // ..moveOnlyMapArea = true;
     return super.onMount();
   }
 

@@ -9,7 +9,7 @@ class MoveCameraController extends Component
     with
         PointerDetectorHandler,
         MotherPointerMixin,
-        HasGameReference<BonfireGameDev> {
+        HasGameReference<GameDev> {
   Vector2 _startPoint = Vector2.zero();
   Vector2 _startCameraPosition = Vector2.zero();
   bool _onlyMouse = false;
@@ -22,7 +22,7 @@ class MoveCameraController extends Component
       return false;
     }
     _startPoint = event.position.toVector2();
-    _startCameraPosition = game.camera.position;
+    _startCameraPosition = game.camera.viewfinder.position;
     return false;
   }
 
@@ -36,7 +36,7 @@ class MoveCameraController extends Component
     double distance = _startPoint.distanceTo(event.position.toVector2());
     if (distance > 1) {
       if (_acceptGesture(event, _mouseButton)) {
-        double zoom = game.camera.zoom;
+        double zoom = game.camera.viewfinder.zoom;
         double px = _startPoint.x - event.position.dx;
         double py = _startPoint.y - event.position.dy;
         game.camera.stop();
