@@ -12,7 +12,7 @@ import '../../mixin/mixin_movable.dart';
 import '../../mixin/radar/mixin_radar_target.dart';
 import '../../mixin/unit/mixin_fx_damage.dart';
 import '../../other/priority.dart';
-import '../../tile/stage_map.dart';
+import '../../other/stage_map.dart';
 import 'enemy_id.dart';
 import 'enemy_sprite_sheet.dart';
 import 'mixin_health.dart';

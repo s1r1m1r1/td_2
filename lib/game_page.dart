@@ -14,7 +14,7 @@ import 'game_core/controller/game_controller.dart';
 import 'game_core/controller/game_event.dart';
 import 'game_core/other/offset_ext.dart';
 import 'game_core/other/screen_util.dart';
-import 'game_core/tile/stage_map.dart';
+import 'game_core/other/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
 import 'game_widget_dev.dart';
 
@@ -97,6 +97,7 @@ class LoadedGameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('MEDIA Query ${MediaQuery.of(context).size}');
     const margin = EdgeInsetsDirectional.only(top: 100);
     final moveCamera = MoveCameraController()..setMargin(margin);
     return Stack(
@@ -116,11 +117,6 @@ class LoadedGameView extends StatelessWidget {
             components: [
               World(),
             ],
-            cameraConfig: GameCameraConfig(
-              zoom: ScreenUtil.getZoomFromMaxVisibleTile(
-                  context, StageMap.tileSize, 20),
-            ),
-            backgroundColor: Colors.blueGrey[900]!,
           ),
         ),
         const _DragTargetZone(margin: margin),

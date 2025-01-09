@@ -8,7 +8,7 @@ import '../../domain/weapon_option.dart';
 import '../../game_dev.dart';
 import '../mixin/clash/mixin_clash.dart';
 import '../mixin/radar/mixin_radar.dart';
-import '../tile/tile_component.dart';
+import '../tile/floor_component.dart';
 import '../unit/enemy/enemy.dart';
 import 'controller_process.dart';
 import 'game_event.dart';
@@ -56,12 +56,12 @@ class GameController extends Component with HasGameReference<GameDev> {
         ),
       // TextGameComponent(text: text, position: position)
     ]);
-
+    // children.register<Enemy>();
     event(const GameEvent.createStage());
     event(const GameEvent.enemySpawn());
     game.camera.moveTo(Vector2.all(200));
     // ..moveOnlyMapArea = true;
-    return super.onMount();
+    return super.onLoad();
   }
 
   void _processInstruction() {

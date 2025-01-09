@@ -6,7 +6,7 @@ import 'package:bonfire/util/text_damage_component.dart'
 import 'package:flame/components.dart';
 import 'package:flutter/painting.dart' show TextStyle;
 
-import '../../tile/stage_map.dart';
+import '../../other/stage_map.dart';
 
 mixin MixinFxDamage on PositionComponent {
   /// Add in the game a text with animation representing damage received

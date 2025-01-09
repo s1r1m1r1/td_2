@@ -16,7 +16,11 @@ FutureOr<void> main() async {
   await Flame.device.setLandscape();
   await Flame.device.fullScreen();
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    [
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ],
+  );
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen(watchRecords);
   GetIt.I.init();

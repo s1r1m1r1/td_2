@@ -13,6 +13,7 @@ abstract class BaseGameDev extends FlameGame
 
   @override
   void updateTree(double dt) {
+    // todo can improve this ??
     _gesturesComponents = [...world.children, ...camera.viewport.children]
         .whereType<PointerDetectorHandler>();
     super.updateTree(dt);
