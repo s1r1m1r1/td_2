@@ -4,10 +4,10 @@ import 'package:flame/components.dart';
 import 'package:logging/logging.dart';
 import '../other/priority.dart';
 
-final _log = Logger(TileFXController.loggerName);
+final _log = Logger(FloorFXController.loggerName);
 
-class TileFXController extends PositionComponent {
-  TileFXController();
+class FloorFXController extends PositionComponent {
+  FloorFXController();
   static const loggerName = 'TileFXController';
   PositionComponent? effect;
 

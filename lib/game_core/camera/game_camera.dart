@@ -7,6 +7,7 @@ import 'package:bonfire/camera/camera_effects.dart'
     show MyFollowBehavior, ShakeEffect;
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame/experimental.dart';
 
 import '../../game_dev.dart';
 import '../other/math_ext.dart';
@@ -213,6 +214,8 @@ class GameCamera extends CameraComponent with HasGameReference<GameDev> {
   //     setBounds(null);
   //   }
   // }
+
+
 
   Vector2 worldToScreen(Vector2 worldPosition) {
     return (worldPosition - topleft) * viewfinder.zoom;

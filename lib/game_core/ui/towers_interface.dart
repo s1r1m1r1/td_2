@@ -1,11 +1,9 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
-import 'package:td_2/game_core/mixin/mother_pointer_mixin.dart';
 import '../../game_dev.dart';
-import '../tile/stage_map.dart';
-import 'draggable_button.dart';
+import '../camera/mother_pointer_mixin.dart';
 
-class TowersInterface extends PositionComponent with HasGameReference<GameDev>{
+class TowersInterface extends PositionComponent with HasGameReference<GameDev> {
   TowersInterface(this.mother);
   final MotherPointerMixin mother;
   static const followerWidgetTestId = 'BUTTON';

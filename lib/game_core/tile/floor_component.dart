@@ -5,11 +5,11 @@ import 'dart:ui';
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:logging/logging.dart';
+
 import '../../game_dev.dart';
 import '../other/priority.dart';
-
+import '../other/stage_map.dart';
 import '../unit/tower/towers.dart';
-import 'stage_map.dart';
 import 'x_tile.dart';
 
 enum TowerType { missile, rocket }

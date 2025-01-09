@@ -1,6 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import '../other/priority.dart';
-import '../tile/stage_map.dart';
+import '../other/stage_map.dart';
 import 'common_sprite_sheet.dart';
 import 'potion_life.dart';
 

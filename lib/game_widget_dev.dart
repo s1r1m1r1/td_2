@@ -9,7 +9,6 @@ import 'game_dev.dart';
 
 class GameWidgetDev extends StatelessWidget {
   final bool debugMode;
-  final Color? backgroundColor;
   final ValueChanged<GameDev>? onReady;
   final Map<String, OverlayWidgetBuilder<GameDev>>? overlayBuilderMap;
   final List<String>? initialActiveOverlays;
@@ -23,7 +22,6 @@ class GameWidgetDev extends StatelessWidget {
     super.key,
     this.background,
     this.debugMode = false,
-    this.backgroundColor,
     this.colorFilter,
     this.hudComponents,
     this.components,
@@ -40,7 +38,6 @@ class GameWidgetDev extends StatelessWidget {
         components: components,
         hudComponents: hudComponents,
         background: background,
-        backgroundColor: backgroundColor,
         debugMode: debugMode,
         cameraConfig: cameraConfig,
         onReady: onReady,

@@ -7,7 +7,7 @@ import '../domain/enums/tile_type.dart';
 import '../domain/map_option.dart';
 import '../domain/stage_option.dart';
 import '../domain/wave_option.dart';
-import '../game_core/tile/stage_map.dart';
+import '../game_core/other/stage_map.dart';
 
 part 'stage_bloc.freezed.dart';
 

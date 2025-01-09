@@ -3,15 +3,18 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import 'package:flame/image_composition.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
 import '../../domain/enums/enemy_type.dart';
 import '../../domain/enums/tile_type.dart';
 import '../../domain/weapon_option.dart';
 import '../other/priority.dart';
-import '../tile/file_fx_controller.dart';
-import '../tile/stage_map.dart';
-import '../tile/tile_component.dart';
+import '../tile/floor_component.dart';
+import '../tile/floor_fx_controller.dart';
+import '../other/stage_map.dart';
+import 'package:flame/experimental.dart' as flameExp;
 import '../unit/enemy/enemy.dart';
 import '../unit/tower/towers.dart';
 import 'astar_controller.dart';
@@ -30,7 +33,7 @@ abstract class GameInstruction {
     switch (event) {
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
-        controller.game.add(TileFXController());
+        controller.game.add(FloorFXController());
         astarController.init(
             controller.stage.layer.width, controller.stage.layer.height);
         for (final tileOption in controller.stage.layer.tiles) {
@@ -64,8 +67,17 @@ abstract class GameInstruction {
           }
           tile.add(SpriteComponent.fromImage(image,
               size: tile.size, priority: Priority.tileOver));
-          controller.game.add(tile);
-          controller.game.world;
+          controller
+            ..game.add(tile)
+            ..game.world;
+          final canvasSize = controller.game.canvasSize;
+          controller.game.camera
+              .setBounds(flameExp.Rectangle.fromRect(Rect.fromLTWH(
+            0 + (canvasSize.x / 2),
+            0 + (canvasSize.y / 2),
+            -(canvasSize.x / 2),
+            -(canvasSize.y / 2),
+          )));
         }
       case EnemyGetDamagedGameEvent():
         _log.info('EnemyGetDamagedGameEvent');
@@ -152,7 +164,7 @@ abstract class GameInstruction {
           item = i;
           break;
         }
-        final fx = controller.game.query<TileFXController>().firstOrNull;
+        final fx = controller.game.query<FloorFXController>().firstOrNull;
         if (item == null) {
           fx?.removeFX();
           break;
@@ -164,7 +176,7 @@ abstract class GameInstruction {
         }
       case FinishPointerGlobalGameEvent():
         final localPos = controller.game.camera.globalToLocal(event.position);
-        final fx = controller.game.query<TileFXController>().firstOrNull;
+        final fx = controller.game.query<FloorFXController>().firstOrNull;
         fx?.removeFX();
         final grids = controller.game.query<FoundationFloorComponent>();
         FoundationFloorComponent? item;

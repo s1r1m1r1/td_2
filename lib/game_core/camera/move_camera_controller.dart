@@ -1,19 +1,19 @@
+
 import 'package:bonfire/bonfire.dart';
 import 'package:bonfire/mixins/pointer_detector.dart';
 import 'package:flutter/gestures.dart';
 
 import '../../game_dev.dart';
-import '../mixin/mother_pointer_mixin.dart';
+import 'mother_pointer_mixin.dart';
 
 class MoveCameraController extends Component
-    with
-        PointerDetectorHandler,
-        MotherPointerMixin,
-        HasGameReference<GameDev> {
+    with PointerDetectorHandler, MotherPointerMixin, HasGameReference<GameDev> {
   Vector2 _startPoint = Vector2.zero();
   Vector2 _startCameraPosition = Vector2.zero();
   bool _onlyMouse = false;
   MouseButton _mouseButton = MouseButton.left;
+
+  
 
   @override
   bool handlerPointerDown(PointerDownEvent event) {

@@ -10,7 +10,7 @@ import '../../mixin/radar/mixin_radar_config.dart';
 import '../../mixin/radar/mixin_radar_target.dart';
 import '../../other/math_ext.dart';
 import '../../other/priority.dart';
-import '../../tile/stage_map.dart';
+import '../../other/stage_map.dart';
 import '../bullet/bullet_component.dart';
 import 'base_detail.dart';
 import 'tower_sprite_sheet.dart';
