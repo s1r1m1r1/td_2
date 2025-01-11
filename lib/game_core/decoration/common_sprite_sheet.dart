@@ -166,4 +166,6 @@ class CommonSpriteSheet {
   static Future<Sprite> get spikesSprite => Sprite.load('itens/spikes.png');
   static Future<Sprite> get potionLifeSprite =>
       Sprite.load('itens/potion_life.png');
+
+ static Future<Sprite> get isoTile1 => Sprite.load('kenney_sketch-desert/Tiles/grass_center_E.png');
 }

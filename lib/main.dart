@@ -25,16 +25,23 @@ FutureOr<void> main() async {
   Logger.root.onRecord.listen(watchRecords);
   GetIt.I.init();
   PlatformDispatcher.instance.onError = (error, stack) {
-    debugPrintStack(stackTrace: stack, label: '${red}PlatformDispatcher$reset');
+    debugPrintStack(
+      stackTrace: stack,
+      label: '${red}PlatformDispatcher$reset$error',
+    );
     return true;
   };
 
   FlutterError.onError = (details) {
     debugPrintStack(
-        stackTrace: details.stack, label: '${red}FlutterError.onError $reset');
+      stackTrace: details.stack,
+      label: '${red}FlutterError.onError$reset${details.exception}',
+    );
   };
 
-  runApp(const MaterialApp(
-    home: GamePage(),
-  ));
+  runApp(
+    const MaterialApp(
+      home: GamePage(),
+    ),
+  );
 }

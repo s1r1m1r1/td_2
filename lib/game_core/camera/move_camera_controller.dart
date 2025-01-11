@@ -39,7 +39,6 @@ class MoveCameraController extends Component
         double zoom = game.camera.viewfinder.zoom;
         double px = _startPoint.x - event.position.dx;
         double py = _startPoint.y - event.position.dy;
-        game.camera.stop();
         game.camera.moveTo(
           _startCameraPosition.translated(
             px / zoom,

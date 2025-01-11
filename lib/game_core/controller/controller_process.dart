@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flame/components.dart';
+import 'package:flame/experimental.dart' as flameExp;
 import 'package:flame/flame.dart';
 import 'package:flame/image_composition.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
 import '../../domain/enums/enemy_type.dart';
 import '../../domain/enums/tile_type.dart';
 import '../../domain/weapon_option.dart';
+import '../decoration/common_sprite_sheet.dart';
 import '../other/priority.dart';
+import '../other/stage_map.dart';
 import '../tile/floor_component.dart';
 import '../tile/floor_fx_controller.dart';
-import '../other/stage_map.dart';
-import 'package:flame/experimental.dart' as flameExp;
 import '../unit/enemy/enemy.dart';
 import '../unit/tower/towers.dart';
 import 'astar_controller.dart';
@@ -31,6 +31,17 @@ abstract class GameInstruction {
       GameEvent event, GameController controller) async {
     // var continueEvent = event;
     switch (event) {
+      // case CreateStageGameEvent():
+      //   final sprite = await CommonSpriteSheet.isoTile1;
+      //   List.generate(10, (x) {
+      //     List.generate(8, (y) {
+      //       controller.game.world.add(SpriteComponent(
+      //         position: Vector2(16.0 * x + (-16.0 * y), 8.0 * x + (8.0 * y)),
+      //         size: Vector2(32, 48),
+      //         sprite: sprite,
+      //       ));
+      //     });
+      //   });
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
         controller.game.add(FloorFXController());
@@ -70,6 +81,7 @@ abstract class GameInstruction {
           controller
             ..game.add(tile)
             ..game.world;
+
           final canvasSize = controller.game.canvasSize;
           controller.game.camera
               .setBounds(flameExp.Rectangle.fromRect(Rect.fromLTWH(
