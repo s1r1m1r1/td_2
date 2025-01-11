@@ -95,15 +95,6 @@ class RoadFloorComponent extends FloorComponent {
     required super.position,
     required super.gridPos,
   });
-
-  @override
-  Future<void> onLoad() {
-    add(RectangleComponent(
-        size: size,
-        paint: Paint()..color = Colors.white24,
-        priority: Priority.overAll));
-    return super.onLoad();
-  }
 }
 
 sealed class FloorComponent extends PositionComponent
@@ -151,7 +142,7 @@ sealed class FloorComponent extends PositionComponent
   Future<void> onLoad() async {
     await super.onLoad();
     decoration =
-        XTile(position: position, size: Vector2.all(StageMap.tileSize * 0.8));
+        XTile(position: position, size: StageMap.floorSize * 1.0 );
 
     game.add(decoration!);
     // gameRef.add(decoration2!);

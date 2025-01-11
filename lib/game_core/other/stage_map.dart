@@ -8,6 +8,7 @@ abstract class Vec2 {
 
 class StageMap {
   static double tileSize = 45;
+  static Vector2 floorSize = Vector2(1 * tileSize, 1.5 * tileSize);
   static const String wallBottom = 'tile/wall_bottom.png';
   static const String wall = 'tile/wall.png';
   static const String wallTop = 'tile/wall_top.png';
@@ -24,6 +25,14 @@ class StageMap {
       (x * tileSize).toDouble(),
       (y * tileSize).toDouble(),
     );
+  }
+
+  static Vector2 toIsometricPoint(int x, int y) {
+    // ~ 0.5, play with value for settings
+    final stepX = floorSize.x * 0.48;
+    // // ~ 1/6 , play with value for settings
+    final stepY = floorSize.y * 0.16;
+    return Vector2(stepX * x + (-stepX * y), stepY * x + (stepY * y));
   }
 
   static Point<int> toAstarPos(Vector2 position) {

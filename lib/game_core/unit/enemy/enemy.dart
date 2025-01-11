@@ -119,7 +119,7 @@ final class Enemy extends UnitSpriteAnimation
       _log.info("Path no empty");
       final next = _path.removeLast();
       final from = position;
-      final to = StageMap.toRelative(next.x, next.y);
+      final to = StageMap.toIsometricPoint(next.x, next.y);
       _log.info("Path from: $position to $to");
       super.moveFromTo(
           from: from, to: to, onFinish: pathNextMove, fixedAngle: 0.0);

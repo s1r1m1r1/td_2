@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart' as flameExp;
-import 'package:flame/flame.dart';
 import 'package:flame/image_composition.dart';
 import 'package:logging/logging.dart';
 
@@ -31,53 +30,53 @@ abstract class GameInstruction {
       GameEvent event, GameController controller) async {
     // var continueEvent = event;
     switch (event) {
-      // case CreateStageGameEvent():
-      //   final sprite = await CommonSpriteSheet.isoTile1;
-      //   List.generate(10, (x) {
-      //     List.generate(8, (y) {
-      //       controller.game.world.add(SpriteComponent(
-      //         position: Vector2(16.0 * x + (-16.0 * y), 8.0 * x + (8.0 * y)),
-      //         size: Vector2(32, 48),
-      //         sprite: sprite,
-      //       ));
-      //     });
-      //   });
       case CreateStageGameEvent():
+        final sprite = await CommonSpriteSheet.isoTile1;
+
         _log.info('CreateStageGameEvent');
         controller.game.add(FloorFXController());
         astarController.init(
             controller.stage.layer.width, controller.stage.layer.height);
         for (final tileOption in controller.stage.layer.tiles) {
           late final FloorComponent tile;
-          final image = await Flame.images.load(tileOption.assetPath);
+          // final image = await Flame.images.load(tileOption.assetPath);
           switch (tileOption.type) {
             case TileType.start:
               tile = StartGateFloorComponent(
-                size: Vector2.all(StageMap.tileSize),
-                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                size: StageMap.floorSize,
+                position: StageMap.toIsometricPoint(tileOption.x, tileOption.y),
+                // position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
               );
             case TileType.end:
               tile = EndGateFloorComponent(
-                size: Vector2.all(StageMap.tileSize),
-                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                size: StageMap.floorSize,
+
+                position: StageMap.toIsometricPoint(tileOption.x, tileOption.y),
+
+                // position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
               );
             case TileType.road:
               tile = RoadFloorComponent(
-                size: Vector2.all(StageMap.tileSize),
-                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                size: StageMap.floorSize,
+
+                position: StageMap.toIsometricPoint(tileOption.x, tileOption.y),
+
+                // position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
               );
             case TileType.foundation:
               tile = FoundationFloorComponent(
-                size: Vector2.all(StageMap.tileSize),
-                position: StageMap.toRelative(tileOption.x, tileOption.y),
+                size: StageMap.floorSize,
+                // position: StageMap.toRelative(tileOption.x, tileOption.y),
+                position: StageMap.toIsometricPoint(tileOption.x, tileOption.y),
+
                 gridPos: Point(tileOption.x, tileOption.y),
               );
           }
-          tile.add(SpriteComponent.fromImage(image,
-              size: tile.size, priority: Priority.tileOver));
+          tile.add(SpriteComponent(
+              sprite: sprite, size: tile.size, priority: Priority.tileOver));
           controller
             ..game.add(tile)
             ..game.world;

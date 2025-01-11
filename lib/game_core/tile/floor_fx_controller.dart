@@ -20,7 +20,13 @@ class FloorFXController extends PositionComponent {
     required Vector2 size,
   }) {
     effect?.removeFromParent();
-    effect = RectangleComponent(
+    effect = PolygonComponent([
+      Vector2(size.x / 2, 0),
+      Vector2(size.x, size.y * 0.16),
+      Vector2(size.x / 2, size.y * 0.32),
+      Vector2(0, size.y * 0.16),
+      Vector2(size.x / 2, 0),
+    ],
         position: pos,
         priority: Priority.overAll,
         size: size,
@@ -34,12 +40,21 @@ class FloorFXController extends PositionComponent {
     required Vector2 size,
   }) {
     effect?.removeFromParent();
-    effect = RectangleComponent(
-        priority: Priority.overAll,
-        position: pos,
-        size: size,
-        paint: Paint()
-          ..color = const Color.fromARGB(255, 63, 218, 68).withAlpha(100));
+    effect = PolygonComponent(
+      [
+        Vector2(size.x / 2, 0),
+        Vector2(size.x, size.y * 0.16),
+        Vector2(size.x / 2, size.y * 0.32),
+        Vector2(0, size.y * 0.16),
+        Vector2(size.x / 2, 0),
+      ],
+      position: pos,
+      priority: Priority.overAll,
+      size: size,
+      paint: Paint()
+        ..color = const Color.fromARGB(255, 63, 218, 68).withAlpha(100),
+    );
+
     parent?.add(effect!);
   }
 

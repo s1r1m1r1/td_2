@@ -4,13 +4,18 @@ class TowerSpriteSheet {
   static Future<SpriteAnimation> cannonSprite() {
     return Sprite.load('weapon/Cannon.png').toAnimation();
   }
+
   static Future<SpriteAnimation> missileSprite() {
     return Sprite.load('weapon/Missile_Launcher.png').toAnimation();
   }
 
-  static Future<SpriteAnimation> gun2Sprite() {
-    return Sprite.load('weapon/Cannon2.png').toAnimation();
+  static Future<SpriteAnimation> tower1() {
+    return Sprite.load('kenney_tower-defense-kit/Models/.png').toAnimation();
   }
+
+  // static Future<SpriteAnimation> gun2Sprite() {
+  //   return Sprite.load('weapon/Cannon2.png').toAnimation();
+  // }
 
   static Future<Sprite> gun3Sprite() {
     return Sprite.load('weapon/Cannon3.png');
