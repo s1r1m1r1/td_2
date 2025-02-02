@@ -17,7 +17,13 @@ import 'game_core/tile/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key});
+  static Route<void> route() {
+    return MaterialPageRoute<void>(
+      builder: (_) => const GamePage._(),
+    );
+  }
+
+  const GamePage._();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +77,6 @@ class GameView extends StatelessWidget {
                   }
                 },
               );
-              
           }
         },
       ),
@@ -137,7 +142,7 @@ class LoadedGameView extends StatelessWidget {
                     sprite: TileSprite(path: i.assetPath)))
               ])
             ]),
-            backgroundColor: Colors.blueGrey[900]!,
+            backgroundColor: Colors.blueGrey[900],
           ),
         ),
         Padding(

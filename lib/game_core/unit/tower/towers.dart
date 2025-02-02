@@ -171,6 +171,18 @@ class RotationTower extends ITowerComponent with MixinRadar {
   }
 
   @override
+  void render(Canvas canvas) {
+    // canvas.drawCircle(
+    //     (size / 2).toOffset(),
+    //     100.0,
+    //     Paint()
+    //       ..style = PaintingStyle.fill
+    //       ..color = Colors.red);
+
+    super.render(canvas);
+  }
+
+  @override
   void onMount() {
     anchor = Anchor.topLeft;
     super.onMount();

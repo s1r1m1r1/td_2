@@ -8,17 +8,22 @@ environment:
 
 dependencies:
   astar_dart:
-    git:
-      url: https://github.com/s1r1m1r1/astar_dart.git
-      ref: develop
+    ^2.1.0
+    # git: url: https://github.com/s1r1m1r1/astar_dart.git ref: develop
+  audioplayers: ^6.1.1
+  bloc: ^8.1.4
   bonfire: 3.13.0
   # bonfire: 3.12.2
+  equatable: ^2.0.7
   fast_noise: ^1.0.1
   flame: ^1.21.0
   # flame: ^1.18.0
+  flame_audio: ^2.10.7
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  flutter_localizations:
+    sdk: flutter
   freezed_annotation: ^2.4.4
 
   get_it: ^8.0.3
@@ -32,6 +37,10 @@ dev_dependencies:
   freezed: ^2.5.2
   injectable_generator: ^2.6.2
   json_serializable: ^6.8.0
+  flutter_gen_runner: ^5.8.0
+  #  flutter pub run intl_utils:generate
+  intl_utils: ^2.8.5
+
   test: any
 
 # The following section is specific to Flutter.
@@ -71,3 +80,39 @@ flutter:
     - assets/images/solaria/
     - assets/images/noise/
     - assets/images/weapon/
+    - assets/audio/music/
+    - assets/audio/sfx/
+# -------------------------------- int generate ----------------------------------------
+flutter_intl:
+  enabled: true
+#  ------------------------------- Flutter GEN -----------------------------------------
+
+flutter_gen:
+  output: lib/generated/ # Optional (default: lib/gen/)
+  line_length: 80 # Optional (default: 80)
+
+  integrations:
+    flutter_svg: false
+    rive: false
+    lottie: false
+
+  assets:
+    enabled: true
+
+    outputs:
+      class_name: Assets
+      package_parameter_enabled: false
+      # Assets.imagesChip
+      # style: camel-case
+
+      # Assets.images_chip
+      # style: snake-case
+
+      # Assets.images.chip (default style)
+      style: dot-delimiter
+
+    # exclude:
+    # - assets-extern/*
+    # - pictures/chip5.jpg
+#  ------------------------------------------------------------------------------------
+
