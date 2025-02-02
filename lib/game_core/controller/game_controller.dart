@@ -1,18 +1,20 @@
-import 'package:bonfire/bonfire.dart' hide TileComponent;
+import 'package:flame/components.dart';
+import 'package:flame/debug.dart';
 
 import '../../bloc/stage_stats_bloc.dart';
 import '../../bloc/stage_treasury_bloc.dart';
 import '../../domain/stage_option.dart';
 import '../../domain/weapon_option.dart';
+import '../../game_dev.dart';
 import '../mixin/clash/mixin_clash.dart';
 import '../mixin/radar/mixin_radar.dart';
-import '../tile/tile_component.dart';
-import '../unit/enemy/goblin.dart';
+import '../tile/floor_component.dart';
+import '../unit/enemy/enemy.dart';
 import 'controller_process.dart';
 import 'game_event.dart';
 import 'timer_process.dart';
 
-class GameController extends GameComponent {
+class GameController extends Component with HasGameReference<GameDev> {
   GameController({
     required this.stage,
     required this.weapons,
@@ -20,16 +22,15 @@ class GameController extends GameComponent {
     required this.stageTreasuryBloc,
   });
 
-  late final game = gameRef;
-  StartGateTileComponent? _start;
-  StartGateTileComponent get startGate {
-    _start ??= game.query<StartGateTileComponent>().first;
-    return _start!;
+  StartGateFloorComponent? _start;
+  StartGateFloorComponent? get startGate {
+    _start = game.query<StartGateFloorComponent>().firstOrNull;
+    return _start;
   }
 
-  EndGateTileComponent? _end;
-  EndGateTileComponent get endGate {
-    _end ??= game.query<EndGateTileComponent>().first;
+  EndGateFloorComponent? _end;
+  EndGateFloorComponent get endGate {
+    _end ??= game.query<EndGateFloorComponent>().first;
     return _end!;
   }
 
@@ -47,16 +48,20 @@ class GameController extends GameComponent {
   Future<void> onLoad() async {
     // astarController.test();
     _instructQ.clear();
-    game.add(
-      FpsTextComponent(position: Vector2(0, 100)),
-    );
-
+    game.addAll([
+      FpsTextComponent(position: Vector2(0, 100))
+        ..add(
+          ChildCounterComponent<Enemy>(
+              target: game.world, position: Vector2(0, 40)),
+        ),
+      // TextGameComponent(text: text, position: position)
+    ]);
+    // children.register<Enemy>();
     event(const GameEvent.createStage());
     event(const GameEvent.enemySpawn());
-    gameRef.camera
-      ..moveTo(Vector2.all(200))
-      ..moveOnlyMapArea = true;
-    return super.onMount();
+    game.camera.moveTo(Vector2.all(200));
+    // ..moveOnlyMapArea = true;
+    return super.onLoad();
   }
 
   void _processInstruction() {
@@ -85,12 +90,12 @@ class GameController extends GameComponent {
 
   void _processRadarScan() {
     final radars = game.query<MixinRadar>();
-    final scans = game.query<Goblin>().toList();
+    final scans = game.query<Enemy>().toList();
 
     for (final r in radars) {
       r.radarScan(scans);
     }
-    final clashes = gameRef.query<MixinClash>();
+    final clashes = game.query<MixinClash>();
     for (final c in clashes) {
       c.clashScan(scans);
     }

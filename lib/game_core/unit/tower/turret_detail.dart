@@ -1,10 +1,11 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 
+import '../../mixin/mixin_sprite_animation.dart';
 import 'tower_rotate_effect.dart';
 
-class TurretDetail extends GameComponent
-    with UseSpriteAnimation, UseAssetsLoader {
+class TurretDetail extends PositionComponent
+    with MixinSpriteAnimation, UseAssetsLoader {
   SpriteAnimation? _anim;
   TurretDetail({
     required Vector2 position,

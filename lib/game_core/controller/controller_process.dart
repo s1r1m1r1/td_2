@@ -1,21 +1,26 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:bonfire/bonfire.dart' hide TileComponent;
+import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/image_composition.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-import 'package:td_2/domain/enums/tile_type.dart';
-import 'package:td_2/domain/weapon_option.dart';
-import 'package:td_2/game_core/controller/astar_controller.dart';
-import 'package:td_2/game_core/controller/timer_process.dart';
-import 'package:td_2/game_core/controller/game_controller.dart';
-import 'package:td_2/domain/enums/enemy_type.dart';
-import 'package:td_2/game_core/tile/file_fx_controller.dart';
-import '../tile/stage_map.dart';
-import '../unit/enemy/goblin.dart';
+
+import '../../domain/enums/enemy_type.dart';
+import '../../domain/enums/tile_type.dart';
+import '../../domain/weapon_option.dart';
+import '../other/priority.dart';
+import '../tile/floor_component.dart';
+import '../tile/floor_fx_controller.dart';
+import '../other/stage_map.dart';
+import 'package:flame/experimental.dart' as flameExp;
+import '../unit/enemy/enemy.dart';
 import '../unit/tower/towers.dart';
+import 'astar_controller.dart';
+import 'game_controller.dart';
 import 'game_event.dart';
-import '../tile/tile_component.dart';
+import 'timer_process.dart';
 
 final _log = Logger(GameInstruction.loggerName);
 
@@ -28,36 +33,51 @@ abstract class GameInstruction {
     switch (event) {
       case CreateStageGameEvent():
         _log.info('CreateStageGameEvent');
-        controller.game.add(TileFXController());
+        controller.game.add(FloorFXController());
         astarController.init(
             controller.stage.layer.width, controller.stage.layer.height);
         for (final tileOption in controller.stage.layer.tiles) {
+          late final FloorComponent tile;
+          final image = await Flame.images.load(tileOption.assetPath);
           switch (tileOption.type) {
             case TileType.start:
-              controller.game.add(StartGateTileComponent(
+              tile = StartGateFloorComponent(
                 size: Vector2.all(StageMap.tileSize),
                 position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
-              ));
+              );
             case TileType.end:
-              controller.game.add(EndGateTileComponent(
+              tile = EndGateFloorComponent(
                 size: Vector2.all(StageMap.tileSize),
                 position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
-              ));
+              );
             case TileType.road:
-              controller.game.add(RoadTileComponent(
+              tile = RoadFloorComponent(
                 size: Vector2.all(StageMap.tileSize),
                 position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
-              ));
+              );
             case TileType.foundation:
-              controller.game.add(FoundationTileComponent(
+              tile = FoundationFloorComponent(
                 size: Vector2.all(StageMap.tileSize),
                 position: StageMap.toRelative(tileOption.x, tileOption.y),
                 gridPos: Point(tileOption.x, tileOption.y),
-              ));
+              );
           }
+          tile.add(SpriteComponent.fromImage(image,
+              size: tile.size, priority: Priority.tileOver));
+          controller
+            ..game.add(tile)
+            ..game.world;
+          final canvasSize = controller.game.canvasSize;
+          controller.game.camera
+              .setBounds(flameExp.Rectangle.fromRect(Rect.fromLTWH(
+            0 + (canvasSize.x / 2),
+            0 + (canvasSize.y / 2),
+            -(canvasSize.x / 2),
+            -(canvasSize.y / 2),
+          )));
         }
       case EnemyGetDamagedGameEvent():
         _log.info('EnemyGetDamagedGameEvent');
@@ -66,8 +86,9 @@ abstract class GameInstruction {
         switch (event.type) {
           case EnemyType.goblin:
           case EnemyType.goblin2:
-            final goblin = Goblin(controller.startGate.position);
-            controller.game.add(goblin);
+            if (controller.startGate == null) break;
+            final goblin = Enemy(controller.startGate!.position);
+            controller.game.world.add(goblin);
             GameController.event(GameEvent.enemyGo(goblin));
         }
       case EnemySpawnGameEvent():
@@ -94,7 +115,7 @@ abstract class GameInstruction {
       case EnemyGoGameEvent():
         _log.info('EnemyGoGameEvent');
         final start = StageMap.toAstarPos(event.enemy.position);
-        final barriers = controller.game.query<FoundationTileComponent>();
+        final barriers = controller.game.query<FoundationFloorComponent>();
         astarController.clearBarriers();
         astarController.addAllBarrier(barriers.map((i) => i.gridPos).toList());
         try {
@@ -134,8 +155,8 @@ abstract class GameInstruction {
         _log.info('EnemyKilledGameEvent');
       case MovePointerGlobalGameEvent():
         final localPos = controller.game.camera.globalToLocal(event.position);
-        final grids = controller.gameRef.query<TileComponent>();
-        TileComponent? item;
+        final grids = controller.game.query<FloorComponent>();
+        FloorComponent? item;
         // firstWhere
         for (final i in grids) {
           final isCover = i.isCover(localPos);
@@ -143,22 +164,22 @@ abstract class GameInstruction {
           item = i;
           break;
         }
-        final fx = controller.gameRef.query<TileFXController>().firstOrNull;
+        final fx = controller.game.query<FloorFXController>().firstOrNull;
         if (item == null) {
           fx?.removeFX();
           break;
         }
-        if (item case FoundationTileComponent() when !item.hasTower) {
+        if (item case FoundationFloorComponent() when !item.hasTower) {
           fx?.setAllowedFX(pos: item.position, size: item.size);
         } else {
           fx?.setNotAllowedFX(pos: item.position, size: item.size);
         }
       case FinishPointerGlobalGameEvent():
         final localPos = controller.game.camera.globalToLocal(event.position);
-        final fx = controller.gameRef.query<TileFXController>().firstOrNull;
+        final fx = controller.game.query<FloorFXController>().firstOrNull;
         fx?.removeFX();
-        final grids = controller.gameRef.query<FoundationTileComponent>();
-        FoundationTileComponent? item;
+        final grids = controller.game.query<FoundationFloorComponent>();
+        FoundationFloorComponent? item;
         // firstWhere
         for (final i in grids) {
           final isCover = i.isCover(localPos);
@@ -181,9 +202,14 @@ abstract class GameInstruction {
         // debugPrint('SetDraggableGameEvent: SET ${event.position}');
         item.setTower(tower);
       case LabGameEvent():
-        debugPrint('LabGameEvent');
-        controller.game.addAll(
-            List.generate(1, (i) => Goblin(Vector2.all(100 + i.toDouble()))));
+      // final grids = controller.gameRef.query<FloorComponent>();
+      // List.generate(
+      //   1000,
+      //   (i) {
+      //     final tile = grids.elementAt(Random().nextInt(grids.length));
+      //     tile.add(MissileTower(position: Vector2.zero()));
+      //   },
+      // );
     }
   }
 }

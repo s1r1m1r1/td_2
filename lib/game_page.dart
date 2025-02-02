@@ -1,7 +1,5 @@
-import 'package:bonfire/bonfire.dart';
-import 'package:bonfire/map/base/layer.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -10,11 +8,15 @@ import 'bloc/stage_stats_bloc.dart';
 import 'bloc/stage_treasury_bloc.dart';
 import 'bloc/weapon_bar_bloc.dart';
 import 'domain/weapon_option.dart';
+import 'game_core/camera/game_camera_config.dart';
+import 'game_core/camera/move_camera_controller.dart';
 import 'game_core/controller/game_controller.dart';
 import 'game_core/controller/game_event.dart';
-import 'game_core/controller/move_camera_controller.dart';
-import 'game_core/tile/stage_map.dart';
+import 'game_core/other/offset_ext.dart';
+import 'game_core/other/screen_util.dart';
+import 'game_core/other/stage_map.dart';
 import 'game_core/ui/towers_interface.dart';
+import 'game_widget_dev.dart';
 
 class GamePage extends StatelessWidget {
   static Route<void> route() {
@@ -43,7 +45,7 @@ class GamePage extends StatelessWidget {
               GetIt.I.get<WeaponBarBloc>()..add(const WeaponBarEvent.read()),
         ),
       ],
-      child: const GameView(),
+      child: const Center(child: GameView()),
     );
   }
 }
@@ -101,26 +103,16 @@ class LoadedGameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('MEDIA Query ${MediaQuery.of(context).size}');
     const margin = EdgeInsetsDirectional.only(top: 100);
     final moveCamera = MoveCameraController()..setMargin(margin);
     return Stack(
       children: [
         Padding(
           padding: margin,
-          child: BonfireWidget(
-            playerControllers: [
-              Keyboard(
-                config: KeyboardConfig(
-                  acceptedKeys: [
-                    LogicalKeyboardKey.space,
-                  ],
-                ),
-              )
-            ],
-            components: [
-              // ...StageMap.enemies(),
-              // ...StageMap.decorations(),
-
+          child: GameWidgetDev(
+            hudComponents: [
+              TowersInterface(moveCamera),
               moveCamera,
               GameController(
                   stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
@@ -128,128 +120,148 @@ class LoadedGameView extends StatelessWidget {
                   stage: stageState.result,
                   weapons: weaponBarState.result),
             ],
-            cameraConfig: CameraConfig(
-              zoom: getZoomFromMaxVisibleTile(context, StageMap.tileSize, 20),
-            ),
-            interface: TowersInterface(moveCamera),
-            map: WorldMap([
-              Layer(id: 0, tiles: [
-                ...stageState.result.layer.tiles.map((i) => Tile(
-                    x: i.x.toDouble(),
-                    y: i.y.toDouble(),
-                    width: StageMap.tileSize,
-                    height: StageMap.tileSize,
-                    sprite: TileSprite(path: i.assetPath)))
-              ])
-            ]),
-            backgroundColor: Colors.blueGrey[900],
-          ),
-        ),
-        Padding(
-          padding: margin,
-          child: DragTarget(
-            onMove: (details) {
-              final double dx = details.offset.dx + 50 + 0;
-              final double dy = details.offset.dy - 50.0;
-
-              final center = Offset(dx, dy);
-              GameController.event(
-                  GameEvent.movePointerGlobal(center.toVector2()));
-            },
-            onAcceptWithDetails: (details) {
-              final double dx = details.offset.dx + 50 + 0;
-              final double dy = details.offset.dy - 50.0;
-              final center = Offset(dx, dy);
-              final weaponId = details.data;
-              if (weaponId is! WeaponId) return;
-              GameController.event(
-                  GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
-            },
-            builder: (_, __, ___) => const SizedBox.expand(),
-          ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
-          height: margin.top,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              ...weaponBarState.result.map((i) => Draggable<WeaponId>(
-                    // Data is the value this Draggable stores.
-                    data: i.id,
-                    feedback: SizedBox.square(
-                      dimension: 50,
-                      child: Image(
-                        image: i.barImage,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                    childWhenDragging: SizedBox.square(
-                      dimension: 100,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        // Image with stroke effect
-                        child: Image(
-                          image: i.barImage,
-                          fit: BoxFit.fitHeight,
-                          frameBuilder:
-                              (context, child, frame, wasSynchronouslyLoaded) {
-                            final colored = ColorFiltered(
-                                colorFilter: const ColorFilter.mode(
-                                    Colors.purple, BlendMode.srcIn),
-                                child: child);
-                            // stroke
-                            const s = 2.0;
-                            return Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                ...List.generate(8, (i) {
-                                  final padding = switch (i) {
-                                    0 => const EdgeInsets.fromLTRB(s, s, 0, 0),
-                                    1 => const EdgeInsets.fromLTRB(0, s, s, 0),
-                                    2 => const EdgeInsets.fromLTRB(0, 0, s, s),
-                                    3 => const EdgeInsets.fromLTRB(s, 0, 0, s),
-                                    4 => const EdgeInsets.fromLTRB(s, 0, 0, 0),
-                                    5 => const EdgeInsets.fromLTRB(0, s, 0, 0),
-                                    6 => const EdgeInsets.fromLTRB(0, 0, s, 0),
-                                    7 => const EdgeInsets.fromLTRB(0, 0, 0, s),
-                                    _ => EdgeInsets.zero
-                                  };
-                                  debugPrint('repaint Stack item');
-                                  return Padding(
-                                    padding: padding,
-                                    child: colored,
-                                  );
-                                }),
-                                Padding(
-                                  padding: const EdgeInsets.all(s),
-                                  child: SizedBox(child: child),
-                                ),
-                              ],
-                            );
-                          },
-                          // color: Colors.grey,
-                          // colorBlendMode: BlendMode.saturation,
-                        ),
-                      ),
-                    ),
-                    child: SizedBox.square(
-                      dimension: 100,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
-                        child: Image(
-                          image: i.barImage,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    ),
-                  )),
+            components: [
+              World(),
             ],
           ),
         ),
+        const _DragTargetZone(margin: margin),
+        _PositionedWeaponBar(
+          height: margin.top,
+          weaponBarState: weaponBarState,
+        ),
       ],
+    );
+  }
+}
+
+class _DragTargetZone extends StatelessWidget {
+  const _DragTargetZone({
+    required this.margin,
+  });
+
+  final EdgeInsetsDirectional margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin,
+      child: DragTarget(
+        onMove: (details) {
+          final double dx = details.offset.dx + 50 + 0;
+          final double dy = details.offset.dy - 50.0;
+
+          final center = Offset(dx, dy);
+          GameController.event(GameEvent.movePointerGlobal(center.toVector2()));
+        },
+        onAcceptWithDetails: (details) {
+          final double dx = details.offset.dx + 50 + 0;
+          final double dy = details.offset.dy - 50.0;
+          final center = Offset(dx, dy);
+          final weaponId = details.data;
+          if (weaponId is! WeaponId) return;
+          GameController.event(
+              GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
+        },
+        builder: (_, __, ___) => const SizedBox.expand(),
+      ),
+    );
+  }
+}
+
+class _PositionedWeaponBar extends StatelessWidget {
+  const _PositionedWeaponBar({
+    required this.height,
+    required this.weaponBarState,
+  });
+
+  final double height;
+  final $SuccessWeaponBarState weaponBarState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: 0,
+      height: height,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          ...weaponBarState.result.map(
+            (i) => Draggable<WeaponId>(
+              // Data is the value this Draggable stores.
+              data: i.id,
+              feedback: SizedBox.square(
+                dimension: 50,
+                child: Image(
+                  image: i.barImage,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              childWhenDragging: SizedBox.square(
+                dimension: 100,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  // Image with stroke effect
+                  child: Image(
+                    image: i.barImage,
+                    fit: BoxFit.fitHeight,
+                    frameBuilder:
+                        (context, child, frame, wasSynchronouslyLoaded) {
+                      final colored = ColorFiltered(
+                          colorFilter: const ColorFilter.mode(
+                              Colors.purple, BlendMode.srcIn),
+                          child: child);
+                      // stroke
+                      const s = 2.0;
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          ...List.generate(8, (i) {
+                            final padding = switch (i) {
+                              0 => const EdgeInsets.fromLTRB(s, s, 0, 0),
+                              1 => const EdgeInsets.fromLTRB(0, s, s, 0),
+                              2 => const EdgeInsets.fromLTRB(0, 0, s, s),
+                              3 => const EdgeInsets.fromLTRB(s, 0, 0, s),
+                              4 => const EdgeInsets.fromLTRB(s, 0, 0, 0),
+                              5 => const EdgeInsets.fromLTRB(0, s, 0, 0),
+                              6 => const EdgeInsets.fromLTRB(0, 0, s, 0),
+                              7 => const EdgeInsets.fromLTRB(0, 0, 0, s),
+                              _ => EdgeInsets.zero
+                            };
+                            debugPrint('repaint Stack item');
+                            return Padding(
+                              padding: padding,
+                              child: colored,
+                            );
+                          }),
+                          Padding(
+                            padding: const EdgeInsets.all(s),
+                            child: SizedBox(child: child),
+                          ),
+                        ],
+                      );
+                    },
+                    // color: Colors.grey,
+                    // colorBlendMode: BlendMode.saturation,
+                  ),
+                ),
+              ),
+              child: SizedBox.square(
+                dimension: 100,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
+                  child: Image(
+                    image: i.barImage,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
