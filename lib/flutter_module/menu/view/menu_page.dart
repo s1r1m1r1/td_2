@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flame_audio/bgm.dart';
@@ -55,7 +54,7 @@ class _MenuPageState extends State<MenuPage> with TickerProviderStateMixin {
 
   void startBgmMusic() {
     bgm.initialize();
-    bgm.play(Assets.audio.music.bgMusic);
+    bgm.play(Assets.audio.music.zanderNoriegaTheorem199Variant);
   }
 
   void playOne() {

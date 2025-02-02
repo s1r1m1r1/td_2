@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../domain/weapon_option.dart';
-import '../flutter_module/constant/assets.dart';
+import '../generated/assets.gen.dart';
 
 part 'weapon_bar_bloc.freezed.dart';
 
@@ -29,7 +29,10 @@ sealed class WeaponBarState with _$WeaponBarState {
 
 @lazySingleton
 class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
-  WeaponBarBloc() : super(const $InitWeaponBarState()) {
+  WeaponBarBloc()
+      : super(
+          const $InitWeaponBarState(),
+        ) {
     on<WeaponBarEvent>(
       (event, emitter) async {
         switch (event) {
@@ -53,7 +56,7 @@ class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
               bulletSpeed: 2,
               bulletDistance: 3,
               price: 100,
-              barImage:  AssetImage(Assets.images.cannon),
+              barImage: AssetImage(Assets.images.weapon.cannon.path),
             ),
             WeaponOption.missile(
               id: const WeaponId(1),
@@ -61,7 +64,7 @@ class WeaponBarBloc extends Bloc<WeaponBarEvent, WeaponBarState> {
               bulletSpeed: 2,
               bulletDistance: 3,
               price: 100,
-              barImage: AssetImage(Assets.images.missile),
+              barImage: AssetImage(Assets.images.weapon.missile.path),
             )
           ],
         ),

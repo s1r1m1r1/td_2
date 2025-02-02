@@ -12,7 +12,7 @@ dependencies:
     # git: url: https://github.com/s1r1m1r1/astar_dart.git ref: develop
   audioplayers: ^6.1.1
   bloc: ^8.1.4
-  bonfire: 3.13.0
+  # bonfire: 3.13.0
   # bonfire: 3.12.2
   equatable: ^2.0.7
   fast_noise: ^1.0.1

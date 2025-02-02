@@ -21,7 +21,7 @@ class PreloadCubit extends Cubit<PreloadState> {
       PreloadPhase(
         label: 'audio',
         loader: () => audio.loadAll([
-          Assets.audio.music.bgMusic,
+          Assets.audio.music.zanderNoriegaTheorem199Variant,
           Assets.audio.sfx.fire1,
           Assets.audio.sfx.fire2,
         ]),

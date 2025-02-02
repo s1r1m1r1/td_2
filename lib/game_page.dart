@@ -1,22 +1,22 @@
-import 'package:flame/components.dart';
+import 'package:flame/components.dart' show Vector2;
+import 'package:flame/game.dart' show GameWidget;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import 'bloc/audio/audio_cubit.dart';
 import 'bloc/stage_bloc.dart';
 import 'bloc/stage_stats_bloc.dart';
 import 'bloc/stage_treasury_bloc.dart';
 import 'bloc/weapon_bar_bloc.dart';
 import 'domain/weapon_option.dart';
-import 'game_core/camera/game_camera_config.dart';
-import 'game_core/camera/move_camera_controller.dart';
-import 'game_core/controller/game_controller.dart';
-import 'game_core/controller/game_event.dart';
-import 'game_core/other/offset_ext.dart';
-import 'game_core/other/screen_util.dart';
-import 'game_core/other/stage_map.dart';
-import 'game_core/ui/towers_interface.dart';
-import 'game_widget_dev.dart';
+import 'game_module/controller/game_controller.dart';
+import 'game_module/controller/game_event.dart';
+import 'game_module/core/process_game.dart';
+import 'game_module/hud/hud_floor_type.dart';
+import 'game_module/hud/hud_left.dart';
+import 'game_module/hud/hud_weapons_bar.dart';
+import 'game_module/other/offset_ext.dart';
 
 class GamePage extends StatelessWidget {
   static Route<void> route() {
@@ -101,39 +101,80 @@ class LoadedGameView extends StatelessWidget {
   final $SuccessStageState stageState;
   final $SuccessWeaponBarState weaponBarState;
 
+
   @override
   Widget build(BuildContext context) {
-    debugPrint('MEDIA Query ${MediaQuery.of(context).size}');
-    const margin = EdgeInsetsDirectional.only(top: 100);
-    final moveCamera = MoveCameraController()..setMargin(margin);
+    final size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        Padding(
-          padding: margin,
-          child: GameWidgetDev(
+        GameWidget(
+          game: ProcessGame(
+            stage: stageState.result,
+            stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
+            stageTreasuryBloc: GetIt.I.get<StageTreasuryBloc>(),
+            components: [],
             hudComponents: [
-              TowersInterface(moveCamera),
-              moveCamera,
-              GameController(
-                  stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
-                  stageTreasuryBloc: GetIt.I.get<StageTreasuryBloc>(),
-                  stage: stageState.result,
-                  weapons: weaponBarState.result),
+              HudLeft(position: Vector2(0, 0), size: Vector2.all(140)),
+              HudWeaponItem(position: Vector2(300, 100), size: Vector2.all(100)),
+              HudLeft(
+                position: Vector2(32, size.height - 200),
+                size: Vector2.all(60),
+              ),
+              HudCurrentFloor(
+                position: Vector2(size.width - 200, size.height - 200),
+              ),
             ],
-            components: [
-              World(),
-            ],
+            audioPlayer: context.read<AudioCubit>().effectPlayer,
+            weapons: weaponBarState.result,
           ),
-        ),
-        const _DragTargetZone(margin: margin),
-        _PositionedWeaponBar(
-          height: margin.top,
-          weaponBarState: weaponBarState,
         ),
       ],
     );
   }
 }
+
+// class LoadedGameView extends StatelessWidget {
+//   const LoadedGameView({
+//     super.key,
+//     required this.stageState,
+//     required this.weaponBarState,
+//   });
+//   final $SuccessStageState stageState;
+//   final $SuccessWeaponBarState weaponBarState;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     debugPrint('MEDIA Query ${MediaQuery.of(context).size}');
+//     const margin = EdgeInsetsDirectional.only(top: 100);
+//     final moveCamera = MoveCameraController()..setMargin(margin);
+//     return Stack(
+//       children: [
+//         Padding(
+//           padding: margin,
+//           child: GameWidgetDev(
+//             hudComponents: [
+//               TowersInterface(moveCamera),
+//               moveCamera,
+//               GameController(
+//                   stageStatsBloc: GetIt.I.get<StageStatsBloc>(),
+//                   stageTreasuryBloc: GetIt.I.get<StageTreasuryBloc>(),
+//                   stage: stageState.result,
+//                   weapons: weaponBarState.result),
+//             ],
+//             components: [
+//               World(),
+//             ],
+//           ),
+//         ),
+//         const _DragTargetZone(margin: margin),
+//         _PositionedWeaponBar(
+//           height: margin.top,
+//           weaponBarState: weaponBarState,
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class _DragTargetZone extends StatelessWidget {
   const _DragTargetZone({
@@ -152,7 +193,7 @@ class _DragTargetZone extends StatelessWidget {
           final double dy = details.offset.dy - 50.0;
 
           final center = Offset(dx, dy);
-          GameController.event(GameEvent.movePointerGlobal(center.toVector2()));
+          // GameController.event(GameEvent.movePointerGlobal(center.toVector2()));
         },
         onAcceptWithDetails: (details) {
           final double dx = details.offset.dx + 50 + 0;
@@ -160,8 +201,7 @@ class _DragTargetZone extends StatelessWidget {
           final center = Offset(dx, dy);
           final weaponId = details.data;
           if (weaponId is! WeaponId) return;
-          GameController.event(
-              GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
+          // GameController.event( GameEvent.finishPointerGlobal(center.toVector2(), weaponId));
         },
         builder: (_, __, ___) => const SizedBox.expand(),
       ),
