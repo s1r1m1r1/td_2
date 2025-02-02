@@ -19,7 +19,13 @@ import 'game_core/ui/towers_interface.dart';
 import 'game_widget_dev.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key});
+  static Route<void> route() {
+    return MaterialPageRoute<void>(
+      builder: (_) => const GamePage._(),
+    );
+  }
+
+  const GamePage._();
 
   @override
   Widget build(BuildContext context) {

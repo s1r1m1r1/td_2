@@ -56,13 +56,13 @@ class TurretDetail extends PositionComponent
     if (!buildDone) {
       final Color? color = buildAllowed ? Colors.green[200] : Colors.red[200];
       /*build indicator */
-      canvas.drawRect(size.toRect(), Paint()..color = color!.withOpacity(0.3));
+      // canvas.drawRect(size.toRect(), Paint()..color = color!.withOpacity(0.3));
       canvas.drawCircle(
           (size / 2).toOffset(),
           range,
           Paint()
             ..style = PaintingStyle.stroke
-            ..color = Colors.green);
+            ..color = Colors.red);
     }
     super.render(canvas);
   }

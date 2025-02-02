@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../domain/weapon_option.dart';
-import '../flutter_core/constant/assets.dart';
+import '../flutter_module/constant/assets.dart';
 
 part 'weapon_bar_bloc.freezed.dart';
 
